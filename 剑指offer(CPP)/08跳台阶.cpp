@@ -5,7 +5,7 @@
 class Solution {
 public:
     int jumpFloor(int number) {
-        //动态规划
+        //动态规划（注意初值）
 		int f1=1,f2=1;
 		while(number--){
 			f2=f1+f2;
