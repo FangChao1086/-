@@ -15,6 +15,7 @@ class Solution {
 public:
     TreeNode* Convert(TreeNode* pRootOfTree)
     {
+		//中序遍历
         //返回链表的头节点
         if(pRootOfTree == NULL)
             return NULL;
