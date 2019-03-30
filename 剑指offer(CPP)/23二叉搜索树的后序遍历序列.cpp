@@ -1,5 +1,5 @@
-//ÊäÈëÒ»¸öÕûÊýÊý×é£¬ÅÐ¶Ï¸ÃÊý×éÊÇ²»ÊÇÄ³¶þ²æËÑË÷Ê÷µÄºóÐò±éÀúµÄ½á¹û¡£
-//Èç¹ûÊÇÔòÊä³öYes,·ñÔòÊä³öNo¡£¼ÙÉèÊäÈëµÄÊý×éµÄÈÎÒâÁ½¸öÊý×Ö¶¼»¥²»ÏàÍ¬¡£
+//è¾“å…¥ä¸€ä¸ªæ•´æ•°æ•°ç»„ï¼Œåˆ¤æ–­è¯¥æ•°ç»„æ˜¯ä¸æ˜¯æŸäºŒå‰æœç´¢æ ‘çš„åŽåºéåŽ†çš„ç»“æžœã€‚
+//å¦‚æžœæ˜¯åˆ™è¾“å‡ºYes,å¦åˆ™è¾“å‡ºNoã€‚å‡è®¾è¾“å…¥çš„æ•°ç»„çš„ä»»æ„ä¸¤ä¸ªæ•°å­—éƒ½äº’ä¸ç›¸åŒã€‚
 
 
 class Solution {
@@ -9,11 +9,11 @@ public:
     }
     
     bool bst(vector<int> sequence, int begin, int end){
-        if(sequence.empty() || begin>end)
+        if(sequence.empty())
             return false;
-        //¸ù½Úµã
+        //æ ¹èŠ‚ç‚¹
         int root = sequence[end];
-        //ÕÒµ½µÚÒ»¸öÓÒ×ÓÊ÷µÄ½Úµã
+        //æ‰¾åˆ°ç¬¬ä¸€ä¸ªå³å­æ ‘çš„èŠ‚ç‚¹
         int i = begin;
         for(;i<end;i++)
             if(sequence[i]>root)
