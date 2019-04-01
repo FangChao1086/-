@@ -2,6 +2,7 @@
 * [2、不修改数组找出重复的数字](#不修改数组找出重复的数字)
 * [3、二维数组中的查找](#二维数组中的查找)
 * [4、替换空格](#替换空格)
+* [5、从尾到头打印链表](#从尾到头打印链表)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -139,7 +140,7 @@ public:
 ```
 **思路**
 * 遍历
-  * 为空格是+%20
+  * 为空格时，替换为%20
   
 **代码**
 ```C++
@@ -154,6 +155,45 @@ public:
                 res+=x;
         }
         return res;
+    }
+};
+```
+
+<span id="从尾到头打印链表"></span>
+## 从尾到头打印链表
+**题目**
+```
+输入一个链表的头结点，按照 从尾到头 的顺序返回节点的值。
+返回的结果用数组存储。
+```
+**样例**
+```
+输入：[2, 3, 5]
+返回：[5, 3, 2]
+```
+**思路**
+* 遍历节点，存值
+* 反转打印
+  
+**代码**
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> printListReversingly(ListNode* head) {
+        vector<int> res;
+        while(head){
+            res.push_back(head->val);
+            head=head->next;
+        }
+        return vector<int>(res.rbegin(),res.rend());
     }
 };
 ```
