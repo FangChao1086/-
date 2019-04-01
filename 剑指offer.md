@@ -3,6 +3,7 @@
 * [3、二维数组中的查找](#二维数组中的查找)
 * [4、替换空格](#替换空格)
 * [5、从尾到头打印链表](#从尾到头打印链表)
+* [6、重建二叉树](#重建二叉树)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -194,6 +195,82 @@ public:
             head=head->next;
         }
         return vector<int>(res.rbegin(),res.rend());
+    }
+};
+```
+
+<span id="重建二叉树"></span>
+## 重建二叉树
+**题目**
+```
+输入一棵二叉树前序遍历和中序遍历的结果，请重建该二叉树。
+
+注意:
+  * 二叉树中每个节点的值都互不相同；
+  * 输入的前序遍历和中序遍历一定合法；
+```
+**样例**
+```
+给定：
+前序遍历是：[3, 9, 20, 15, 7]
+中序遍历是：[9, 3, 15, 20, 7]
+
+返回：[3, 9, 20, null, null, 15, 7, null, null, null, null]
+返回的二叉树如下所示：
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+**思路**
+* 1、得到中序遍历的根节点的位置
+* 2、得到左子树的前序与中序遍历的结果
+* 3、得到右子树的前序与中序遍历的结果
+* 4、递归得到整个二叉树
+
+  
+**代码**
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& pre, vector<int>& vin) {
+        int vinlen=vin.size();
+        if(vinlen==0) return NULL;
+        vector<int> left_pre,left_vin,right_pre,right_vin;
+        TreeNode* head=new TreeNode(pre[0]);
+        
+        int root_index=0;
+        for(int i=0;i<vinlen;i++){
+            if(vin[i]==pre[0]){
+                root_index=i;
+                break;
+            }
+        }
+        
+        for(int i=0;i<root_index;i++){
+            left_pre.push_back(pre[i+1]);
+            left_vin.push_back(vin[i]);
+        }
+        
+        for(int i=root_index+1;i<vinlen;i++){
+            right_pre.push_back(pre[i]);
+            right_vin.push_back(vin[i]);
+        }
+        
+        head->left=buildTree(left_pre,left_vin);
+        head->right=buildTree(right_pre,right_vin);
+        
+        return head;
     }
 };
 ```
