@@ -448,7 +448,7 @@ public:
         int l=0,r=n;
         while(l<r){
             int mid=l+r>>1;
-            if(nums[mid]<l) r=mid;
+            if(nums[mid]<nums[0]) r=mid;
             else l=mid+1;
         }
         return nums[r];
