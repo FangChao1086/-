@@ -8,6 +8,7 @@
 * [8、用两个栈实现队列](#用两个栈实现队列)
 * [9、斐波那契数列](#斐波那契数列)
 * [10、旋转数组的最小数字](#旋转数组的最小数字)
+* [11、矩阵中的路径](#矩阵中的路径)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -452,6 +453,63 @@ public:
             else l=mid+1;
         }
         return nums[r];
+    }
+};
+```
+
+<span id="矩阵中的路径"></span>
+## 矩阵中的路径
+```
+题目：
+请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。
+路径可以从矩阵中的任意一个格子开始，每一步可以在矩阵中向左，向右，向上，向下移动一个格子。
+如果一条路径经过了矩阵中的某一个格子，则之后不能再次进入这个格子。
+注意：
+* 输入的路径不为空；
+* 所有出现的字符均为大写英文字母；
+
+样例：
+matrix=
+[
+  ["A","B","C","E"],
+  ["S","F","C","S"],
+  ["A","D","E","E"]
+]
+str="BCCE" , return "true" 
+str="ASAE" , return "false"
+
+思路：
+* 从每个点开始遍历，使用dfs深度优先遍历
+* 找到该字符串后输出true,遍历完没有找到输出false
+```
+**代码**
+```
+class Solution {
+public:
+    bool hasPath(vector<vector<char>>& matrix, string str) {
+        for(int i=0;i < matrix.size();i++){
+            for(int j=0;j<matrix[i].size();j++){
+                if(dfs(matrix,str,0,i,j))
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    bool dfs(vector<vector<char>>& matrix, string &str,int u,int x,int y){
+        if(matrix[x][y]!=str[u]) return false;
+        if(u==str.size()-1) return true;
+        int a[4]={-1,0,1,0}, b[4]={0,1,0,-1};
+        char t=matrix[x][y];
+        matrix[x][y]='*';
+        for(int i=0;i<4;i++){
+            int p=x+a[i],q=y+b[i];
+            if(p>=0 && p<matrix.size() && q>=0 && q<=matrix[p].size()){
+                if(dfs(matrix,str,u+1,p,q)) return true;
+            }
+        }
+        matrix[x][y]=t;
+        return false;
     }
 };
 ```
