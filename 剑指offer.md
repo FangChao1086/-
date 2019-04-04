@@ -483,7 +483,7 @@ str="ASAE" , return "false"
 * 找到该字符串后输出true,遍历完没有找到输出false
 ```
 **代码**
-```
+```cpp
 class Solution {
 public:
     bool hasPath(vector<vector<char>>& matrix, string str) {
