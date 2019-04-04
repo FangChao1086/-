@@ -508,7 +508,7 @@ public:
                 if(dfs(matrix,str,u+1,p,q)) return true;
             }
         }
-        matrix[x][y]=t;
+        matrix[x][y]=t;  // 回溯
         return false;
     }
 };
