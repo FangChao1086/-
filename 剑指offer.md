@@ -529,7 +529,7 @@ public:
 输出：20
 ```
 **代码**
-```
+```cpp
 class Solution {
 public:
     int movingCount(int threshold, int rows, int cols)
