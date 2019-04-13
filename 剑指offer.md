@@ -9,6 +9,7 @@
 * [9、斐波那契数列](#斐波那契数列)
 * [10、旋转数组的最小数字](#旋转数组的最小数字)
 * [11、矩阵中的路径](#矩阵中的路径)
+* [12、机器人的运动范围](#机器人的运动范围)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -510,6 +511,60 @@ public:
         }
         matrix[x][y]=t;  // 回溯
         return false;
+    }
+};
+```
+
+<sapn id="机器人的运动范围"></span>
+## 机器人的运动范围
+```
+题目：
+地上有一个 m 行和 n 列的方格，横纵坐标范围分别是 0∼m−1 和 0∼n−1。
+一个机器人从坐标0,0的格子开始移动，每一次只能向左，右，上，下四个方向移动一格。
+但是不能进入行坐标和列坐标的数位之和大于 k 的格子。
+请问该机器人能够达到多少个格子？
+
+样例：
+输入：k=7, m=4, n=5
+输出：20
+```
+**代码**
+```
+class Solution {
+public:
+    int movingCount(int threshold, int rows, int cols)
+    {
+        if(!rows || !cols) return 0;
+        vector<vector<bool>> dp(rows,vector<bool>(cols,false));
+        queue<pair<int,int>> que;
+        que.push({0,0});
+        int count_s=0;
+        int a[4]={-1,0,1,0},b[4]={0,1,0,-1};
+        while(!que.empty()){
+            auto t=que.front();
+            que.pop();
+            if(sum_of_num(t)>threshold || dp[t.first][t.second]) continue;
+            count_s++;
+            dp[t.first][t.second]=true;
+            for(int i=0;i<4;i++){
+                int x=t.first+a[i],y=t.second+b[i];
+                if(x>=0 && x<rows&& y>=0 && y<cols) que.push({x,y});
+            }
+        }
+        return count_s;
+    }
+    
+    int sum_of_num(pair<int,int> p){
+        int count_num=0;
+        while(p.first){
+            count_num+=p.first%10;
+            p.first/=10;
+        }
+        while(p.second){
+            count_num+=p.second%10;
+            p.second/=10;
+        }
+        return count_num;
     }
 };
 ```
