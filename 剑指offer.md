@@ -10,6 +10,7 @@
 * [10、旋转数组的最小数字](#旋转数组的最小数字)
 * [11、矩阵中的路径](#矩阵中的路径)
 * [12、机器人的运动范围](#机器人的运动范围)
+* [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -565,6 +566,40 @@ public:
             p.second/=10;
         }
         return count_num;
+    }
+};
+```
+
+<span id ="在O(1)时间删除链表节点"></span>
+## 在O(1)时间删除链表节点
+```
+题目:
+给定单向链表的一个节点指针，定义一个函数在O(1)时间删除该结点。
+假设链表一定存在，并且该节点一定不是尾节点。
+注意：实际代码中不存在输入输出，只是在后台测试时会使用输入输出样例
+
+样例：
+输入：链表 1->4->6->8
+      删掉节点：第2个节点即6（头节点为第0个节点）
+输出：新链表 1->4->8
+```
+**代码**
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+        auto p=node->next;
+        node->val=p->val;
+        node->next=p->next;
+        delete p;
     }
 };
 ```
