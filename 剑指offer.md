@@ -11,6 +11,7 @@
 * [11、矩阵中的路径](#矩阵中的路径)
 * [12、机器人的运动范围](#机器人的运动范围)
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
+* [删除链表中重复的节点](#删除链表中重复的节点)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -600,6 +601,52 @@ public:
         node->val=p->val;
         node->next=p->next;
         delete p;
+    }
+};
+```
+
+<span id="删除链表中重复的节点"></span>
+## 删除链表中重复的节点
+```
+题目:
+在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留。
+
+样例：
+输入：1->2->3->3->4->4->5
+输出：1->2->5
+
+说明:
+代码中的tmp存储的是重复节点后的节点
+```
+**代码**
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplication(ListNode* head) {
+        ListNode* dummy=new ListNode(0);
+        dummy->next=head;
+        ListNode* p=dummy;
+        while(p->next){
+            ListNode* tmp=p->next;
+            while(tmp && p->next->val==tmp->val){
+                tmp=tmp->next;
+            }
+            if(p->next->next==tmp){
+                p=p->next;
+            }
+            else{
+                p->next=tmp;
+            }
+        }
+        return dummy->next;
     }
 };
 ```
