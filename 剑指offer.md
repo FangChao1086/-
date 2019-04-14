@@ -12,6 +12,7 @@
 * [12、机器人的运动范围](#机器人的运动范围)
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
 * [删除链表中重复的节点](#删除链表中重复的节点)
+* [正则表达式匹配](#正则表达式匹配)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -647,6 +648,50 @@ public:
             }
         }
         return dummy->next;
+    }
+};
+```
+
+<span id="正则表达式匹配"></span>
+## 正则表达式匹配
+```
+题目：
+请实现一个函数用来匹配包括'.'和'*'的正则表达式。
+模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符可以出现任意次（含0次）。
+在本题中，匹配是指字符串的所有字符匹配整个模式。
+例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和"ab*a"均不匹配。
+
+样例：
+输入：s="aa" p="a*"
+输出:true
+```
+**代码**
+```cpp
+class Solution {
+public:
+    vector<vector<int>>f;
+    int n,m;
+    bool isMatch(string s, string p) {
+        n=s.size();
+        m=p.size();
+        f=vector<vector<int>>(n+1,vector<int>(m+1,-1));
+        return dp(0,0,s,p);
+    }
+    
+    bool dp(int x,int y,string &s,string &p){
+        if(f[x][y]!=-1) return f[x][y];
+        if(y==m){
+            return f[x][y]=x==n;
+        }
+        bool firstMatch=x<n && (s[x]==p[y] || p[y]=='.');
+        bool ans;
+        if(y+1<m && p[y+1]=='*'){
+            ans = dp(x,y+2,s,p) || firstMatch && dp(x+1,y,s,p);
+        }
+        else{
+            ans = firstMatch && dp(x+1,y+1,s,p);
+        }
+        return f[x][y]=ans;
     }
 };
 ```
