@@ -14,6 +14,7 @@
 * [删除链表中重复的节点](#删除链表中重复的节点)
 * [正则表达式匹配](#正则表达式匹配)
 * [表示数值的字符串](#表示数值的字符串)
+* [链表中环的入口节点](#链表中环的入口节点)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -746,6 +747,53 @@ public:
             else return false;
         }
         return true;
+    }
+};
+```
+
+<span id="链表中环的入口节点"></span>
+## 链表中环的入口节点
+```
+题目：
+给定一个链表，若其中包含环，则输出环的入口节点。
+若其中不包含环，则输出null。
+
+样例：
+给定如上所示的链表：    注意：3与6形成环，即入口节点为3.
+[1, 2, 3, 4, 5, 6]
+2
+注意，这里的2表示编号是2的节点，节点编号从0开始。所以编号是2的节点就是val等于3的节点。
+则输出环的入口节点3.
+```
+**代码**
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *entryNodeOfLoop(ListNode *head) {
+        ListNode* p1=head;
+        ListNode* p2=head;
+        while(p2!=NULL && p2->next->next){
+            p1=p1->next;
+            p2=p2->next->next;
+            if(p1==p2){
+                p2=head;
+                while(p1!=p2){
+                    p1=p1->next;
+                    p2=p2->next;
+                }
+                if(p1==p2) return p2; 
+            }
+        }
+        return NULL;
+        
     }
 };
 ```
