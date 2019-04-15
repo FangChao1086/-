@@ -15,6 +15,7 @@
 * [正则表达式匹配](#正则表达式匹配)
 * [表示数值的字符串](#表示数值的字符串)
 * [链表中环的入口节点](#链表中环的入口节点)
+* [二叉树的镜像](#二叉树的镜像)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -794,6 +795,52 @@ public:
         }
         return NULL;
         
+    }
+};
+```
+
+<span id="二叉树的镜像"></span>
+## 二叉树的镜像
+```
+题目：
+输入一个二叉树，将它变换为它的镜像。
+
+样例：
+输入树：
+      8
+     / \
+    6  10
+   / \ / \
+  5  7 9 11
+
+ [8,6,10,5,7,9,11,null,null,null,null,null,null,null,null] 
+输出树：
+      8
+     / \
+    10  6
+   / \ / \
+  11 9 7  5
+
+ [8,10,6,11,9,7,5,null,null,null,null,null,null,null,null]
+```
+**代码**
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void mirror(TreeNode* root) {
+        if (!root) return;
+        swap(root->left, root->right);
+        mirror(root->left);
+        mirror(root->right);
     }
 };
 ```
