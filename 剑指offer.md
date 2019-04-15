@@ -16,6 +16,7 @@
 * [表示数值的字符串](#表示数值的字符串)
 * [链表中环的入口节点](#链表中环的入口节点)
 * [二叉树的镜像](#二叉树的镜像)
+* [栈的压入、弹出序列](#栈的压入、弹出序列)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -841,6 +842,42 @@ public:
         swap(root->left, root->right);
         mirror(root->left);
         mirror(root->right);
+    }
+};
+```
+
+<span id="栈的压入、弹出序列"></span>
+## 栈的压入、弹出序列
+```
+题目：
+输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否可能为该栈的弹出顺序。
+假设压入栈的所有数字均不相等。
+例如序列1,2,3,4,5是某栈的压入顺序，序列4,5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。
+注意：若两个序列长度不等则视为并不是一个栈的压入、弹出序列。若两个序列都为空，则视为是一个栈的压入、弹出序列。
+
+样例：
+输入：[1,2,3,4,5]
+      [4,5,3,2,1]
+输出：true
+```
+**代码**
+```cpp
+class Solution {
+public:
+    bool isPopOrder(vector<int> pushV,vector<int> popV) {
+        if(pushV.empty() && popV.empty()) return true;
+        if(pushV.empty() || popV.empty() || pushV.size()==popV.empty()) return false;
+        stack<int> s;
+        int p_size=0;
+        for(int i=0;i<pushV.size();i++){
+            s.push(pushV[i]);
+            while(!s.empty() && s.top()==popV[p_size]){
+                p_size++;
+                s.pop();
+            }
+        }
+        if(s.empty()) return true;
+        return false;
     }
 };
 ```
