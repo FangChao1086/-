@@ -20,6 +20,7 @@
 * [二叉搜索树的后序遍历序列](#二叉搜索树的后序遍历序列)
 * [二叉树中和为某一值的路径](#二叉树中和为某一值的路径)
 * [复杂链表的复制](#复杂链表的复制)
+* [二叉搜索树与双向链表](#二叉搜索树与双向链表)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -1017,6 +1018,55 @@ public:
             p1=pNext;
         }
         return p2;
+    }
+};
+```
+
+<span id="二叉搜索树与双向链表"></span>
+## 二叉搜索树与双向链表
+```
+题目：
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
+要求不能创建任何新的结点，只能调整树中结点指针的指向。
+
+注意：
+需要返回双向链表最左侧的节点。
+例如，输入下图中左边的二叉搜索树，则输出右边的排序双向链表。
+```
+
+![二叉搜索树与双向链表](https://i.ibb.co/qF2mdYP/image.png)  
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* convert(TreeNode* root) {
+        if(root==NULL) return NULL;
+        TreeNode* pre=NULL;
+        convert(root,pre);
+        TreeNode* p1=root;
+        while(p1->left){
+            p1=p1->left;
+        }
+        return p1;
+    }
+    
+    void convert(TreeNode* root,TreeNode* &pre){
+        if(!root) return ;
+        convert(root->left,pre);
+        root->left=pre;
+        if(pre){
+            pre->right=root;
+        }
+        pre=root;
+        convert(root->right,pre);
     }
 };
 ```
