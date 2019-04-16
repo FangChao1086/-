@@ -17,6 +17,7 @@
 * [链表中环的入口节点](#链表中环的入口节点)
 * [二叉树的镜像](#二叉树的镜像)
 * [栈的压入、弹出序列](#栈的压入、弹出序列)
+* [二叉搜索树的后序遍历序列](#二叉搜索树的后序遍历序列)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -878,6 +879,41 @@ public:
         }
         if(s.empty()) return true;
         return false;
+    }
+};
+```
+
+<span id="二叉搜索树的后序遍历序列"></span>
+## 二叉搜索树的后序遍历序列
+```
+题目：
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
+如果是则返回true，否则返回false。
+假设输入的数组的任意两个数字都互不相同。
+
+样例：
+输入：[4, 8, 6, 12, 16, 14, 10]
+输出：true
+```
+**代码**
+```cpp
+class Solution {
+public:
+    bool verifySequenceOfBST(vector<int> sequence) {
+        return dfs(sequence,0,sequence.size()-1);
+    }
+    
+    bool dfs(vector<int> sequence,int left,int right){
+        if(left>=right) return true;
+        int root=sequence[right];
+        int k=left;
+        while(k<right && sequence[k]<root) k++;
+        for(int i=k;i<right;i++){
+            if(sequence[i]<root){
+                return false;
+            }
+        }
+        return dfs(sequence,left,k-1) && dfs(sequence,k,right-1);
     }
 };
 ```
