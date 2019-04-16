@@ -19,6 +19,7 @@
 * [栈的压入、弹出序列](#栈的压入、弹出序列)
 * [二叉搜索树的后序遍历序列](#二叉搜索树的后序遍历序列)
 * [二叉树中和为某一值的路径](#二叉树中和为某一值的路径)
+* [复杂链表的复制](#复杂链表的复制)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -965,6 +966,57 @@ public:
         dfs(root->left,sum);
         dfs(root->right,sum);
         path.pop_back();
+    }
+};
+```
+
+<sapn id="复杂链表的复制"></span>
+## 复杂链表的复制
+```
+题目:
+请实现一个函数可以复制一个复杂链表。
+在复杂链表中，每个结点除了有一个指针指向下一个结点外，还有一个额外的指针指向链表中的任意结点或者null。
+```
+**代码**
+```cpp
+/**
+ * Definition for singly-linked list with a random pointer.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next, *random;
+ *     ListNode(int x) : val(x), next(NULL), random(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *copyRandomList(ListNode *head) {
+        if(head==NULL) return NULL;
+        ListNode* p1=head;
+        
+        while(p1){
+            ListNode* pNew=new  ListNode(p1->val);
+            pNew->next=p1->next;
+            p1->next=pNew;
+            p1=pNew->next;
+        }
+        
+        p1=head;
+        while(p1){
+            ListNode* pNext= p1->next;
+            if(p1->random){
+                pNext->random=p1->random->next;
+            }
+            p1=pNext->next;
+        }
+        
+        p1=head;
+        ListNode* p2=head->next;
+        while(p1->next){
+            ListNode* pNext=p1->next;
+            p1->next=pNext->next;
+            p1=pNext;
+        }
+        return p2;
     }
 };
 ```
