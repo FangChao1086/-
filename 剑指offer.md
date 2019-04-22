@@ -1104,6 +1104,24 @@ public:
         }
         reverse(res.begin(),res.end());
         return res;
+        
+        /*
+        vector<int> res;
+        for(int i=0;i<k;i++){
+            res.push_back(input[i]);
+        }
+        make_heap(res.begin(),res.end());
+        for(int i=k;i<input.size();i++){
+            if(input[i]<res[0]){
+                pop_heap(res.begin(),res.end());
+                res.pop_back();
+                res.push_back(input[i]);
+                push_heap(res.begin(),res.end());
+            }
+        }
+        sort(res.begin(),res.end());
+        return res;
+        */
     }
 };
 ```
