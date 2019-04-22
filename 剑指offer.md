@@ -21,6 +21,7 @@
 * [二叉树中和为某一值的路径](#二叉树中和为某一值的路径)
 * [复杂链表的复制](#复杂链表的复制)
 * [二叉搜索树与双向链表](#二叉搜索树与双向链表)
+* [最小的K个数](#最小的K个数)
 
 <span id="找出数组中重复的数字"></span>
 ## 找出数组中重复的数字
@@ -1067,6 +1068,42 @@ public:
         }
         pre=root;
         convert(root->right,pre);
+    }
+};
+```
+
+<span id="最小的K个数"></span>
+## 最小的K个数
+```
+题目：
+输入n个整数，找出其中最小的k个数。
+
+注意：
+数据保证k一定小于等于输入数组的长度;
+输出数组内元素请按从小到大顺序排序;
+
+样例：
+输入：[1,2,3,4,5,6,7,8] , k=4
+输出：[1,2,3,4]
+```
+```cpp
+class Solution {
+public:
+    vector<int> getLeastNumbers_Solution(vector<int> input, int k) {
+        priority_queue<int> heap; // 创建一个大根堆
+        for(auto x:input){
+            heap.push(x);
+            if(heap.size()>k){
+                heap.pop();
+            }
+        }
+        vector<int> res;
+        while(heap.size()){
+            res.push_back(heap.top());
+            heap.pop();
+        }
+        reverse(res.begin(),res.end());
+        return res;
     }
 };
 ```
