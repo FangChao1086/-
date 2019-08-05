@@ -125,13 +125,19 @@ public:
 ```C++
 class Solution {
 public:
-    bool searchArray(vector<vector<int>> array, int target) {
-        if(array.empty() || array[0].empty()) return false;
-        int i=0,j=array[0].size()-1,n=array.size();
-        while(i<n && j>=0){
-            if(array[i][j]==target) return true;
-            else if(array[i][j]>target) j--;
-            else i++;
+    bool Find(int target, vector<vector<int> > array) {
+        int row = array.size();
+        int col = array[0].size();
+        int i = 0, j = col-1;
+        while(i < row && j > -1){
+            if(array[i][j] > target){
+                j--;
+            }
+            else if(array[i][j] < target){
+                i++;
+            }
+            else
+                return true;
         }
         return false;
     }
