@@ -242,7 +242,7 @@ public:
 **代码**
 ```C++
 /**
- * Definition for a binary tree node.
+ * Definition for binary tree
  * struct TreeNode {
  *     int val;
  *     TreeNode *left;
@@ -252,33 +252,27 @@ public:
  */
 class Solution {
 public:
-    TreeNode* buildTree(vector<int>& pre, vector<int>& vin) {
-        int vinlen=vin.size();
-        if(vinlen==0) return NULL;
-        vector<int> left_pre,left_vin,right_pre,right_vin;
-        TreeNode* head=new TreeNode(pre[0]);
-        
-        int root_index=0;
-        for(int i=0;i<vinlen;i++){
-            if(vin[i]==pre[0]){
-                root_index=i;
+    TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin) {
+        if(vin.size()==0) return NULL;
+        vector<int> leftPre, leftVin, rightPre, rightVin;
+        TreeNode* head = new TreeNode(pre[0]);
+        int count = 0;
+        for(int i = 0; i < vin.size(); i++){
+            if(vin[i] == pre[0]){
+                count = i;
                 break;
             }
         }
-        
-        for(int i=0;i<root_index;i++){
-            left_pre.push_back(pre[i+1]);
-            left_vin.push_back(vin[i]);
+        for(int i = 0; i < count; i++){
+            leftPre.push_back(pre[i+1]);
+            leftVin.push_back(vin[i]);
         }
-        
-        for(int i=root_index+1;i<vinlen;i++){
-            right_pre.push_back(pre[i]);
-            right_vin.push_back(vin[i]);
+        for(int i = count + 1; i < vin.size(); i++){
+            rightPre.push_back(pre[i]);
+            rightVin.push_back(vin[i]);
         }
-        
-        head->left=buildTree(left_pre,left_vin);
-        head->right=buildTree(right_pre,right_vin);
-        
+        head->left = reConstructBinaryTree(leftPre, leftVin);
+        head->right = reConstructBinaryTree(rightPre, rightVin);
         return head;
     }
 };
