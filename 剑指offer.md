@@ -353,6 +353,7 @@ queue.empty(); // returns false
 ```
 **代码**
 ```c++
+// 方法1
 class MyQueue {
 public:
     /** Initialize your data structure here. */
@@ -404,6 +405,31 @@ public:
  * int param_3 = obj.peek();
  * bool param_4 = obj.empty();
  */
+ 
+// 方法2
+class Solution
+{
+public:
+    void push(int node) {
+        stack1.push(node);
+    }
+
+    int pop() {
+        if(stack2.empty()){
+            while(!stack1.empty()){
+                stack2.push(stack1.top());
+                stack1.pop();
+            }
+        }
+        int a = stack2.top();
+        stack2.pop();
+        return a;
+    }
+
+private:
+    stack<int> stack1;
+    stack<int> stack2;
+};
 ```
 
 <span id="斐波那契数列"></span>
