@@ -523,6 +523,7 @@ public:
 ```
 **代码**
 ```cpp
+// 方法1
 class Solution{
 public:
     int findMin(vector<int>& nums){
@@ -537,6 +538,25 @@ public:
             else l=mid+1;
         }
         return nums[r];
+    }
+};
+
+// 方法2  好理解，推荐使用
+class Solution {
+public:
+    int minNumberInRotateArray(vector<int> rotateArray) {
+        int len = rotateArray.size();
+        int left = 0,mid = 0, right = len - 1;
+        while(left < right){
+            if(right - left <= 1) return rotateArray[right];
+            mid = (left + right) >> 1;
+            if(rotateArray[left] <= rotateArray[mid]){
+                left = mid;
+            }
+            else if(rotateArray[mid] <= rotateArray[right]){
+                right = mid;
+            }
+        }
     }
 };
 ```
