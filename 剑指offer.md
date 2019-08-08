@@ -160,6 +160,7 @@ public:
 ``` 
 **代码**
 ```C++
+// 方法1 有返回值
 class Solution {
 public:
     string replaceSpaces(string &str) {
@@ -172,6 +173,28 @@ public:
         }
         return res;
     }
+};
+
+// 方法2 无返回值
+class Solution {
+public:
+	void replaceSpace(char *str,int length) {
+        int count = 0;
+        for(int i = 0; i < length; i++){
+            if(str[i] == ' ')
+                count++;
+        }
+        int len = length + 2 * count - 1;
+        for(int i = len, j = length-1; j > -1; j--){
+            if(str[j] == ' '){
+                str[i--] = '0';
+                str[i--] = '2';
+                str[i--] = '\%';
+            }
+            else
+                str[i--] = str[j];
+        }
+	}
 };
 ```
 
