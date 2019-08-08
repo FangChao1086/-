@@ -189,7 +189,7 @@ public:
             if(str[j] == ' '){
                 str[i--] = '0';
                 str[i--] = '2';
-                str[i--] = '\%';
+                str[i--] = '%';
             }
             else
                 str[i--] = str[j];
@@ -223,15 +223,37 @@ public:
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+// 方法1 先读值，后反向
 class Solution {
 public:
     vector<int> printListReversingly(ListNode* head) {
         vector<int> res;
         while(head){
             res.push_back(head->val);
-            head=head->next;
+            head = head -> next;
         }
-        return vector<int>(res.rbegin(),res.rend());
+        return vector<int>(res.rbegin(), res.rend());
+    }
+};
+
+// 方法2 先反向，后读值
+class Solution {
+public:
+    vector<int> printListFromTailToHead(ListNode* head) {
+        ListNode* pNew = head;
+        ListNode* pPre = NULL;
+        vector<int> vec;
+        while(pNew){
+            ListNode* pNode = pNew -> next;
+            pNew -> next = pPre;
+            pPre = pNew;
+            pNew = pNode;
+        }
+        while(pPre){
+            vec.push_back(pPre -> val);
+            pPre = pPre -> next;
+        }
+        return vec;
     }
 };
 ```
