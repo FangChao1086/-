@@ -6,7 +6,7 @@
 * [6、（ * ）**重建二叉树**](#重建二叉树)
 * [7、二叉树的下一个节点](#二叉树的下一个节点)
 * [8、用两个栈实现队列](#用两个栈实现队列)
-* [9、斐波那契数列](#斐波那契数列)
+* [9、斐波那契数列、跳台阶、矩形覆盖](#斐波那契数列)
 * [10、旋转数组的最小数字](#旋转数组的最小数字)
 * [11、矩阵中的路径](#矩阵中的路径)
 * [12、机器人的运动范围](#机器人的运动范围)
@@ -478,7 +478,7 @@ private:
 ```
 
 <span id="斐波那契数列"></span>
-## 斐波那契数列
+## 斐波那契数列、跳台阶、矩形覆盖
 ```
 题目:
 输入一个整数n，求斐波那契数列的第n项。  
@@ -495,12 +495,39 @@ private:
 class Solution {
 public:
     int Fibonacci(int n) {
-        int a=0,b=1;
+        int f1 = 0, f2 = 1;
         while(n--){
-            int c=a+b;
-            a=b,b=c;
+            f2 = f1 + f2;  // 和
+            f1 = f2 - f1;  // 单个数
         }
-        return a;
+        return f1;
+    }
+};
+
+// 初级跳台阶：可跳1，2级台阶；初始化：f1 = 1, f2 = 1；同上
+// 高级条台阶：可跳1，2，n级；
+class Solution {
+public:
+    int jumpFloorII(int number) {
+        int s = 1;
+        for(int i = 1; i < number; i++){
+            s *= 2;
+        }
+        return s;
+    }
+};
+
+// 矩形覆盖  用n个2*1的小矩形无重叠地覆盖一个2*n的大矩形，总共有多少种方法
+class Solution {
+public:
+    int rectCover(int number) {
+        int s1 = 1, s2 = 1;
+        if(number <= 0) return 0;
+        while(number--){
+            s2 = s1 + s2;
+            s1 = s2 - s1;
+        }
+        return s1;
     }
 };
 ```
