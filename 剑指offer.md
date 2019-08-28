@@ -12,6 +12,7 @@
 * [12、数值的整数次方](#数值的整数次方)
 * [13、调整数组顺序使奇数位于偶数前面](#调整数组顺序使奇数位于偶数前面)
 * [14、链表中倒数第K个节点](#链表中倒数第K个节点)
+* [15、反转链表](#反转链表)
 * [11、矩阵中的路径](#矩阵中的路径)
 * [12、机器人的运动范围](#机器人的运动范围)
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
@@ -672,6 +673,36 @@ public:
             p1 = p1 -> next;
         }
         return i >= k ? p2 : NULL;
+    }
+};
+```
+
+<span id="反转链表"></span>
+## 反转链表
+```
+输入一个链表，反转链表后，输出新链表的表头
+```
+```cpp
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* ReverseList(ListNode* pHead) {
+        ListNode* pNew = pHead;
+        ListNode* pPre = NULL;
+        while(pNew){
+            ListNode* pNext = pNew -> next;
+            pNew -> next = pPre;
+            pPre = pNew;
+            pNew = pNext;
+        }
+        return pPre;
     }
 };
 ```
