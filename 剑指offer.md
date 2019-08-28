@@ -11,6 +11,7 @@
 * [11、（ * ）**二进制中1的个数**](#二进制中1的个数)
 * [12、数值的整数次方](#数值的整数次方)
 * [13、调整数组顺序使奇数位于偶数前面](#调整数组顺序使奇数位于偶数前面)
+* [14、链表中倒数第K个节点](#链表中倒数第K个节点)
 * [11、矩阵中的路径](#矩阵中的路径)
 * [12、机器人的运动范围](#机器人的运动范围)
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
@@ -47,8 +48,7 @@
     * 时间复杂度：n
     * 空间复杂度：1 
 ```  
-**代码**
-```C++
+```cpp
 class Solution {
 public:
     int duplicateInArray(vector<int>& nums) {
@@ -82,8 +82,7 @@ public:
     * 每次遍历若值在左边，则左边计数值加一
     * 当计数值大于左边边界范围，则重复值在左边，否则在右边
 ```  
-**代码**
-```C++
+```cpp
 class Solution {
 public:
     int duplicateInArray(vector<int>& nums) {
@@ -124,8 +123,7 @@ public:
   * 若当前值大于目标值，则向左查找
   * 若等于目标值，则找到
 ``` 
-**代码**
-```C++
+```cpp
 class Solution {
 public:
     bool Find(int target, vector<vector<int> > array) {
@@ -161,8 +159,7 @@ public:
 * 遍历
   * 为空格时，替换为%20
 ``` 
-**代码**
-```C++
+```cpp
 // 方法1 有返回值
 class Solution {
 public:
@@ -216,8 +213,7 @@ public:
 * 遍历节点，存值
 * 反转打印
 ```  
-**代码**
-```C++
+```cpp
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -287,8 +283,7 @@ public:
 * 3、得到右子树的前序与中序遍历的结果
 * 4、递归得到整个二叉树
 ``` 
-**代码**
-```C++
+```cpp
 /**
  * Definition for binary tree
  * struct TreeNode {
@@ -348,8 +343,7 @@ public:
 * 有右子树
 * 无右子树
 ```
-**代码**
-```c++
+```cpp
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -399,8 +393,7 @@ queue.empty(); // returns false
 思路:
 * 两个栈实现，暴力解
 ```
-**代码**
-```c++
+```cpp
 // 方法1
 class MyQueue {
 public:
@@ -493,8 +486,7 @@ private:
 
 思路:
 ```
-**代码**
-```c++
+```cpp
 class Solution {
 public:
     int Fibonacci(int n) {
@@ -551,7 +543,6 @@ public:
 思路：
 去除边界（不合法与重复值）后，使用二分查找
 ```
-**代码**
 ```cpp
 // 方法1
 class Solution{
@@ -651,6 +642,36 @@ public:
             for(int j = 0; j < array.size() - 1; j++)
                 if(array[j] % 2 == 0 && array[j + 1] % 2 == 1)
                     swap(array[j], array[j + 1]);
+    }
+};
+```
+
+<span id="链表中倒数第K个节点"></span>
+## 链表中倒数第K个节点
+```
+输入一个链表，输出该链表中倒数第k个结点。
+```
+```cpp
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+        ListNode* p1 = pListHead;
+        ListNode* p2 = pListHead;
+        int i;
+        for(i = 0; p1 != NULL; i++){
+            if(i >= k)
+                p2 = p2 -> next;
+            p1 = p1 -> next;
+        }
+        return i >= k ? p2 : NULL;
     }
 };
 ```
