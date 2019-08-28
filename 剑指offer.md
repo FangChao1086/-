@@ -14,6 +14,7 @@
 * [14、链表中倒数第K个节点](#链表中倒数第K个节点)
 * [15、反转链表](#反转链表)
 * [16、合并两个排序的链表](#合并两个排序的链表)
+* [17、树的子结构](#树的子结构)
 * [11、矩阵中的路径](#矩阵中的路径)
 * [12、机器人的运动范围](#机器人的运动范围)
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
@@ -764,6 +765,37 @@ public:
             head -> next = pHead2;
         }
         return Head -> next;
+    }
+};
+```
+
+<span id="树的子结构"></span>
+## 树的子结构
+```
+输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
+```
+```cpp
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    bool HasSubtree(TreeNode* pRoot1, TreeNode* pRoot2)
+    {
+        if(pRoot1 == NULL || pRoot2 == NULL) return false;
+        return isSubtree(pRoot1, pRoot2) || HasSubtree(pRoot1 -> left, pRoot2) || HasSubtree(pRoot1 ->right, pRoot2);
+    }
+    
+    bool isSubtree(TreeNode* pRoot1, TreeNode* pRoot2){
+        if(pRoot2 == NULL) return true;
+        if(pRoot1 == NULL || (pRoot1 -> val != pRoot2 ->val)) return false;
+        return isSubtree(pRoot1 -> left, pRoot2 ->left) && isSubtree(pRoot1 -> right, pRoot2 -> right);
     }
 };
 ```
