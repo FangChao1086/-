@@ -67,10 +67,6 @@
 [66、机器人的运动范围](#机器人的运动范围)  
 
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
-* [表示数值的字符串](#表示数值的字符串)
-* [链表中环的入口节点](#链表中环的入口节点)
-* [二叉树的镜像](#二叉树的镜像)
-* [栈的压入、弹出序列](#栈的压入、弹出序列)
 * [二叉搜索树的后序遍历序列](#二叉搜索树的后序遍历序列)
 * [二叉树中和为某一值的路径](#二叉树中和为某一值的路径)
 * [复杂链表的复制](#复杂链表的复制)
@@ -981,6 +977,7 @@ public:
 但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
 ```
 ```cpp
+//方法1（建vector）
 class Solution {
 public:
     bool IsPopOrder(vector<int> pushV,vector<int> popV) {
@@ -997,6 +994,26 @@ public:
             }
         }
         return res.empty();
+    }
+};
+
+//方法2（建栈）
+class Solution {
+public:
+    bool isPopOrder(vector<int> pushV,vector<int> popV) {
+        if(pushV.empty() && popV.empty()) return true;
+        if(pushV.empty() || popV.empty() || pushV.size()==popV.empty()) return false;
+        stack<int> s;
+        int p_size=0;
+        for(int i=0;i<pushV.size();i++){
+            s.push(pushV[i]);
+            while(!s.empty() && s.top()==popV[p_size]){
+                p_size++;
+                s.pop();
+            }
+        }
+        if(s.empty()) return true;
+        return false;
     }
 };
 ```
@@ -2011,11 +2028,28 @@ public:
 <span id="表示数值的字符串"></span>
 ## 53、表示数值的字符串
 ```
+方法1题目：
 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。
 例如，字符串"+100","5e2","-123","3.1416"和"-1E-16"都表示数值。 
 但是"12e","1a3.14","1.2.3","+-5"和"12e+4.3"都不是。
+
+方法2题目：
+请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。
+例如，字符串"+100","5e2","-123","3.1416"和"-1E-16"都表示数值。
+但是"12e","1a3.14","1.2.3","+-5"和"12e+4.3"都不是。
+注意:
+小数可以没有整数部分，例如.123等于0.123；
+小数点后面可以没有数字，例如233.等于233.0；
+小数点前面和后面可以有数字，例如233.666;
+当e或E前面没有数字时，整个字符串不能表示数字，例如.e1、e1；
+当e或E后面没有整数时，整个字符串不能表示数字，例如12e、12e+5.4;
+
+样例：
+输入: "0"
+输出: true
 ```
 ```cpp
+//方法1（推荐）
 class Solution {
 public:
     bool isNumeric(char* string)
@@ -2046,6 +2080,39 @@ public:
             }
             else
                 return false;
+        }
+        return true;
+    }
+};
+
+//方法2
+class Solution {
+public:
+    bool isNumber(string s) {
+        int n=s.size();
+        if(n==0) return false;
+        int s_num=0,s_dot=0,s_e=0;
+        if(s[0]=='+' ||s[0]=='-') s=s.substr(1,n-1);
+        if(s[0]=='.' && s.size()==1) return false;
+        for(int i=0;i<s.size();i++){
+            if(s[i]>='0' && s[i]<='9') {
+                s_num++;
+                continue;
+            }
+            else if(s[i]=='.'){
+                if(s_e>0 || s_dot>0) return false;
+                s_dot++;
+            }
+            else if(s[i]=='E' || s[i]=='e'){
+                if(s_e>0 || s_num==0) return false;
+                s_e++;
+                i++;
+                if(s[i]=='+' || s[i]=='-'){
+                    i++;
+                }
+                if(s[i]=='\0') return false;
+            }
+            else return false;
         }
         return true;
     }
@@ -2725,188 +2792,6 @@ public:
         node->val=p->val;
         node->next=p->next;
         delete p;
-    }
-};
-```
-
-<span id="表示数值的字符串"></span>
-## 表示数值的字符串
-```
-题目：
-请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。
-例如，字符串"+100","5e2","-123","3.1416"和"-1E-16"都表示数值。
-但是"12e","1a3.14","1.2.3","+-5"和"12e+4.3"都不是。
-注意:
-小数可以没有整数部分，例如.123等于0.123；
-小数点后面可以没有数字，例如233.等于233.0；
-小数点前面和后面可以有数字，例如233.666;
-当e或E前面没有数字时，整个字符串不能表示数字，例如.e1、e1；
-当e或E后面没有整数时，整个字符串不能表示数字，例如12e、12e+5.4;
-
-样例：
-输入: "0"
-输出: true
-```
-**代码**
-```cpp
-class Solution {
-public:
-    bool isNumber(string s) {
-        int n=s.size();
-        if(n==0) return false;
-        int s_num=0,s_dot=0,s_e=0;
-        if(s[0]=='+' ||s[0]=='-') s=s.substr(1,n-1);
-        if(s[0]=='.' && s.size()==1) return false;
-        for(int i=0;i<s.size();i++){
-            if(s[i]>='0' && s[i]<='9') {
-                s_num++;
-                continue;
-            }
-            else if(s[i]=='.'){
-                if(s_e>0 || s_dot>0) return false;
-                s_dot++;
-            }
-            else if(s[i]=='E' || s[i]=='e'){
-                if(s_e>0 || s_num==0) return false;
-                s_e++;
-                i++;
-                if(s[i]=='+' || s[i]=='-'){
-                    i++;
-                }
-                if(s[i]=='\0') return false;
-            }
-            else return false;
-        }
-        return true;
-    }
-};
-```
-
-<span id="链表中环的入口节点"></span>
-## 链表中环的入口节点
-```
-题目：
-给定一个链表，若其中包含环，则输出环的入口节点。
-若其中不包含环，则输出null。
-
-样例：
-给定如上所示的链表：    注意：3与6形成环，即入口节点为3.
-[1, 2, 3, 4, 5, 6]
-2
-注意，这里的2表示编号是2的节点，节点编号从0开始。所以编号是2的节点就是val等于3的节点。
-则输出环的入口节点3.
-```
-**代码**
-```cpp
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
-class Solution {
-public:
-    ListNode *entryNodeOfLoop(ListNode *head) {
-        ListNode* p1=head;
-        ListNode* p2=head;
-        while(p2!=NULL && p2->next->next){
-            p1=p1->next;
-            p2=p2->next->next;
-            if(p1==p2){
-                p2=head;
-                while(p1!=p2){
-                    p1=p1->next;
-                    p2=p2->next;
-                }
-                if(p1==p2) return p2; 
-            }
-        }
-        return NULL;
-        
-    }
-};
-```
-
-<span id="二叉树的镜像"></span>
-## 二叉树的镜像
-```
-题目：
-输入一个二叉树，将它变换为它的镜像。
-
-样例：
-输入树：
-      8
-     / \
-    6  10
-   / \ / \
-  5  7 9 11
-
- [8,6,10,5,7,9,11,null,null,null,null,null,null,null,null] 
-输出树：
-      8
-     / \
-    10  6
-   / \ / \
-  11 9 7  5
-
- [8,10,6,11,9,7,5,null,null,null,null,null,null,null,null]
-```
-**代码**
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-class Solution {
-public:
-    void mirror(TreeNode* root) {
-        if (!root) return;
-        swap(root->left, root->right);
-        mirror(root->left);
-        mirror(root->right);
-    }
-};
-```
-
-<span id="栈的压入、弹出序列"></span>
-## 栈的压入、弹出序列
-```
-题目：
-输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否可能为该栈的弹出顺序。
-假设压入栈的所有数字均不相等。
-例如序列1,2,3,4,5是某栈的压入顺序，序列4,5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。
-注意：若两个序列长度不等则视为并不是一个栈的压入、弹出序列。若两个序列都为空，则视为是一个栈的压入、弹出序列。
-
-样例：
-输入：[1,2,3,4,5]
-      [4,5,3,2,1]
-输出：true
-```
-**代码**
-```cpp
-class Solution {
-public:
-    bool isPopOrder(vector<int> pushV,vector<int> popV) {
-        if(pushV.empty() && popV.empty()) return true;
-        if(pushV.empty() || popV.empty() || pushV.size()==popV.empty()) return false;
-        stack<int> s;
-        int p_size=0;
-        for(int i=0;i<pushV.size();i++){
-            s.push(pushV[i]);
-            while(!s.empty() && s.top()==popV[p_size]){
-                p_size++;
-                s.pop();
-            }
-        }
-        if(s.empty()) return true;
-        return false;
     }
 };
 ```
