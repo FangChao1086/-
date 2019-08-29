@@ -2295,40 +2295,189 @@ public:
 };
 ```
 
-<span id=""></span>
-## 61、
+<span id="序列化二叉树"></span>
+## 61、序列化二叉树
 ```
-
-```
-```cpp
-
-```
-
-<span id=""></span>
-## 62、
-```
-
+请实现两个函数，分别用来序列化和反序列化二叉树
 ```
 ```cpp
-
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    vector<int> buffer;
+    void dfs(TreeNode *root){
+        if(root==NULL){
+            buffer.push_back(0xFFFFFFFF);
+        }
+        else{
+            buffer.push_back(root->val);
+            dfs(root->left);
+            dfs(root->right);
+        }
+    }
+    
+    TreeNode* dfs2(int* &p){
+        if(*p==0xFFFFFFFF){
+            p++;
+            return NULL;
+        }
+        TreeNode* res=new TreeNode(*p);
+        p++;
+        res->left=dfs2(p);
+        res->right=dfs2(p);
+        return res;
+    }
+    
+    
+    char* Serialize(TreeNode *root) {    
+        buffer.clear();
+        dfs(root);
+        int size=buffer.size();
+        int *res=new int[size];
+        for(int i=0;i<size;i++){
+            res[i]=buffer[i];
+        }
+        return (char*) res;
+    }
+    TreeNode* Deserialize(char *str) {
+        int *p =(int*) str;
+        return dfs2(p);
+    }
+};
 ```
 
-<span id=""></span>
-## 63、
+<span id="二叉搜索数的第k个节点"></span>
+## 62、二叉搜索数的第k个节点
 ```
-
+给定一棵二叉搜索树，请找出其中的第k小的结点。
+例如，（5，3，7，2，4，6，8）中，按结点数值大小顺序第三小结点的值为4。
 ```
 ```cpp
-
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    int count = 0;
+    TreeNode* KthNode(TreeNode* pRoot, int k)
+    {
+        if(pRoot != NULL){
+            TreeNode* node = KthNode(pRoot -> left, k);
+            if(node != NULL) return node;
+            count++;
+            if(count == k) return pRoot;
+            node = KthNode(pRoot -> right, k);
+            if(node != NULL) return node;
+        }
+        return NULL;
+    }
+};
 ```
 
-<span id=""></span>
-## 64、
+<span id="数据流中的中位数"></span>
+## 63、数据流中的中位数
 ```
-
+如何得到一个数据流中的中位数？
+如果从数据流中读出奇数个数值，那么中位数就是所有数值排序之后位于中间的数值。
+如果从数据流中读出偶数个数值，那么中位数就是所有数值排序之后中间两个数的平均值。
+我们使用Insert()方法读取数据流，使用GetMedian()方法获取当前读取数据的中位数。
 ```
 ```cpp
+/*
+将数据数据分为大根堆（元素值小的数据）和小根堆（元素值大的数据）
+1、原始的数据长度为偶，将数据加入到小根堆（加入前新的数据要先加入大根堆，经过大根堆筛选出最大元素进入小根堆）
+   这样每次加入数据后小根堆始终保持里面是比大根堆大的元素
+2、原始的数据长度为奇，将数据加入大根堆（同样加入前要经过小根堆筛选出最小元素加入大根堆）。。。
+*/
 
+/*得到中位数，当数据数量为奇，中位数是小根堆堆顶的元素
+当数据数量为偶时，中位数时小根堆堆顶与大根堆堆顶元素和的一半
+*/
+class Solution {
+public:
+    vector<int> min;
+    vector<int> max;
+    void Insert(int num)
+    {
+        int size = min.size()+max.size();
+        if((size & 1) == 0){
+            if(max.size() > 0 && num < max[0]){
+                max.push_back(num);
+                push_heap(max.begin(), max.end(), less<int>());
+                num = max[0];
+                pop_heap(max.begin(), max.end(), less<int>());
+                max.pop_back();
+            }
+            min.push_back(num);
+            push_heap(min.begin(), min.end(), greater<int>());
+        }
+        else{
+            if(min.size() > 0 && num > min[0]){
+                min.push_back(num);
+                push_heap(min.begin(), min.end(), greater<int>());
+                num = min[0];
+                pop_heap(min.begin(), min.end(), greater<int>());
+                min.pop_back();
+            }
+            max.push_back(num);
+            push_heap(max.begin(), max.end(), less<int>());
+        }
+    }
+
+    double GetMedian()
+    { 
+        int size = min.size() + max.size();
+        if((size & 1) == 0) return (min[0] + max[0]) / 2.0;
+        else return min[0];
+    }
+};
+```
+
+<span id="滑动窗口的最大值"></span>
+## 64、滑动窗口的最大值
+```
+给定一个数组和滑动窗口的大小，找出所有滑动窗口里数值的最大值。
+例如，如果输入数组{2,3,4,2,6,2,5,1}及滑动窗口的大小3，
+那么一共存在6个滑动窗口，他们的最大值分别为{4,4,6,6,6,5}； 
+针对数组{2,3,4,2,6,2,5,1}的滑动窗口有以下6个： 
+{[2,3,4],2,6,2,5,1}， {2,[3,4,2],6,2,5,1}， {2,3,[4,2,6],2,5,1}， 
+{2,3,4,[2,6,2],5,1}， {2,3,4,2,[6,2,5],1}， {2,3,4,2,6,[2,5,1]}。
+```
+```cpp
+class Solution {
+public:
+    vector<int> maxInWindows(const vector<int>& num, unsigned int size)
+    {
+        vector<int> res;  // 存最大值
+        deque<int> deq;  // 双端队列存下标
+        for(int i = 0; i < num.size(); i++){
+            while(deq.size() && num[i] >= num[deq.back()])
+                deq.pop_back();
+            while(deq.size() && i - deq.front() + 1 > size)
+                deq.pop_front();
+            deq.push_back(i);
+            if(size && i + 1 >= size)
+                res.push_back(num[deq.front()]);
+        }
+        return res;
+    }
+};
 ```
 
 <span id="矩阵中的路径"></span>
@@ -2352,11 +2501,20 @@ matrix=
 str="BCCE" , return "true" 
 str="ASAE" , return "false"
 
+题的第二种输入：
+请设计一个函数，用来判断在一个矩阵中是否存在一条包含某字符串所有字符的路径。
+路径可以从矩阵中的任意一个格子开始，每一步可以在矩阵中向左，向右，向上，向下移动一个格子。
+如果一条路径经过了矩阵中的某一个格子，则之后不能再次进入这个格子。 
+例如 a b c e s f c s a d e e 这样的3 X 4 矩阵中包含一条字符串"bcced"的路径，
+但是矩阵中不包含"abcb"路径，因为字符串的第一个字符b占据了矩阵中的第一行第二个格子之后，
+路径不能再次进入该格子。
+
 思路：
 * 从每个点开始遍历，使用dfs深度优先遍历
 * 找到该字符串后输出true,遍历完没有找到输出false
 ```
 ```cpp
+// 方法1
 class Solution {
 public:
     bool hasPath(vector<vector<char>>& matrix, string str) {
@@ -2385,6 +2543,38 @@ public:
         return false;
     }
 };
+
+//方法2
+class Solution {
+public:
+    bool hasPath(char* matrix, int rows, int cols, char* str)
+    {
+        vector<char> flags(rows * cols, 0);
+        bool condition = false;
+        for(int i = 0; i < rows; i++)
+            for(int j = 0; j < cols; j++)
+                if(isPath(matrix, str, flags, rows, cols, i, j)){
+                    condition = true;
+                    break;
+                }
+        return condition;
+    }
+    
+    bool isPath(char* matrix,char* str, vector<char> flags, int rows, int cols, int i, int j){
+        if(i < 0 || i >= rows || j >= cols) return false;
+        if(matrix[i * cols + j] == *str && flags[i * cols + j] == 0){
+            flags[i * cols + j] = 1;
+            if(*(str+1) == 0) return true;
+            bool condition = isPath(matrix, str + 1, flags, rows, cols, i - 1, j)
+                || isPath(matrix, str + 1, flags, rows, cols, i + 1, j)
+                || isPath(matrix, str + 1, flags, rows, cols, i, j - 1)
+                || isPath(matrix, str + 1, flags, rows, cols, i, j + 1);
+            if (condition == false) flags[i * cols + j] = 0;
+            return condition;
+        }
+        return false;
+    }
+};
 ```
 
 <sapn id="机器人的运动范围"></span>
@@ -2401,6 +2591,7 @@ public:
 输出：20
 ```
 ```cpp
+//方法1
 class Solution {
 public:
     int movingCount(int threshold, int rows, int cols)
@@ -2436,6 +2627,40 @@ public:
             p.second/=10;
         }
         return count_num;
+    }
+};
+
+//方法2
+class Solution {
+public:
+    int movingCount(int threshold, int rows, int cols)
+    {
+        bool *flags = new bool[rows * cols];
+        for(int i = 0; i < rows * cols; i++)
+            flags[i] = false;
+        int count_ = moving(threshold, flags, rows, cols, 0, 0);
+        return count_;
+    }
+    
+    int sum_(int a){
+        int sum_ = 0;
+        while(a){
+            sum_ += a % 10;
+            a /= 10;
+        }
+        return sum_;
+    }
+    
+    int moving(int threshold, bool *flags, int rows, int cols, int i, int j){
+        int count_ = 0;
+        if(i >= 0 && i < rows && j >= 0 && j < cols && flags[i * cols + j] == false && sum_(i) + sum_(j) <= threshold){
+            flags[i * cols + j] = true;
+            count_ = 1 + moving(threshold, flags, rows, cols, i - 1, j)
+                + moving(threshold, flags, rows, cols, i + 1, j)
+                + moving(threshold, flags, rows, cols, i, j - 1)
+                + moving(threshold, flags, rows, cols, i, j + 1);
+        }
+        return count_;
     }
 };
 ```
