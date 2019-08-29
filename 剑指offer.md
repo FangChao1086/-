@@ -2055,8 +2055,8 @@ public:
 };
 ```
 
-<span id="链表中环的入口节点"></span>
-## 55、链表中环的入口节点
+<span id="链表中环的入口结点"></span>
+## 55、链表中环的入口结点
 ```
 给一个链表，若其中包含环，请找出该链表的环的入口结点，否则，输出null。
 ```
@@ -2095,49 +2095,204 @@ public:
 };
 ```
 
-<span id=""></span>
-## 56、
+<span id="删除链表中重复的结点"></span>
+## 56、删除链表中重复的结点
 ```
-
-```
-```cpp
-
-```
-
-<span id=""></span>
-## 57、
-```
-
+在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。 
+例如，链表1->2->3->3->4->4->5 处理后为 1->2->5
 ```
 ```cpp
-
+/*
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) :
+        val(x), next(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    ListNode* deleteDuplication(ListNode* pHead)
+    {
+        ListNode* pDummy = new ListNode(0);
+        pDummy -> next = pHead;
+        ListNode* p = pDummy;
+        while(p -> next){
+            ListNode* tmp = p -> next;
+            while(tmp && p -> next -> val == tmp -> val){
+                tmp = tmp -> next;
+            }
+            if(p -> next -> next == tmp){
+                p = p -> next;
+            }
+            else
+                p -> next = tmp;
+        }
+        return pDummy -> next;
+    }
+};
 ```
 
-<span id=""></span>
-## 58、
+<span id="二叉树的下一个结点"></span>
+## 57、二叉树的下一个结点
 ```
-
+给定一个二叉树和其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。
+注意，树中的结点不仅包含左右子结点，同时包含指向父结点的指针。
 ```
 ```cpp
-
+/*
+struct TreeLinkNode {
+    int val;
+    struct TreeLinkNode *left;
+    struct TreeLinkNode *right;
+    struct TreeLinkNode *next;
+    TreeLinkNode(int x) :val(x), left(NULL), right(NULL), next(NULL) {
+        
+    }
+};
+*/
+class Solution {
+public:
+    TreeLinkNode* GetNext(TreeLinkNode* pNode)
+    {
+        if(pNode == NULL)
+            return NULL;
+        if(pNode -> right != NULL){
+            pNode = pNode -> right;
+            while(pNode -> left != NULL)
+                pNode = pNode -> left;
+            return pNode;
+        }
+        while(pNode -> next != NULL){
+            if(pNode -> next -> left == pNode)
+                return pNode -> next;
+            else
+                pNode = pNode -> next;
+        }
+        return NULL;
+    }
+};
 ```
 
-<span id=""></span>
-## 59、
+<span id="对称的二叉树"></span>
+## 58、对称的二叉树
 ```
-
+请实现一个函数，用来判断一颗二叉树是不是对称的。
+注意，如果一个二叉树同此二叉树的镜像是同样的，定义其为对称的。
 ```
 ```cpp
-
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    bool isSymmetrical(TreeNode* pRoot)
+    {
+        return IsSame(pRoot, pRoot);
+    }
+    
+    bool IsSame(TreeNode* root1, TreeNode* root2){
+        if(root1 == NULL && root2 == NULL) return true;
+        if(root1 == NULL || root2 == NULL) return false;
+        if(root1 -> val != root2 -> val) return false;
+        return IsSame(root1 -> left, root2 -> right) && IsSame(root1 -> right, root2 -> left);
+    }
+};
 ```
 
-<span id=""></span>
-## 60、
+<span id="按之字形顺序打印二叉树"></span>
+## 59、按之字形顺序打印二叉树
 ```
-
+请实现一个函数按照之字形打印二叉树，
+即第一行按照从左到右的顺序打印，
+第二层按照从右至左的顺序打印，
+第三行按照从左到右的顺序打印，其他行以此类推。
 ```
 ```cpp
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    vector<vector<int> > Print(TreeNode* pRoot) {
+        vector<vector<int>> res;
+        queue<TreeNode*> que;
+        que.push(pRoot);
+        if(!pRoot) return res;
+        bool flag = false;
+        while(!que.empty()){
+            int size = que.size();
+            vector<int> vec;
+            for(int i = 0; i < size; i++){
+                TreeNode* node = que.front();
+                vec.push_back(node -> val);
+                if(node -> left) que.push(node -> left);
+                if(node -> right) que.push(node -> right);
+                que.pop();
+            }
+            if(flag)
+                reverse(vec.begin(), vec.end());
+            res.push_back(vec);
+            flag = !flag;
+        }
+        return res;
+    }
+};
+```
 
+<span id="把二叉树打印成多行"></span>
+## 60、把二叉树打印成多行
+```
+从上到下按层打印二叉树，同一层结点从左至右输出。每一层输出一行。
+```
+```cpp
+/*
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+    TreeNode(int x) :
+            val(x), left(NULL), right(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+        vector<vector<int> > Print(TreeNode* pRoot) {
+            vector<vector<int>> res;
+            queue<TreeNode*> que;
+            que.push(pRoot);
+            if(!pRoot) return res;
+            while(!que.empty()){
+                int size = que.size();
+                vector<int> vec;
+                for(int i = 0; i < size; i++){
+                    TreeNode* node = que.front();
+                    que.pop();
+                    vec.push_back(node -> val);
+                    if(node -> left) que.push(node -> left);
+                    if(node -> right) que.push(node -> right);
+                }
+                res.push_back(vec);
+            }
+            return res;
+        }
+};
 ```
 
 <span id=""></span>
