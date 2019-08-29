@@ -18,6 +18,7 @@
 * [18、二叉树的镜像](#二叉树的镜像)
 * [19、顺时针打印矩阵](#顺时针打印矩阵)
 * [20、包含min函数的栈](#包含min函数的栈)
+* [21、栈的压入、弹出序列](#栈的压入、弹出序列)
 * [11、矩阵中的路径](#矩阵中的路径)
 * [12、机器人的运动范围](#机器人的运动范围)
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
@@ -924,6 +925,35 @@ public:
     }
     int min() {
         return stackMin.top();
+    }
+};
+```
+
+<span id="栈的压入、弹出序列"></span>
+## 21、栈的压入、弹出序列
+```
+输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否可能为该栈的弹出顺序。
+假设压入栈的所有数字均不相等。
+例如序列1,2,3,4,5是某栈的压入顺序，序列4,5,3,2,1是该压栈序列对应的一个弹出序列，
+但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+```
+```cpp
+class Solution {
+public:
+    bool IsPopOrder(vector<int> pushV,vector<int> popV) {
+        int i = 0, j = 0;
+        int len = pushV.size();
+        if (len <= 0) return false;
+        vector<int> res;
+        while(i < len){
+            res.push_back(pushV[i]);
+            i++;
+            while(j < popV.size() && popV[j] == res.back()){
+                res.pop_back();
+                j++;
+            }
+        }
+        return res.empty();
     }
 };
 ```
