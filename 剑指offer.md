@@ -19,6 +19,21 @@
 * [19、顺时针打印矩阵](#顺时针打印矩阵)
 * [20、包含min函数的栈](#包含min函数的栈)
 * [21、栈的压入、弹出序列](#栈的压入、弹出序列)
+* [22、从上往下打印二叉树](#从上往下打印二叉树)
+* [23、二叉搜索树的后序遍历序列](#二叉搜索树的后序遍历序列)
+* [24、二叉树中和为某一个值的路径](#二叉树中和为某一个值的路径)
+* [25、复杂链表的复制](#复杂链表的复制)
+* [26、二叉搜索树与双向链表](#二叉搜索树与双向链表)
+* [27、字符串的排列](#字符串的排列)
+* [28、数组中出现次数超过一半的数字](#数组中出现次数超过一半的数字)
+* [29、最小的K个数](#最小的K个数)
+* [30、连续子数组的最大和](#连续子数组的最大和)
+* [31、整数中1出现的次数（从1到n整数中1出现的次数）](#整数中1出现的次数（从1到n整数中1出现的次数）)
+* [32、把整数排成最小的数](#把整数排成最小的数)
+* [33、丑数](#丑数)
+* [34、第一次只出现一次的字符](#第一次只出现一次的字符)
+* [35、数组中的逆序对](#数组中的逆序对)
+
 * [11、矩阵中的路径](#矩阵中的路径)
 * [12、机器人的运动范围](#机器人的运动范围)
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
@@ -954,6 +969,466 @@ public:
             }
         }
         return res.empty();
+    }
+};
+```
+
+<span id="从上往下打印二叉树"></span>
+## 22、从上往下打印二叉树
+```
+从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+```
+```cpp
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    vector<int> PrintFromTopToBottom(TreeNode* root) {
+        queue<TreeNode*> que;
+        vector<int> vec;
+        que.push(root);
+        if(!root) return vec;
+        while(!que.empty()){
+            TreeNode* node = que.front();
+            vec.push_back(node -> val);
+            if(node -> left != NULL)
+                que.push(node -> left);
+            if(node -> right != NULL)
+                que.push(node -> right);
+            que.pop();
+        }
+        return vec;
+    }
+};
+```
+
+<span id="二叉搜索树的后序遍历序列"></span>
+## 23、二叉搜索树的后序遍历序列
+```
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
+如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+```
+```cpp
+class Solution {
+public:
+    bool VerifySquenceOfBST(vector<int> sequence) {
+        return bst(sequence, 0, sequence.size()-1);
+    }
+    
+    bool bst(vector<int> sequence, int begin, int end){
+        if (sequence.empty()) return false;
+        int root = sequence[end];
+        int i = begin;
+        for(; i < end; i++)
+            if(sequence[i] > root)
+                break;
+        for(int j = i; j < end; j++)
+            if (sequence[j] < root)
+                return false;
+        bool left = true;
+        bool right = true;
+        if(i > begin)
+            left = bst(sequence, begin, i-1);
+        if(i < end){
+            right = bst(sequence, i, end - 1);
+        }
+        return left && right;
+    }
+};
+```
+	
+<span id="二叉树中和为某一个值的路径"></span>
+## 24、二叉树中和为某一个值的路径
+```
+输入一颗二叉树的跟节点和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
+路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+(注意: 在返回值的list中，数组长度大的数组靠前)
+```
+```cpp
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<int> path;
+    vector<vector<int> > FindPath(TreeNode* root,int expectNumber) {
+        dfs(root, expectNumber);
+        return res;
+    }
+    
+    void dfs(TreeNode* root, int num){
+        if(!root) return ;
+        path.push_back(root -> val);
+        num = num - root -> val;
+        if(num == 0 && root -> left == NULL && root -> right == NULL)
+            res.push_back(path);
+        dfs(root -> left, num);
+        dfs(root -> right, num);
+        path.pop_back();
+    }
+};
+```
+
+<span id="复杂链表的复制"></span>
+## 25、复杂链表的复制
+```
+输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，另一个特殊指针指向任意一个节点），
+返回结果为复制后复杂链表的head。
+（注意，输出结果中请不要返回参数中的节点引用，否则判题程序会直接返回空）
+```
+```cpp
+/*
+struct RandomListNode {
+    int label;
+    struct RandomListNode *next, *random;
+    RandomListNode(int x) :
+            label(x), next(NULL), random(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    RandomListNode* Clone(RandomListNode* pHead)
+    {
+        if(pHead == NULL) return NULL;
+        RandomListNode* Head = pHead;
+        while(Head != NULL){
+            RandomListNode* pNew = new RandomListNode(Head -> label);
+            pNew -> next = Head -> next;
+            Head -> next = pNew;
+            Head = pNew -> next;
+        }
+        RandomListNode* p_head = pHead;
+        while(p_head != NULL){
+            RandomListNode* pNew = p_head -> next;
+            if(p_head -> random != NULL)
+                pNew -> random = p_head -> random ->next;
+            p_head = pNew -> next;
+        }
+        p_head = pHead;
+        RandomListNode* pClone = p_head -> next;
+        while(p_head -> next != NULL){
+            RandomListNode* pNew = p_head -> next;
+            p_head -> next = pNew -> next;
+            p_head = pNew;
+        }
+        return pClone;
+    }
+};
+```
+
+<span id="二叉搜索树与双向链表"></span>
+## 26、二叉搜索树与双向链表
+```
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
+要求不能创建任何新的结点，只能调整树中结点指针的指向。
+```
+```cpp
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    TreeNode* Convert(TreeNode* pRootOfTree)
+    {
+        //中序遍历
+        //返回链表的头节点
+        if(!pRootOfTree) return NULL;
+        TreeNode* pre = NULL;
+        convert(pRootOfTree, pre);
+        while(pRootOfTree -> left)
+            pRootOfTree = pRootOfTree -> left;
+        return pRootOfTree;
+    }
+    
+    void convert(TreeNode* root, TreeNode* &pre){
+        if(!root) return ;
+        convert(root -> left, pre);
+        root -> left = pre;
+        if(pre)
+            pre -> right = root;
+        pre = root;
+        convert(root -> right, pre);
+    }
+};
+```
+
+<span id="字符串的排列"></span>
+## 27、字符串的排列
+```
+输入一个字符串,按字典序打印出该字符串中字符的所有排列。
+例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+```
+```cpp
+class Solution {
+public:
+    vector<string> Permutation(string str) {
+        vector<string> res;
+        if(str.size() == 0) return res;
+        sort(str.begin(), str.end());
+        do
+            res.push_back(str);
+        while(next_permutation(str.begin(), str.end()));
+        return res;
+    }
+};
+```
+
+<span id="数组中出现次数超过一半的数字"></span>
+## 28、数组中出现次数超过一半的数字
+```
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
+例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。
+由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
+```
+```cpp
+class Solution {
+public:
+    int MoreThanHalfNum_Solution(vector<int> numbers) {
+        //排序后，若存在符合条件的数，则一定是数组中间的那个数
+        //使用sort,时间复杂度为nlogn,非最优
+        int len = numbers.size();
+        sort(numbers.begin(), numbers.end());
+        int mid = numbers[len/2], count = 0;
+        for(int i = 0; i < len; i++)
+            if(numbers[i] == mid)
+                count++;
+        return count > len / 2 ? mid : 0;
+    }
+};
+```
+
+<span id="最小的K个数"></span>
+## 29、最小的K个数
+```
+输入n个整数，找出其中最小的K个数。
+例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
+```
+```cpp
+class Solution {
+public:
+    vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
+        //最大堆实现，前k个数建立大根堆，时间复杂度nlogk
+        if(k > input.size() || k <= 0 || input.size()==0)
+            return vector<int> ();
+        vector<int> res(input.begin(), input.begin() + k);
+        make_heap(res.begin(), res.begin() + k);
+        for(int i = k; i < input.size(); i++){
+            if(input[i] < res[0]){
+                pop_heap(res.begin(), res.end());
+                res.pop_back();
+                res.push_back(input[i]);
+                push_heap(res.begin(), res.end());
+            }
+        }
+        sort(res.begin(), res.end());
+        return res;
+    }
+};
+```
+
+<span id="连续子数组的最大和"></span>
+## 30、连续子数组的最大和
+```
+HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。今天测试组开完会后,他又发话了:
+在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。
+但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？
+例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。
+给一个数组，返回它的最大连续子序列的和，你会不会被他忽悠住？(子向量的长度至少是1)
+```
+```cpp
+class Solution {
+public:
+    int FindGreatestSumOfSubArray(vector<int> array) {
+        int max_single = array[0], max_all = array[0];
+        for(int i = 1; i < array.size(); i++){
+            max_single = max(array[i], max_single + array[i]);
+            max_all = max(max_all, max_single);
+        }
+        return max_all;
+    }
+};
+```
+
+<span id="整数中1出现的次数（从1到n整数中1出现的次数）"></span>
+## 31、整数中1出现的次数（从1到n整数中1出现的次数）
+```
+求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？
+为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,
+但是对于后面问题他就没辙了。ACMer希望你们帮帮他,并把问题更加普遍化,
+可以很快的求出任意非负整数区间中1出现的次数（从1 到 n 中1出现的次数）。
+```
+```cpp
+class Solution {
+public:
+    int NumberOf1Between1AndN_Solution(int n)
+    {
+        int sum = 0;
+        for(int i = 0; i <= n; i++)
+            sum += Count(i);
+        return sum;
+    }
+    
+    int Count(int i){
+        int count = 0;
+        while(i){
+            if(i % 10 == 1)
+                count++;
+            i /= 10;
+        }
+        return count;
+    }
+};
+```
+
+<span id="把整数排成最小的数"></span>
+## 32、把整数排成最小的数
+```
+输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
+```
+```cpp
+class Solution {
+public:
+    string PrintMinNumber(vector<int> numbers) {
+        string s;
+        sort(numbers.begin(), numbers.end(), cmp);
+        for(int i = 0; i < numbers.size(); i++){
+            s += to_string(numbers[i]);
+        }
+        return s;
+    }
+    
+    static bool cmp(int a, int b){
+        string A = to_string(a) + to_string(b);
+        string B = to_string(b) + to_string(a);
+        return A < B;
+    }
+};
+```
+
+<span id="丑数"></span>
+## 33、丑数
+```
+把只包含质因子2、3和5的数称作丑数（Ugly Number）。
+例如6、8都是丑数，但14不是，因为它包含质因子7。 
+习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+```
+```cpp
+class Solution {
+public:
+    int GetUglyNumber_Solution(int index) {
+        if(index < 7) return index;
+        vector<int> res(index);
+        res[0] = 1;
+        int i1 = 0, i2 = 0, i3 = 0;
+        for(int i = 1; i < index; i++){
+            res[i] = min(res[i1] * 2, min(res[i2] * 3, res[i3] * 5));
+            if(res[i] == 2 * res[i1])
+                i1++;
+            if(res[i] == 3 * res[i2])
+                i2++;
+            if(res[i] == 5 * res[i3])
+                i3++;
+        }
+        return res[index - 1];
+        
+    }
+};
+```
+
+<span id="第一次只出现一次的字符"></span>
+## 34、第一次只出现一次的字符
+```
+在一个字符串(0<=字符串长度<=10000，
+全部由字母组成)中找到第一个只出现一次的字符,并返回它的位置, 
+如果没有则返回 -1（需要区分大小写）.
+```
+```cpp
+class Solution {
+public:
+    int FirstNotRepeatingChar(string str) {
+        map<char, int> mp;
+        for(int i = 0; i < str.size(); i++)
+            mp[str[i]]++;
+        for(int i = 0; i < str.size(); i++)
+            if(mp[str[i]] == 1)
+                return i;
+        return -1;
+    }
+};
+```
+
+<span id="数组中的逆序对"></span>
+## 35、数组中的逆序对
+```
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。
+输入一个数组,求出这个数组中的逆序对的总数P。
+并将P对1000000007取模的结果输出。 即输出P%1000000007
+```
+```cpp
+class Solution {
+public:
+    int InversePairs(vector<int> data) {
+        if(data.size()<1)
+            return 0;
+        vector<int> copy;
+        for(int i=0;i<int(data.size());i++){
+            copy.push_back(data[i]);
+        }
+        long count=InversePairsCore(data,copy,0,int(data.size())-1);
+        return count%1000000007;
+    }
+    
+    long InversePairsCore(vector<int> &data,vector<int> &copy,int start,int end){
+        if(start==end){
+            copy[start]=data[start];
+            return 0;
+        }
+        int length=(end-start)/2;
+        long left=InversePairsCore(copy,data,start,start+length);
+        long right=InversePairsCore(copy,data,start+length+1,end);
+        
+        int i=start+length;
+        int j=end;
+        int index_copy=end;
+        long count=0;
+        while(i>=start && j>=start+length+1){
+            if(data[i]>data[j]){
+                copy[index_copy--]=data[i--];
+                count=count+j-start-length;
+            }
+            else{
+                copy[index_copy--]=data[j--];
+            }
+        }
+        for(;i>=start;i--){
+            copy[index_copy--]=data[i];
+        }
+        for(;j>=start+length+1;j--){
+            copy[index_copy--]=data[j];
+        }
+        return count+left+right;
     }
 };
 ```
