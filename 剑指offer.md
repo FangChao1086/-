@@ -17,6 +17,7 @@
 * [17、树的子结构](#树的子结构)
 * [18、二叉树的镜像](#二叉树的镜像)
 * [19、顺时针打印矩阵](#顺时针打印矩阵)
+* [20、包含min函数的栈](#包含min函数的栈)
 * [11、矩阵中的路径](#矩阵中的路径)
 * [12、机器人的运动范围](#机器人的运动范围)
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
@@ -894,6 +895,35 @@ public:
             left++, right--, top++, bottom--;
         }
         return res;
+    }
+};
+```
+
+<span id="包含min函数的栈"></span>
+## 20、包含min函数的栈
+```
+定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的min函数（时间复杂度应为O（1））。
+```
+```cpp
+class Solution {
+public:
+    stack<int> stackAll;
+    stack<int> stackMin;
+    void push(int value) {
+        stackAll.push(value);
+        if(stackMin.empty() || stackMin.top() > value) stackMin.push(value);
+        else
+            stackMin.push(stackMin.top());
+    }
+    void pop() {
+        stackAll.pop();
+        stackMin.pop();
+    }
+    int top() {
+        return stackAll.top();
+    }
+    int min() {
+        return stackMin.top();
     }
 };
 ```
