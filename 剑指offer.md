@@ -1492,40 +1492,125 @@ public:
 };
 ```
 
-<span id=""></span>
-## 37、
+<span id="数字在排序数组中出现的次数"></span>
+## 37、数字在排序数组中出现的次数
 ```
-
-```
-```cpp
-
-```
-
-<span id=""></span>
-## 38、
-```
-
+统计一个数字在排序数组中出现的次数。
 ```
 ```cpp
-
+class Solution {
+public:
+    int GetNumberOfK(vector<int> data ,int k) {
+        // 二分查找
+        int mid = -1, start = 0, end = data.size()-1;
+        while(start < end){
+            mid = (start + end) >> 1;
+            if(data[mid] < k)
+                start = mid + 1;
+            else if(data[mid] > k)
+                end = mid - 1;
+            else
+                break;
+        }
+        int i = mid;
+        int count = 0;
+        while(i>=0 && data[i] == k){
+            count++;
+            i--;
+        }
+        i = mid + 1;
+        while(i< data.size() && data[i] == k){
+            count++;
+            i++;
+        }
+        return count;
+    }
+};
 ```
 
-<span id=""></span>
-## 39、
+<span id="二叉树的深度"></span>
+## 38、二叉树的深度
 ```
-
+输入一棵二叉树，求该树的深度。
+从根结点到叶结点依次经过的结点（含根、叶结点）形成树的一条路径，最长路径的长度为树的深度。
 ```
 ```cpp
+/*
+struct TreeNode {
+	int val;
+	struct TreeNode *left;
+	struct TreeNode *right;
+	TreeNode(int x) :
+			val(x), left(NULL), right(NULL) {
+	}
+};*/
+class Solution {
+public:
+    int TreeDepth(TreeNode* pRoot)
+    {
+        if(pRoot == NULL) return 0;
+        int left = TreeDepth(pRoot -> left);
+        int right = TreeDepth(pRoot -> right);
+        return left > right ? (left + 1) : (right + 1);
+    }
+};
+```
 
+<span id="平衡二叉树"></span>
+## 39、平衡二叉树
+```
+输入一棵二叉树，判断该二叉树是否是平衡二叉树。
+```
+```cpp
+class Solution {
+public:
+    bool IsBalanced_Solution(TreeNode* pRoot) {
+        //1、树为空是平衡二叉树
+        //2、左右树高相差不能超过1
+        //3、其子树也要是平衡二叉树
+        if(pRoot == NULL) return true;
+        if(abs(getDepth(pRoot -> left) - getDepth(pRoot -> right)) > 1)
+            return false;
+        return IsBalanced_Solution(pRoot -> left) && IsBalanced_Solution(pRoot -> right);
+    }
+    
+    int getDepth(TreeNode* root){
+        if(root ==NULL) return 0;
+        int left = getDepth(root -> left);
+        int right = getDepth(root -> right);
+        return left > right ? (left + 1) : (right + 1);
+    }
+};
 ```
 
 <span id=""></span>
 ## 40、
 ```
-
+一个整型数组里除了两个数字之外，其他的数字都出现了偶数次。请写程序找出这两个只出现一次的数字。
 ```
 ```cpp
-
+class Solution {
+public:
+    void FindNumsAppearOnce(vector<int> data,int* num1,int *num2) {
+        //相同的数异或为0，异或结果为1的那一位可以将两个数字分开；
+        int num = data[0];
+        for(int i = 1; i < data.size(); i++)
+            num ^= data[i];
+        if(num == 0) return ;
+        int move = 0;
+        while((num & 1)==0){
+            num >>= 1;
+            move++;
+        }
+        *num1 = 0, *num2 = 0;
+        for(int i = 0; i < data.size(); i++){
+            if((data[i] >> move) & 1)
+                *num1 ^= data[i];
+            else
+                *num2 ^= data[i];
+        }
+    }
+};
 ```
 
 <span id=""></span>
