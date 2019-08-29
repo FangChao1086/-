@@ -1787,49 +1787,136 @@ public:
 };
 ```
 
-<span id=""></span>
-## 46、
+<span id="孩子们的游戏（圆圈中最后剩下的数）"></span>
+## 46、孩子们的游戏（圆圈中最后剩下的数）
 ```
-
-```
-```cpp
-
-```
-
-<span id=""></span>
-## 47、
-```
-
+每年六一儿童节,牛客都会准备一些小礼物去看望孤儿院的小朋友,今年亦是如此。
+HF作为牛客的资深元老,自然也准备了一些小游戏。
+其中,有个游戏是这样的:首先,让小朋友们围成一个大圈。
+然后,他随机指定一个数m,让编号为0的小朋友开始报数。
+每次喊到m-1的那个小朋友要出列唱首歌,然后可以在礼品箱中任意的挑选礼物,并且不再回到圈中,
+从他的下一个小朋友开始,继续0...m-1报数....这样下去....
+直到剩下最后一个小朋友,可以不用表演,并且拿到牛客名贵的“名侦探柯南”典藏版(名额有限哦!!^_^)。
+请你试着想下,哪个小朋友会得到这份礼品呢？(注：小朋友的编号是从0到n-1)
 ```
 ```cpp
-
+class Solution {
+public:
+    int LastRemaining_Solution(int n, int m)
+    {
+        //约瑟夫环问题
+        if(n == 0 || m == 0) return -1;
+        int s = 0;
+        for(int i = 2; i <= n; i++)
+            s = (s + m) % i; 
+        return s;
+    }
+};
 ```
 
-<span id=""></span>
-## 48、
+<span id="求1+2+3+...+n"></span>
+## 47、求1+2+3+...+n
 ```
-
-```
-```cpp
-
-```
-
-<span id=""></span>
-## 49、
-```
-
-```
-```cpp
-
-```
-
-<span id=""></span>
-## 50、
-```
-
+求1+2+3+...+n，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
 ```
 ```cpp
+class Solution {
+public:
+    int Sum_Solution(int n) {
+        int sum = n;
+        sum && (sum += Sum_Solution(n - 1));
+        return sum;
+    }
+};
+```
 
+<span id="不用加减乘除做加法"></span>
+## 48、不用加减乘除做加法
+```
+写一个函数，求两个整数之和，要求在函数体内不得使用+、-、*、/四则运算符号。
+```
+```cpp
+class Solution {
+public:
+    int Add(int num1, int num2)
+    {
+        while(num2 != 0){
+            int temp = num1 ^ num2;
+            num2 = (num1 & num2) << 1;
+            num1 = temp;
+        }
+        return num1;
+    }
+};
+```
+
+<span id="把字符串转换成整数"></span>
+## 49、把字符串转换成整数
+```
+将一个字符串转换成一个整数(实现Integer.valueOf(string)的功能，
+但是string不符合数字要求时返回0)，要求不能使用字符串转换整数的库函数。 
+数值为0或者字符串不是一个合法的数值则返回0。
+
+输入描述:
+输入一个字符串,包括数字字母符号,可以为空
+输出描述:
+如果是合法的数值表达则返回该数字，否则返回0
+示例1 
+输入
++2147483647
+    1a33
+	
+输出
+2147483647
+    0
+```
+```cpp
+class Solution {
+public:
+    int StrToInt(string str) {
+        int len = str.size(), s = 1, res = 0;
+        if(str[0]== '-') s = -1;
+        for(int i = (str[0] == '+' || str[0] == '-') ? 1 : 0; i < len; i++){
+            if(str[i] < '0' || str[i] > '9') return 0;
+            res = (res << 1) + (res << 3) + (str[i] & 0xf);
+        }
+        return res * s;
+    }
+};
+```
+
+<span id="数组中重复的数字"></span>
+## 50、数组中重复的数字
+```
+在一个长度为n的数组里的所有数字都在0到n-1的范围内。 
+数组中某些数字是重复的，但不知道有几个数字是重复的。也不知道每个数字重复几次。
+请找出数组中任意一个重复的数字。 
+例如，如果输入长度为7的数组{2,3,1,0,2,5,3}，那么对应的输出是第一个重复的数字2。
+```
+```cpp
+class Solution {
+public:
+    // Parameters:
+    //        numbers:     an array of integers
+    //        length:      the length of array numbers
+    //        duplication: (Output) the duplicated number in the array number
+    // Return value:       true if the input is valid, and there are some duplications in the array number
+    //                     otherwise false
+    bool duplicate(int numbers[], int length, int* duplication) {
+        map<int, int> mp;
+        for(int i = 0; i < length; i++)
+            mp[numbers[i]]++;
+        bool flag = false;
+        for(int i = 0; i < length; i++){
+            if(mp[numbers[i]] > 1){
+                *duplication = numbers[i];
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
+};
 ```
 
 <span id=""></span>
