@@ -63,14 +63,10 @@
 [62、二叉搜索树的第k个结点](#二叉搜索树的第k个结点)  
 [63、数据流中的中位数](#数据流中的中位数)  
 [64、滑动窗口的最大值](#滑动窗口的最大值)  
-
-
 [65、矩阵中的路径](#矩阵中的路径)  
 [66、机器人的运动范围](#机器人的运动范围)  
 
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
-* [删除链表中重复的节点](#删除链表中重复的节点)
-* [正则表达式匹配](#正则表达式匹配)
 * [表示数值的字符串](#表示数值的字符串)
 * [链表中环的入口节点](#链表中环的入口节点)
 * [二叉树的镜像](#二叉树的镜像)
@@ -1952,8 +1948,13 @@ public:
 模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符可以出现任意次（包含0次）。 
 在本题中，匹配是指字符串的所有字符匹配整个模式。
 例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和"ab*a"均不匹配
+
+方法2样例：
+输入：s="aa" p="a*"
+输出:true
 ```
 ```cpp
+//方法1（推荐）
 class Solution {
 public:
     bool match(char* str, char* pattern)
@@ -1974,6 +1975,35 @@ public:
             else
                 return false;
         }
+    }
+};
+
+//方法2
+class Solution {
+public:
+    vector<vector<int>>f;
+    int n,m;
+    bool isMatch(string s, string p) {
+        n=s.size();
+        m=p.size();
+        f=vector<vector<int>>(n+1,vector<int>(m+1,-1));
+        return dp(0,0,s,p);
+    }
+    
+    bool dp(int x,int y,string &s,string &p){
+        if(f[x][y]!=-1) return f[x][y];
+        if(y==m){
+            return f[x][y]=x==n;
+        }
+        bool firstMatch=x<n && (s[x]==p[y] || p[y]=='.');
+        bool ans;
+        if(y+1<m && p[y+1]=='*'){
+            ans = dp(x,y+2,s,p) || firstMatch && dp(x+1,y,s,p);
+        }
+        else{
+            ans = firstMatch && dp(x+1,y+1,s,p);
+        }
+        return f[x][y]=ans;
     }
 };
 ```
@@ -2695,96 +2725,6 @@ public:
         node->val=p->val;
         node->next=p->next;
         delete p;
-    }
-};
-```
-
-<span id="删除链表中重复的节点"></span>
-## 删除链表中重复的节点
-```
-题目:
-在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留。
-
-样例：
-输入：1->2->3->3->4->4->5
-输出：1->2->5
-
-说明:
-代码中的tmp存储的是重复节点后的节点
-```
-**代码**
-```cpp
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
- */
-class Solution {
-public:
-    ListNode* deleteDuplication(ListNode* head) {
-        ListNode* dummy=new ListNode(0);
-        dummy->next=head;
-        ListNode* p=dummy;
-        while(p->next){
-            ListNode* tmp=p->next;
-            while(tmp && p->next->val==tmp->val){
-                tmp=tmp->next;
-            }
-            if(p->next->next==tmp){
-                p=p->next;
-            }
-            else{
-                p->next=tmp;
-            }
-        }
-        return dummy->next;
-    }
-};
-```
-
-<span id="正则表达式匹配"></span>
-## 正则表达式匹配
-```
-题目：
-请实现一个函数用来匹配包括'.'和'*'的正则表达式。
-模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符可以出现任意次（含0次）。
-在本题中，匹配是指字符串的所有字符匹配整个模式。
-例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和"ab*a"均不匹配。
-
-样例：
-输入：s="aa" p="a*"
-输出:true
-```
-**代码**
-```cpp
-class Solution {
-public:
-    vector<vector<int>>f;
-    int n,m;
-    bool isMatch(string s, string p) {
-        n=s.size();
-        m=p.size();
-        f=vector<vector<int>>(n+1,vector<int>(m+1,-1));
-        return dp(0,0,s,p);
-    }
-    
-    bool dp(int x,int y,string &s,string &p){
-        if(f[x][y]!=-1) return f[x][y];
-        if(y==m){
-            return f[x][y]=x==n;
-        }
-        bool firstMatch=x<n && (s[x]==p[y] || p[y]=='.');
-        bool ans;
-        if(y+1<m && p[y+1]=='*'){
-            ans = dp(x,y+2,s,p) || firstMatch && dp(x+1,y,s,p);
-        }
-        else{
-            ans = firstMatch && dp(x+1,y+1,s,p);
-        }
-        return f[x][y]=ans;
     }
 };
 ```
