@@ -82,7 +82,7 @@
 * [最小的K个数](#最小的K个数)
 
 <span id="找出数组中重复的数字"></span>
-## 找出数组中重复的数字
+## 1、找出数组中重复的数字
 ```
 题目：
 给定一个长度为n的整数数组nums，数组中所有的数字都在0∼n−1的范围内。  
@@ -119,7 +119,7 @@ public:
 ```
 
 <span id="不修改数组找出重复的数字"></span>
-## 不修改数组找出重复的数字
+## 2、不修改数组找出重复的数字
 ```
 题目：
 给定一个长度为n+1的数组nums，数组中所有的数均在1∼n的范围内，其中 n≥1  
@@ -154,7 +154,7 @@ public:
 ```
 
 <span id="二维数组中的查找"></span>
-## 二维数组中的查找
+## 3、二维数组中的查找
 ```
 题目：
 在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。  
@@ -200,7 +200,7 @@ public:
 ```
 
 <span id="替换空格"></span>
-## 替换空格
+## 4、替换空格
 ```
 题目：  
 请实现一个函数，把字符串中的每个空格替换成"%20"。  
@@ -253,7 +253,7 @@ public:
 ```
 
 <span id="从尾到头打印链表"></span>
-## 从尾到头打印链表
+## 5、从尾到头打印链表
 ```
 题目：
 输入一个链表的头结点，按照 从尾到头 的顺序返回节点的值。  
@@ -312,7 +312,7 @@ public:
 ```
 
 <span id="重建二叉树"></span>
-## （ * ）**重建二叉树**
+## 6、（ * ）**重建二叉树**
 ```
 题目：
 输入一棵二叉树前序遍历和中序遍历的结果，请重建该二叉树。  
@@ -376,7 +376,7 @@ public:
 ```
 
 <span id="二叉树的下一个节点"></span>
-## 二叉树的下一个节点
+## 7、二叉树的下一个节点
 ```
 题目:  
 给定一棵二叉树的其中一个节点，请找出中序遍历序列的下一个节点。  
@@ -423,7 +423,7 @@ public:
 ```
 
 <span id="用两个栈实现队列"></span>
-## 用两个栈实现队列
+## 8、用两个栈实现队列
 ```
 题目:  
 请用栈实现一个队列，支持如下四种操作：  
@@ -528,7 +528,7 @@ private:
 ```
 
 <span id="斐波那契数列"></span>
-## 斐波那契数列、跳台阶、矩形覆盖
+## 9、斐波那契数列、跳台阶、矩形覆盖
 ```
 题目:
 输入一个整数n，求斐波那契数列的第n项。  
@@ -581,7 +581,7 @@ public:
 };
 ```
 <span id="旋转数组的最小数字"></span>
-## 旋转数组的最小数字
+## 10、旋转数组的最小数字
 ```
 题目：
 把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。
@@ -637,7 +637,7 @@ public:
 ```
 
 <span id="二进制中1的个数"></span>
-## （ * ）**二进制中1的个数**
+## 11、（ * ）**二进制中1的个数**
 ```
 题目：
 输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。
@@ -658,7 +658,7 @@ public:
 ```
 
 <span id="数值的整数次方"></span>
-## 数值的整数次方
+## 12、数值的整数次方
 ```
 给定一个double类型的浮点数base和int类型的整数exponent。
 求base的exponent次方。
@@ -682,7 +682,7 @@ public:
 ```
 
 <span id="调整数组顺序使奇数位于偶数前面"></span>
-## 调整数组顺序使奇数位于偶数前面
+## 13、调整数组顺序使奇数位于偶数前面
 ```
 输入一个整数数组，实现一个函数来调整该数组中数字的顺序，
 使得所有的奇数位于数组的前半部分，所有的偶数位于数组的后半部分，
@@ -701,7 +701,7 @@ public:
 ```
 
 <span id="链表中倒数第K个节点"></span>
-## 链表中倒数第K个节点
+## 14、链表中倒数第K个节点
 ```
 输入一个链表，输出该链表中倒数第k个结点。
 ```
@@ -731,7 +731,7 @@ public:
 ```
 
 <span id="反转链表"></span>
-## 反转链表
+## 15、反转链表
 ```
 输入一个链表，反转链表后，输出新链表的表头
 ```
@@ -761,7 +761,7 @@ public:
 ```
 
 <span id="合并两个排序的链表"></span>
-## 合并两个排序的链表
+## 16、合并两个排序的链表
 ```
 输入两个单调递增的链表，输出两个链表合成后的链表
 要求：合成后的链表满足单调不减规则。
@@ -821,7 +821,7 @@ public:
 ```
 
 <span id="树的子结构"></span>
-## 树的子结构
+## 17、树的子结构
 ```
 输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
 ```
@@ -852,7 +852,7 @@ public:
 ```
 
 <span id="二叉树的镜像"></span>
-## 二叉树的镜像
+## 18、二叉树的镜像
 ```
 操作给定的二叉树，将其变换为源二叉树的镜像。
 
@@ -914,7 +914,7 @@ public:
 ```
 
 <span id="顺时针打印矩阵"></span>
-## 顺时针打印矩阵
+## 19、顺时针打印矩阵
 ```
 输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，
 例如，如果输入如下4 X 4矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
@@ -1919,49 +1919,180 @@ public:
 };
 ```
 
-<span id=""></span>
-## 51、
+<span id="构建乘积数组"></span>
+## 51、构建乘积数组
 ```
-
-```
-```cpp
-
-```
-
-<span id=""></span>
-## 52、
-```
-
+给定一个数组A[0,1,...,n-1],请构建一个数组B[0,1,...,n-1],
+其中B中的元素B[i]=A[0]*A[1]*...*A[i-1]*A[i+1]*...*A[n-1]。不能使用除法。
 ```
 ```cpp
-
+class Solution {
+public:
+    vector<int> multiply(const vector<int>& A) {
+        int len = A.size();
+        vector<int> vec;
+        vec.push_back(1);
+        for(int i = 1; i < len; i++){
+            vec.push_back(vec.back()*A[i-1]);
+        }
+        int tmp = 1;
+        for(int i = len - 1; i >= 0; i--){
+            vec[i] = vec[i] * tmp;
+            tmp *= A[i];
+        }
+        return vec;
+    }
+};
 ```
 
-<span id=""></span>
-## 53、
+<span id="正则表达式匹配"></span>
+## 52、正则表达式匹配
 ```
-
+请实现一个函数用来匹配包括'.'和'*'的正则表达式。
+模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符可以出现任意次（包含0次）。 
+在本题中，匹配是指字符串的所有字符匹配整个模式。
+例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和"ab*a"均不匹配
 ```
 ```cpp
-
+class Solution {
+public:
+    bool match(char* str, char* pattern)
+    {
+        if(*str == '\0' && *pattern == '\0') return true;
+        if(*str != '\0' && *pattern == '\0') return false;
+        if(*(pattern + 1) == '*'){
+            if(*str == *pattern || (*str != '\0' && *pattern == '.')){
+                return match(str + 1, pattern) || match(str, pattern + 2);
+            }
+            else
+                return match(str, pattern + 2);
+        }
+        else{
+            if(*str == *pattern || (*str != '\0' && *pattern == '.')){
+                return match(str + 1, pattern + 1);
+            }
+            else
+                return false;
+        }
+    }
+};
 ```
 
-<span id=""></span>
-## 54、
+<span id="表示数值的字符串"></span>
+## 53、表示数值的字符串
 ```
-
+请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。
+例如，字符串"+100","5e2","-123","3.1416"和"-1E-16"都表示数值。 
+但是"12e","1a3.14","1.2.3","+-5"和"12e+4.3"都不是。
 ```
 ```cpp
-
+class Solution {
+public:
+    bool isNumeric(char* string)
+    {
+        int count_dot = 0, count_e = 0, count_num = 0;
+        if(*string == '+' || *string == '-') string++;
+        if(*string == '\0') return false;
+        while(*string != '\0'){
+            if(*string >= '0' && *string <= '9'){
+                count_num = 1;
+                string++;
+            }
+            else if(*string == '.'){
+                if(count_dot > 0 || count_e > 0)
+                    return false;
+                count_dot = 1;
+                string++;
+            }
+            else if(*string == 'E' || *string == 'e'){
+                if(count_num == 0 || count_e > 0)
+                    return false;
+                count_e = 1;
+                string++;
+                if(*string == '+' || *string == '-')
+                    string++;
+                if(*string == '\0')
+                    return false;
+            }
+            else
+                return false;
+        }
+        return true;
+    }
+};
 ```
 
-<span id=""></span>
-## 55、
+<span id="字符流中第一个不重复的字符"></span>
+## 54、字符流中第一个不重复的字符
 ```
+请实现一个函数用来找出字符流中第一个只出现一次的字符。
+例如，当从字符流中只读出前两个字符"go"时，第一个只出现一次的字符是"g"。
+当从该字符流中读出前六个字符“google"时，第一个只出现一次的字符是"l"。
 
+如果当前字符流没有存在出现一次的字符，返回#字符。
 ```
 ```cpp
+class Solution
+{
+public:
+  //Insert one char from stringstream
+    void Insert(char ch)
+    {
+        s += ch;
+         hash[ch]++;
+    }
+  //return the first appearence once char in current stringstream
+    char FirstAppearingOnce()
+    {
+        for(int i = 0; i < s.size(); i++)
+            if(hash[s[i]] == 1)
+                return s[i];
+        return '#';
+    }
+    
+    string s;
+    char hash[128] = {0};
+};
+```
 
+<span id="链表中环的入口节点"></span>
+## 55、链表中环的入口节点
+```
+给一个链表，若其中包含环，请找出该链表的环的入口结点，否则，输出null。
+```
+```cpp
+/*
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) :
+        val(x), next(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    ListNode* EntryNodeOfLoop(ListNode* pHead)
+    {
+        if(pHead == NULL || pHead -> next == NULL) return NULL;
+        ListNode* p1 = pHead;
+        ListNode* p2 = pHead;
+        while(p2 != NULL && p2 -> next != NULL){
+            p1 = p1 -> next;
+            p2 = p2 -> next -> next;
+            if(p1 == p2){
+                p1 = pHead;
+                while(p1 != p2){
+                    p1 = p1 -> next;
+                    p2 = p2 -> next;
+                }
+                if(p1 == p2)
+                    return p1;
+            }
+        }
+        return NULL;
+    }
+};
 ```
 
 <span id=""></span>
