@@ -67,11 +67,6 @@
 [66、机器人的运动范围](#机器人的运动范围)  
 
 * [在O(1)时间删除链表节点](#在O(1)时间删除链表节点)
-* [二叉搜索树的后序遍历序列](#二叉搜索树的后序遍历序列)
-* [二叉树中和为某一值的路径](#二叉树中和为某一值的路径)
-* [复杂链表的复制](#复杂链表的复制)
-* [二叉搜索树与双向链表](#二叉搜索树与双向链表)
-* [最小的K个数](#最小的K个数)
 
 <span id="找出数组中重复的数字"></span>
 ## 1、找出数组中重复的数字
@@ -1061,6 +1056,7 @@ public:
 如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
 ```
 ```cpp
+//方法1
 class Solution {
 public:
     bool VerifySquenceOfBST(vector<int> sequence) {
@@ -1085,6 +1081,27 @@ public:
             right = bst(sequence, i, end - 1);
         }
         return left && right;
+    }
+};
+
+//方法2
+class Solution {
+public:
+    bool verifySequenceOfBST(vector<int> sequence) {
+        return dfs(sequence,0,sequence.size()-1);
+    }
+    
+    bool dfs(vector<int> sequence,int left,int right){
+        if(left>=right) return true;
+        int root=sequence[right];
+        int k=left;
+        while(k<right && sequence[k]<root) k++;
+        for(int i=k;i<right;i++){
+            if(sequence[i]<root){
+                return false;
+            }
+        }
+        return dfs(sequence,left,k-1) && dfs(sequence,k,right-1);
     }
 };
 ```
@@ -1181,7 +1198,14 @@ public:
 ```
 输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
 要求不能创建任何新的结点，只能调整树中结点指针的指向。
+
+注意：
+需要返回双向链表最左侧的节点。
+例如，输入下图中左边的二叉搜索树，则输出右边的排序双向链表。
 ```
+
+
+![二叉搜索树与双向链表](https://i.ibb.co/qF2mdYP/image.png)   
 ```cpp
 /*
 struct TreeNode {
@@ -1270,6 +1294,7 @@ public:
 例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
 ```
 ```cpp
+//方法1
 class Solution {
 public:
     vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
@@ -1287,6 +1312,27 @@ public:
             }
         }
         sort(res.begin(), res.end());
+        return res;
+    }
+};
+
+//方法2
+class Solution {
+public:
+    vector<int> getLeastNumbers_Solution(vector<int> input, int k) {
+        priority_queue<int> heap; // 创建一个大根堆
+        for(auto x:input){
+            heap.push(x);
+            if(heap.size()>k){
+                heap.pop();
+            }
+        }
+        vector<int> res;
+        while(heap.size()){
+            res.push_back(heap.top());
+            heap.pop();
+        }
+        reverse(res.begin(),res.end());
         return res;
     }
 };
@@ -2792,245 +2838,6 @@ public:
         node->val=p->val;
         node->next=p->next;
         delete p;
-    }
-};
-```
-
-<span id="二叉搜索树的后序遍历序列"></span>
-## 二叉搜索树的后序遍历序列
-```
-题目：
-输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
-如果是则返回true，否则返回false。
-假设输入的数组的任意两个数字都互不相同。
-
-样例：
-输入：[4, 8, 6, 12, 16, 14, 10]
-输出：true
-```
-**代码**
-```cpp
-class Solution {
-public:
-    bool verifySequenceOfBST(vector<int> sequence) {
-        return dfs(sequence,0,sequence.size()-1);
-    }
-    
-    bool dfs(vector<int> sequence,int left,int right){
-        if(left>=right) return true;
-        int root=sequence[right];
-        int k=left;
-        while(k<right && sequence[k]<root) k++;
-        for(int i=k;i<right;i++){
-            if(sequence[i]<root){
-                return false;
-            }
-        }
-        return dfs(sequence,left,k-1) && dfs(sequence,k,right-1);
-    }
-};
-```
-
-<span id="二叉树中和为某一值的路径"></span>
-## 二叉树中和为某一值的路径
-```
-题目：
-输入一棵二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
-从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
-
-样例：
-给出二叉树如下所示，并给出num=22。
-      5
-     / \
-    4   6
-   /   / \
-  12  13  6
- /  \    / \
-9    1  5   1
-输出：[[5,4,12,1],[5,6,6,5]]
-```
-**代码**
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-class Solution {
-public:
-    vector<vector<int>> res;
-    vector<int> path;
-    vector<vector<int>> findPath(TreeNode* root, int sum) {
-        dfs(root,sum);
-        return res;
-    }
-    
-    void dfs(TreeNode* root, int sum){
-        if(!root) return;
-        path.push_back(root->val);
-        sum=sum-root->val;
-        if(!root->left && !root->right && sum==0) res.push_back(path);
-        dfs(root->left,sum);
-        dfs(root->right,sum);
-        path.pop_back();
-    }
-};
-```
-
-<sapn id="复杂链表的复制"></span>
-## 复杂链表的复制
-```
-题目:
-请实现一个函数可以复制一个复杂链表。
-在复杂链表中，每个结点除了有一个指针指向下一个结点外，还有一个额外的指针指向链表中的任意结点或者null。
-```
-**代码**
-```cpp
-/**
- * Definition for singly-linked list with a random pointer.
- * struct ListNode {
- *     int val;
- *     ListNode *next, *random;
- *     ListNode(int x) : val(x), next(NULL), random(NULL) {}
- * };
- */
-class Solution {
-public:
-    ListNode *copyRandomList(ListNode *head) {
-        if(head==NULL) return NULL;
-        ListNode* p1=head;
-        
-        while(p1){
-            ListNode* pNew=new  ListNode(p1->val);
-            pNew->next=p1->next;
-            p1->next=pNew;
-            p1=pNew->next;
-        }
-        
-        p1=head;
-        while(p1){
-            ListNode* pNext= p1->next;
-            if(p1->random){
-                pNext->random=p1->random->next;
-            }
-            p1=pNext->next;
-        }
-        
-        p1=head;
-        ListNode* p2=head->next;
-        while(p1->next){
-            ListNode* pNext=p1->next;
-            p1->next=pNext->next;
-            p1=pNext;
-        }
-        return p2;
-    }
-};
-```
-
-<span id="二叉搜索树与双向链表"></span>
-## 二叉搜索树与双向链表
-```
-题目：
-输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
-要求不能创建任何新的结点，只能调整树中结点指针的指向。
-
-注意：
-需要返回双向链表最左侧的节点。
-例如，输入下图中左边的二叉搜索树，则输出右边的排序双向链表。
-```
-
-![二叉搜索树与双向链表](https://i.ibb.co/qF2mdYP/image.png)  
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-class Solution {
-public:
-    TreeNode* convert(TreeNode* root) {
-        if(root==NULL) return NULL;
-        TreeNode* pre=NULL;
-        convert(root,pre);
-        TreeNode* p1=root;
-        while(p1->left){
-            p1=p1->left;
-        }
-        return p1;
-    }
-    
-    void convert(TreeNode* root,TreeNode* &pre){
-        if(!root) return ;
-        convert(root->left,pre);
-        root->left=pre;
-        if(pre){
-            pre->right=root;
-        }
-        pre=root;
-        convert(root->right,pre);
-    }
-};
-```
-
-<span id="最小的K个数"></span>
-## 最小的K个数
-```
-题目：
-输入n个整数，找出其中最小的k个数。
-
-注意：
-数据保证k一定小于等于输入数组的长度;
-输出数组内元素请按从小到大顺序排序;
-
-样例：
-输入：[1,2,3,4,5,6,7,8] , k=4
-输出：[1,2,3,4]
-```
-```cpp
-class Solution {
-public:
-    vector<int> getLeastNumbers_Solution(vector<int> input, int k) {
-        priority_queue<int> heap; // 创建一个大根堆
-        for(auto x:input){
-            heap.push(x);
-            if(heap.size()>k){
-                heap.pop();
-            }
-        }
-        vector<int> res;
-        while(heap.size()){
-            res.push_back(heap.top());
-            heap.pop();
-        }
-        reverse(res.begin(),res.end());
-        return res;
-        
-        /*
-        vector<int> res;
-        for(int i=0;i<k;i++){
-            res.push_back(input[i]);
-        }
-        make_heap(res.begin(),res.end());
-        for(int i=k;i<input.size();i++){
-            if(input[i]<res[0]){
-                pop_heap(res.begin(),res.end());
-                res.pop_back();
-                res.push_back(input[i]);
-                push_heap(res.begin(),res.end());
-            }
-        }
-        sort(res.begin(),res.end());
-        return res;
-        */
     }
 };
 ```
