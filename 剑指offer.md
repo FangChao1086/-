@@ -1583,8 +1583,8 @@ public:
 };
 ```
 
-<span id=""></span>
-## 40、
+<span id="数组中只出现一次的数字"></span>
+## 40、数组中只出现一次的数字
 ```
 一个整型数组里除了两个数字之外，其他的数字都出现了偶数次。请写程序找出这两个只出现一次的数字。
 ```
@@ -1613,49 +1613,177 @@ public:
 };
 ```
 
-<span id=""></span>
-## 41、
+<span id="和为S的连续正数序列"></span>
+## 41、和为S的连续正数序列
 ```
+题目描述
+小明很喜欢数学,有一天他在做数学作业时,要求计算出9~16的和,他马上就写出了正确答案是100。
+但是他并不满足于此,他在想究竟有多少种连续的正数序列的和为100(至少包括两个数)。
+没多久,他就得到另一组连续正数和为100的序列:18,19,20,21,22。
+现在把问题交给你,你能不能也很快的找出所有和为S的连续正数序列? Good Luck!
 
-```
-```cpp
-
-```
-
-<span id=""></span>
-## 42、
-```
-
+输出描述:
+输出所有和为S的连续正数序列。序列内按照从小至大的顺序，序列间按照开始数字从小到大的顺序
 ```
 ```cpp
-
+class Solution {
+public:
+    vector<vector<int> > FindContinuousSequence(int sum) {
+        //双指针问题，当总和大于sum,左指针右移；
+        vector<vector<int>> res;
+        int left = 1, right = 1, sum_ = 1;
+        while(left <= right){
+            right++;
+            sum_ += right;
+            while(sum_ > sum){
+                sum_ -= left;
+                left++;
+            }
+            if(left != right && sum_ == sum){
+                vector<int> vec;
+                for(int i = left; i <= right; i++)
+                    vec.push_back(i);
+                res.push_back(vec);
+            }
+        }
+        return res;
+    }
+};
 ```
 
-<span id=""></span>
-## 43、
+<span id="和为S的两个数字"></span>
+## 42、和为S的两个数字
 ```
+题目描述
+输入一个递增排序的数组和一个数字S，在数组中查找两个数，使得他们的和正好是S，
+如果有多对数字的和等于S，输出两个数的乘积最小的。
 
+输出描述:
+对应每个测试案例，输出两个数，小的先输出。
 ```
 ```cpp
-
+class Solution {
+public:
+    vector<int> FindNumbersWithSum(vector<int> array,int sum) {
+        //递增排序的数组，两端的数相乘积小于较中间的数相乘
+        vector<int> res;
+        int len = array.size(), left = 0, right = len - 1;
+        if(len <= 0) return res;
+        while(left < right){
+            int sum_ = array[left] + array[right];
+            if(sum_ < sum) left++;
+            else if(sum_ > sum) right--;
+            else{
+                res.push_back(array[left]);
+                res.push_back(array[right]);
+                break;
+            }
+        }
+        return res;
+    }
+};
 ```
 
-<span id=""></span>
-## 44、
+<span id="左旋转字符串"></span>
+## 43、左旋转字符串
 ```
-
+汇编语言中有一种移位指令叫做循环左移（ROL），现在有个简单的任务，就是用字符串模拟这个指令的运算结果。
+对于一个给定的字符序列S，请你把其循环左移K位后的序列输出。
+例如，字符序列S=”abcXYZdef”,要求输出循环左移3位后的结果，即“XYZdefabc”。
+是不是很简单？OK，搞定它！
 ```
 ```cpp
-
+class Solution {
+public:
+    string LeftRotateString(string str, int n) {
+        int len = str.size();
+        flip_string(str, 0, len - 1);
+        flip_string(str, 0, len - 1 - n);
+        flip_string(str, len - n, len - 1);
+        return str;
+    }
+    
+    void flip_string(string &str, int left, int right){
+        while(left < right){
+            swap(str[left], str[right]);
+            left++;
+            right--;
+        }
+    }
+};
 ```
 
-<span id=""></span>
-## 45、
+<span id="翻转单词顺序序列"></span>
+## 44、翻转单词顺序序列
 ```
-
+牛客最近来了一个新员工Fish，每天早晨总是会拿着一本英文杂志，写些句子在本子上。
+同事Cat对Fish写的内容颇感兴趣，有一天他向Fish借来翻看，但却读不懂它的意思。
+例如，“student. a am I”。
+后来才意识到，这家伙原来把句子单词的顺序翻转了，正确的句子应该是“I am a student.”。
+Cat对一一的翻转这些单词顺序可不在行，你能帮助他么？
 ```
 ```cpp
+class Solution {
+public:
+    string ReverseSentence(string str) {
+        //1.先将字符串翻转
+        //2、将翻转后的字符串，在句末加上一个空格字符，
+        //   利用空格字符，将每个单词分开，在进行翻转。得到结果
+        int len = str.size();
+        flip_string(str, 0 , len-1);
+        str += ' ';
+        int mark = 0;
+        for(int i = 0; i < str.size(); i++){
+            if(str[i] == ' '){
+                flip_string(str, mark, i-1);
+                mark = i + 1;
+            }
+        }
+        return str.substr(0, len);
+    }
+    
+    void flip_string(string &str, int left, int right){
+        while(left < right){
+            swap(str[left], str[right]);
+            left++;
+            right--;
+        }
+    }
+};
+```
 
+<span id="扑克牌顺子"></span>
+## 45、扑克牌顺子
+```
+LL今天心情特别好,因为他去买了一副扑克牌,发现里面居然有2个大王,2个小王(一副牌原本是54张^_^)...
+他随机从中抽出了5张牌,想测测自己的手气,看看能不能抽到顺子,如果抽到的话,他决定去买体育彩票,嘿嘿！！
+“红心A,黑桃3,小王,大王,方片5”,“Oh My God!”不是顺子.....LL不高兴了,他想了想,
+决定大\小 王可以看成任何数字,并且A看作1,J为11,Q为12,K为13。
+上面的5张牌就可以变成“1,2,3,4,5”(大小王分别看作2和4),“So Lucky!”。
+LL决定去买体育彩票啦。现在,要求你使用这幅牌模拟上面的过程,然后告诉我们LL的运气如何， 
+如果牌能组成顺子就输出true，否则就输出false。为了方便起见,你可以认为大小王是0。
+```
+```cpp
+class Solution {
+public:
+    bool IsContinuous( vector<int> numbers ) {
+        //1、无重复数字
+        //2、num_max-num_min<5;
+        int len =  numbers.size();
+        int a[14] = {0};
+        int min_num = 13, max_num = 0;
+        if(len != 5) return false;
+        for(int i = 0; i < len; i++){
+            a[numbers[i]]++;
+            if(numbers[i] == 0) continue;
+            if(a[numbers[i]] > 1) return false;
+            if(numbers[i] <= min_num) min_num = numbers[i];
+            if(numbers[i] >= max_num) max_num = numbers[i];
+        }
+        if(max_num - min_num >= 5) return false;
+        else return true;
+    }
+};
 ```
 
 <span id=""></span>
