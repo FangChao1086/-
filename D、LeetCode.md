@@ -1,4 +1,4 @@
-# leetcode
+# LeetCode
 
 * [386. 字典序排数](#字典序排数)
 
