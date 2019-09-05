@@ -674,6 +674,7 @@ public:
 并保证奇数和奇数，偶数和偶数之间的相对位置不变。
 ```
 ```cpp
+//方法1
 class Solution {
 public:
     void reOrderArray(vector<int> &array) {
@@ -681,6 +682,31 @@ public:
             for(int j = 0; j < array.size() - 1; j++)
                 if(array[j] % 2 == 0 && array[j + 1] % 2 == 1)
                     swap(array[j], array[j + 1]);
+    }
+};
+
+//方法2（更优）
+//双指针，begin从左向右找到第一个偶数，end从begin之后找到第一个奇数，
+//begin-end之间的数后移，将begin与end的数进行交换
+class Solution {
+public:
+    void reOrderArray(vector<int> &array) {
+        int size = array.size();
+        int begin = 0;
+        while(begin < size){
+            while((begin < size) && (array[begin] & 1) == 1)
+                begin++;
+            int end = begin + 1;
+            while(end < size && (array[end] & 1) == 0)
+                end++;
+            if(end < size){
+                int tmp = array[end];
+                for(int i = end - 1; i >= begin; i--)
+                    array[i+1] = array[i];
+                array[begin++] = tmp;
+            }
+            else break;
+        }
     }
 };
 ```
