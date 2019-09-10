@@ -1,6 +1,26 @@
 # LeetCode
 
-* [386. 字典序排数](#字典序排数)
+[69、x的平方根](#x的平方根)   
+[386、字典序排数](#字典序排数)
+
+<span id="x的平方根"></span>
+## x的平方根
+```cpp
+// 二分查找
+class Solution {
+public:
+    int mySqrt(int x) {
+        if (x <= 1) return x;
+        int left = 0, right = x;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (x / mid >= mid) left = mid + 1;
+            else right = mid;
+        }
+        return right - 1;
+    }
+};
+```
 
 <span id="字典序排数"></span>
 ## 字典序排数
