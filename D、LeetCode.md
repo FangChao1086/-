@@ -1,5 +1,5 @@
 <span id="re_"></span>
-## LeetCode
+# LeetCode
 
 [69、x的平方根](#x的平方根)   
 [386、字典序排数](#字典序排数)
