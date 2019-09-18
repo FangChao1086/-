@@ -11,5 +11,4 @@
   * [二叉树](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/专题/二叉树.md)
   * [动态规划](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/专题/动态规划.md)
   * [回溯](https://github.com/FangChao1086/data_structures_and_algorithms/blob/master/专题/回溯.md)
-  * [二分查找算法模板](https://www.acwing.com/blog/content/31/)
   * [并查集](https://blog.csdn.net/weixin_43824059/article/details/88535734)
