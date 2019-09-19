@@ -212,7 +212,7 @@ for(int i=0;i<n;i++){
 ```cpp
 // 二维数组
 int dp[n][m];  // 方法1
-memset(dp,0,sizeof(dp));
+memset(dp,0,sizeof(dp));  // 用0填充
 
 vector<vector<int>> dp(n,vector<int>(m,0));  // 方法2
 ```
