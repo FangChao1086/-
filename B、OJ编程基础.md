@@ -1,4 +1,5 @@
-# OJ编程在线判题_输入输出
+<span id="re_"></span>
+## OJ编程基础
 * [输入](#输入)
   * [只有一组数据](#只有一组数据)
   * [预先知道数据组数](#预先知道数据组数)
@@ -8,9 +9,10 @@
   * [需要输出case数](#需要输出case数)
   * [每个case后有空行](#每个case后有空行)
   * [只有两个case之间有空行](#只有两个case之间有空行)
+* [生成数组](#生成数组)
 
 <span id="输入"></span>
-## 输入
+## [输入](#re_)
 <span id="只有一组数据"></span>
 ## 只有一组数据
 ```c,c++,java
@@ -26,7 +28,6 @@ cout << a+b << endl;
 int a = scanner.nextInt();
 int b = scanner.nextInt();
 ```
-
 
 <span id="预先知道数据组数"></span>
 ## 预先知道数据组数
@@ -80,7 +81,7 @@ while(scanner.hasNextInt()){
 ```
 
 <span id="输出"></span>
-## 输出
+## [输出](#re_)
 <span id="不需要输出case数"></span>
 ## 不需要输出case数
 ```c,c++,java
@@ -204,5 +205,13 @@ for(int i=0;i<n;i++){
     }
     System.out.println("Case "+ (i+1)+" "+ (a + b));
 }
+```
+
+<span id="生成数组"></span>
+## [生成数组](#re_)
+```cpp
+// 二维数组
+int a[n][m];  // 方法1
+vector<vector<int>> dp(n,vector<int>(m,0));  // 方法2
 ```
 
