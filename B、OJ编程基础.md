@@ -1,9 +1,8 @@
 <span id="re_"></span>
 ## OJ编程基础
 * [输入](#输入)
-  * [只有一组数据](#只有一组数据)
   * [预先知道数据组数](#预先知道数据组数)
-  * [预先不输入数据的组数](#预先不输入数据的组数)
+  * [预先不知道数据组数](#预先不知道数据组数)
 * [输出](#输出)
   * [不需要输出case数](#不需要输出case数)
   * [需要输出case数](#需要输出case数)
@@ -13,22 +12,6 @@
 
 <span id="输入"></span>
 ## [输入](#re_)
-<span id="只有一组数据"></span>
-## 只有一组数据
-```c,c++,java
-//c
-scanf("%d%d",&a,&b);
-printf("%d\n", a+b);
-
-//c++
-cin >> a >> b;
-cout << a+b << endl;
-
-//java
-int a = scanner.nextInt();
-int b = scanner.nextInt();
-```
-
 <span id="预先知道数据组数"></span>
 ## 预先知道数据组数
 ```c,c++,java
@@ -58,8 +41,8 @@ for(int i=0;i<n;i++){
 }
 ```
 
-<span id="预先不输入数据的组数"></span>
-## 预先不输入数据的组数
+<span id="预先不知道数据组数"></span>
+## 预先不知道数据组数
 ```c,c++,java
 // C
 while(scanf("%d%d",&a,&b) != EOF){
