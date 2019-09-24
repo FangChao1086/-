@@ -61,9 +61,13 @@ while(scanner.hasNextInt()){
 <span id="生成数组"></span>
 ## [生成数组](#re_)
 ```cpp
+// C++
+
 // 二维数组
 int dp[n][m];  // 方法1
 memset(dp,0,sizeof(dp));  // 用0填充
 
-vector<vector<int>> dp(n,vector<int>(m,0));  // 方法2
+vector<vector<int>> dp(n,vector<int>(m,0));  // 方法2；n*m填充0
+
+vector<int> res(input.begin(), input.begin() + k);  // 方法3；input是已经存在的vector
 ```
