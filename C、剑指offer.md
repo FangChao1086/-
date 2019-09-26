@@ -2702,7 +2702,7 @@ public:
         matrix[x][y]='*';
         for(int i=0;i<4;i++){
             int p=x+a[i],q=y+b[i];
-            if(p>=0 && p<matrix.size() && q>=0 && q<=matrix[p].size()){
+            if(p>=0 && p<matrix.size() && q>=0 && q<matrix[p].size()){
                 if(dfs(matrix,str,u+1,p,q)) return true;
             }
         }
