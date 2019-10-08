@@ -91,6 +91,63 @@ result 2.5
 
 <span id="最长回文子串"></span>
 ## [5、最长回文子串](#re_)
+```py
+"""
+给定一个字符串 s，找到 s 中最长的回文子串。
+你可以假设 s 的最大长度为1000。
+
+示例 1：
+输入: "babad"
+输出: "bab"
+注意: "aba"也是一个有效答案。
+示例 2：
+输入: "cbbd"
+输出: "bb"
+"""
+
+
+class Solution(object):
+    longest_s = ""  # 最长回文子串
+    maxLen = 0  # 长度
+
+    def longestPalindrome(self, s):
+        """
+        :param s: str
+        :return: str
+        """
+        len_s = len(s)
+        if len_s == 1:
+            return s
+        for i in range(len_s):
+            # 单核
+            self.find_longest_Palindrome(s, i, i)
+            self.find_longest_Palindrome(s, i, i + 1)
+        return self.longest_s
+
+    def find_longest_Palindrome(self, s, low, high):
+        # 从中间向两端延伸
+        while low >= 0 and high < len(s):
+            if s[low] == s[high]:
+                low -= 1
+                high += 1
+            else:
+                break
+        # high - low - 1表示当前字符串长度
+        if high - low - 1 >= self.maxLen:
+            self.maxLen = high - low - 1
+            self.longest_s = s[low + 1:high]
+
+
+str = "cbbd"
+s = Solution()
+result = s.longestPalindrome(str)
+print("result:", result)
+
+"""
+result: bb
+"""
+```
+
 ```cpp
 class Solution {
 public:
