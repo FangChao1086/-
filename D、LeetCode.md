@@ -4,6 +4,7 @@
 [1、两数之和](#两数之和)  
 [2、两个排序数组的中位数](#两个排序数组的中位数)  
 [5、最长回文子串](#最长回文子串)  
+[14、最长公共前缀](最长公共前缀)
 [69、X的平方根](#X的平方根)   
 [386、字典序排数](#字典序排数)
 
@@ -186,6 +187,70 @@ public:
         return s.substr(start, maxLen);
     }
 };
+```
+
+<span id="最长公共前缀"></span>
+## [14、最长公共前缀](#re_)
+```py
+"""
+编写一个函数来查找字符串数组中的最长公共前缀。
+如果不存在公共前缀，返回空字符串 ""。
+
+示例 1:
+输入: ["flower","flow","flight"]
+输出: "fl"
+
+示例 2:
+输入: ["dog","racecar","car"]
+输出: ""
+"""
+
+
+class Solution(object):
+    # 方法1
+    def longestCommonPrefix1(self, strs):
+        """
+        :param strs: List[str]
+        :return: str
+        """
+        len_str = len(strs)
+        if len_str == 0:
+            return ''
+        list_len = []
+        for i in range(len_str):
+            list_len.append(len(strs[i]))
+        list_len.sort()
+        # 取出最短的子串
+        # 我这里是直接取第一个子串的前min_len
+        min_len = list_len[0]
+        b0 = strs[0][0:min_len]  # 最短的子串
+        com = b0
+        for s in strs:
+            for j in range(list_len[0]):
+                if s[j] != com[j]:
+                    # 判断到有不等的地方
+                    a0 = s[0:j]
+                    if len(b0) >= len(a0):  # 上一个最长公共前缀是否比现在长
+                        b0 = a0
+        return b0
+
+    # 方法2:高级
+    def longestCommonPrefix2(self, strs):
+        res = ""
+        if len(strs)==0:
+            return ""
+        for each in zip(*str):
+            if (len(set(each))) == 1:
+                res += each[0]
+            else:
+                return res
+        return res
+
+
+str = ["flower", "flow", "flight"]
+s = Solution()
+result = s.longestCommonPrefix2(str)
+print("result:", result)
 ```
 
 <span id="X的平方根"></span>
