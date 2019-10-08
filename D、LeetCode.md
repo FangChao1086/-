@@ -237,7 +237,7 @@ class Solution(object):
     # 方法2:高级
     def longestCommonPrefix2(self, strs):
         res = ""
-        if len(strs)==0:
+        if len(strs) == 0:
             return ""
         for each in zip(*str):
             if (len(set(each))) == 1:
