@@ -1,9 +1,50 @@
 <span id="re_"></span>
 # LeetCode
 
+[1、两数之和](#两数之和)  
 [5、最长回文子串](#最长回文子串)  
 [69、X的平方根](#X的平方根)   
 [386、字典序排数](#字典序排数)
+
+<span id="两数之和"></span>
+## [1、两数之和](#re_)
+```python
+"""
+题目：
+# 给定一个整数数组和一个目标值，找出数组中和为目标值的两个数。
+# 你可以假设每个输入只对应一种答案，且同样的元素不能被重复利用。
+
+# 给定 nums = [2, 7, 11, 15], target = 9
+# 因为 nums[0] + nums[1] = 2 + 7 = 9
+# 所以返回 [0, 1]
+"""
+
+
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :param nums: List[int]
+        :param target: int
+        :return: List[int]
+        """
+        l = len(nums)
+        dict_ = {nums[i]: i for i in range(l)}
+        for a in range(l):
+            other_num = target - nums[a]
+            if other_num in dict_ and a != dict_[other_num]:
+                return [a, dict_[other_num]]
+
+
+nums = [2, 7, 11, 15]
+target = 9
+s = Solution()
+result = s.twoSum(nums, target)
+print("result", result)
+
+"""
+result [0, 1]
+"""
+```
 
 <span id="最长回文子串"></span>
 ## [5、最长回文子串](#re_)
