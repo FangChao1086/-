@@ -2,13 +2,14 @@
 # LeetCode
 
 [1、两数之和](#两数之和)  
+[2、两个排序数组的中位数](#两个排序数组的中位数)  
 [5、最长回文子串](#最长回文子串)  
 [69、X的平方根](#X的平方根)   
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
 ## [1、两数之和](#re_)
-```python
+```py
 """
 题目：
 # 给定一个整数数组和一个目标值，找出数组中和为目标值的两个数。
@@ -43,6 +44,48 @@ print("result", result)
 
 """
 result [0, 1]
+"""
+```
+
+<span id="两个排序数组的中位数"></span>
+## [2、两个排序数组的中位数](#re_)
+```py
+"""
+给定两个大小为 m 和 n 的有序数组 nums1 和 nums2 。
+请找出这两个有序数组的中位数。 要求算法的时间复杂度为 O(log (m+n))  。
+你可以假设 nums1 和 nums2 不同时为空。
+
+# 示例1
+nums1 = [1, 3]
+nums2 = [2]
+中位数是 2.0
+
+# 示例2
+nums1 = [1, 2]
+nums2 = [3, 4]
+中位数是 (2 + 3)/2 = 2.5
+"""
+
+
+class Solution(object):
+    def findMedianSortArrays(self, nums1, nums2):
+        nums = nums1 + nums2
+        nums.sort()
+        mid = len(nums) // 2  # 整除
+        if mid % 2 == 1:
+            return float(nums[mid])
+        else:
+            return (nums[mid - 1] + nums[mid]) / 2.0
+
+
+nums1 = [1, 2]
+nums2 = [3, 4]
+s = Solution()
+result = s.findMedianSortArrays(nums1, nums2)
+print("result", result)
+
+"""
+result 2.5
 """
 ```
 
