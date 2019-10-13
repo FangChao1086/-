@@ -5,7 +5,7 @@
 [2、两个排序数组的中位数](#两个排序数组的中位数)  
 [5、最长回文子串](#最长回文子串)  
 [14、最长公共前缀](#最长公共前缀)  
-[69、X的平方根](#X的平方根)   
+[69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -270,6 +270,17 @@ public:
         return right - 1;
     }
 };
+
+// 扩展，给定精度
+double getSqrt(int x,double precision) {
+	 double left = 0, right = x;
+	 while (1) {
+		 double mid = left + (right - left) / 2;
+		 if (abs(x /mid - mid) < precision)	return mid;
+		 else if (x / mid > mid)	left = mid + 1;
+		 else right = mid - 1;
+	 }
+}
 ```
 
 <span id="字典序排数"></span>
