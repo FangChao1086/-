@@ -10,42 +10,33 @@
 
 <span id="两数之和"></span>
 ## [1、两数之和](#re_)
-```py
-"""
+```cpp
 题目：
-# 给定一个整数数组和一个目标值，找出数组中和为目标值的两个数。
-# 你可以假设每个输入只对应一种答案，且同样的元素不能被重复利用。
+// 给定一个整数数组 nums 和一个目标值 target，
+// 请你在该数组中找出和为目标值的那两个整数，并返回他们的数组下标。
 
-# 给定 nums = [2, 7, 11, 15], target = 9
-# 因为 nums[0] + nums[1] = 2 + 7 = 9
-# 所以返回 [0, 1]
-"""
+// 给定 nums = [2, 7, 11, 15], target = 9
+// 因为 nums[0] + nums[1] = 2 + 7 = 9
+// 所以返回 [0, 1]
 
-
-class Solution(object):
-    def twoSum(self, nums, target):
-        """
-        :param nums: List[int]
-        :param target: int
-        :return: List[int]
-        """
-        l = len(nums)
-        dict_ = {nums[i]: i for i in range(l)}
-        for a in range(l):
-            other_num = target - nums[a]
-            if other_num in dict_ and a != dict_[other_num]:
-                return [a, dict_[other_num]]
-
-
-nums = [2, 7, 11, 15]
-target = 9
-s = Solution()
-result = s.twoSum(nums, target)
-print("result", result)
-
-"""
-result [0, 1]
-"""
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        int len = nums.size();
+        map<int, int> mp;
+        vector<int> vec(2,0);
+        for(int i = 0; i < len; i++){
+            int other = target - nums[i];
+            if(mp.count(other) > 0 && mp[other] != i){
+                vec[0] = mp[other];
+                vec[1] = i;
+                break;
+            }
+            mp[nums[i]] = i;
+        }
+        return vec;
+    }
+};
 ```
 
 <span id="两个排序数组的中位数"></span>
