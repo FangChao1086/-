@@ -3,6 +3,7 @@
 
 [1、两数之和](#两数之和)  
 [2、两数相加](#两数相加)  
+[3、无重复字符的最长子串](#无重复字符的最长子串)  
 [2、两个排序数组的中位数](#两个排序数组的中位数)  
 [5、最长回文子串](#最长回文子串)  
 [14、最长公共前缀](#最长公共前缀)  
@@ -89,6 +90,45 @@ public:
 };
 ```
 
+
+<span id="无重复字符的最长子串"></span>
+## [3、无重复字符的最长子串](#re_)
+```cpp
+给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+
+输入: "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+
+输入: "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+
+输入: "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        // 双指针; aim,end
+        if(s.size() == 0 || s.size() == 1) return s.size();
+        int p = 0, max_len = 1;
+        for(int end = 1;end < s.size(); end++){
+            for(int aim = p; aim < end; aim++){
+                if(s[aim] == s[end]){
+                    p = aim + 1;
+                    if(max_len < end - aim) max_len = end - aim;
+                    break;
+                }
+            }
+            if(max_len < end - p + 1) max_len = end - p + 1;
+        }
+        return max_len;
+    }
+};
+```
 
 <span id="两个排序数组的中位数"></span>
 ## [2、两个排序数组的中位数](#re_)
