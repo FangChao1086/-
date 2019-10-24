@@ -234,39 +234,32 @@ result: bb
 ```cpp
 class Solution {
 public:
+    // 中心扩散
     string longestPalindrome(string s) {
-        const int len = s.size();
-        if(len <= 1)return s;
-        int start, maxLen = 0;
-        for(int i = 1; i < len; i++)
-        {
-            //寻找以i-1,i为中点偶数长度的回文
-            int low = i-1, high = i;
-            while(low >= 0 && high < len && s[low] == s[high])
-            {
-                low--;
-                high++;
-            }
-            if(high - low - 1 > maxLen)
-            {
-                maxLen = high - low -1;
-                start = low + 1;
-            }
-             
-            //寻找以i为中心的奇数长度的回文
-            low = i- 1; high = i + 1;
-            while(low >= 0 && high < len && s[low] == s[high])
-            {
-                low--;
-                high++;
-            }
-            if(high - low - 1 > maxLen)
-            {
-                maxLen = high - low -1;
-                start = low + 1;
-            }
+        int len_1, len_2, len_ = 1;
+        int start = 0, end = 0;
+        for(int i = 0; i < s.size(); i++){
+            len_1 = expandAroundCenter(s, i, i);
+            len_2 = expandAroundCenter(s, i, i + 1);
+            len_ = max(len_, max(len_1, len_2));
+            if(len_ > end - start + 1){
+                start = i - (len_ - 1) / 2;
+                end  = i + len_ / 2;
+            }   
         }
-        return s.substr(start, maxLen);
+        return s.substr(start, len_);
+    }
+    
+private:
+    int expandAroundCenter(string s, int low, int high){
+        while(low >= 0 && high < s.size()){
+            if(s[low] == s[high]){
+                low--;
+                high++;
+            }
+            else break;
+        }
+        return high - low - 1;
     }
 };
 ```
