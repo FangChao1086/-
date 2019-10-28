@@ -10,6 +10,7 @@
 [7、整数反转](#整数反转)  
 [8、字符串转换整数（atoi）](#字符串转换整数（atoi）)  
 [9、回文数](#回文数)  
+[10、正则表达式匹配](#正则表达式匹配)  
 [14、最长公共前缀](#最长公共前缀)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
@@ -396,6 +397,49 @@ public:
             x = x / 10;
         }
         return x == expect_num || x == expect_num / 10;
+    }
+};
+```
+
+<span id="正则表达式匹配"></span>
+## [10、正则表达式匹配](#re_)
+```cpp
+给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。
+'.' 匹配任意单个字符
+'*' 匹配零个或多个前面的那一个元素
+
+输入:
+s = "aab"
+p = "c*a*b"
+输出: true
+解释: 因为 '*' 表示零个或多个，这里 'c' 为 0 个, 'a' 被重复一次。因此可以匹配字符串 "aab"。
+
+class Solution {
+public:
+    vector<vector<int>> f;
+    int n, m;
+    bool isMatch(string s, string p) {
+        n = s.size();
+        m = p.size();
+        f = vector<vector<int>> (n + 1, vector<int>(m + 1, -1));
+        return dp(0, 0, s, p);
+    }
+    
+    // 动态规划 
+    bool dp(int x, int y, string &s, string &p) {
+        if (f[x][y] != -1) return f[x][y];
+        if(y == m){
+            return f[x][y] = x == n;
+        }
+        bool first_con = (x < n) && (s[x] == p[y] || p[y] == '.');
+        bool ans;
+        if (y + 1 < m && p[y + 1] == '*') {
+            ans = dp(x, y + 2, s, p) || first_con && dp(x + 1, y, s, p);
+        }
+        else {
+            ans = first_con  && dp(x + 1, y + 1, s, p);
+        }
+        return f[x][y] = ans;
     }
 };
 ```
