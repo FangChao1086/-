@@ -6,6 +6,8 @@
 [3、无重复字符的最长子串](#无重复字符的最长子串)  
 [2、两个排序数组的中位数](#两个排序数组的中位数)  
 [5、最长回文子串](#最长回文子串)  
+[6、Z字形变换](#Z字形变换)  
+[7、整数反转](#整数反转)  
 [14、最长公共前缀](#最长公共前缀)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
@@ -260,6 +262,71 @@ private:
             else break;
         }
         return high - low - 1;
+    }
+};
+```
+
+<span id="Z字形变换"></span>
+## [6、Z字形变换](#re_)
+```cpp
+将一个给定字符串根据给定的行数，以从上往下、从左到右进行 Z 字形排列。
+比如输入字符串为 "LEETCODEISHIRING" 行数为 3 时，排列如下：
+L   C   I   R
+E T O E S I I G
+E   D   H   N
+之后，你的输出需要从左往右逐行读取，产生出一个新的字符串，比如："LCIRETOESIIGEDHN"。
+
+输入: s = "LEETCODEISHIRING", numRows = 4
+输出: "LDREOEIIECIHNTSG"
+解释:
+L     D     R
+E   O E   I I
+E C   I H   N
+T     S     G
+
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(numRows == 1) return s;
+        vector<string> res(min(int(s.size()), numRows));
+        bool direction = false;
+        int cur_row= 0;
+        for(char s_ : s){
+            res[cur_row] += s_;
+            if(cur_row == 0 || cur_row == numRows - 1) direction = !direction;
+            cur_row += direction ? 1 : -1;
+        }
+        string str;
+        for(string res_: res) str += res_;
+        return str;
+    }
+};
+```
+
+<span id="整数反转"></span>
+## [7、整数反转](#re_)
+```cpp
+给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
+
+输入: 123
+输出: 321
+
+输入: -123
+输出: -321
+
+class Solution {
+public:
+    int reverse(int x) {
+        // 考虑溢出问题
+        int ret = 0;
+        while(x){
+            int pop = x % 10;
+            x = x / 10;
+            if(ret > INT_MAX / 10 || (ret == INT_MAX / 10 && pop > 7)) return 0;  // 正数溢出
+            if(ret < INT_MIN / 10 || (ret == INT_MIN / 10 && pop < -8 )) return 0;  // 负数溢出
+            ret = ret * 10 + pop;
+        }
+        return ret;
     }
 };
 ```
