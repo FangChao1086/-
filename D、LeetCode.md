@@ -8,6 +8,8 @@
 [5、最长回文子串](#最长回文子串)  
 [6、Z字形变换](#Z字形变换)  
 [7、整数反转](#整数反转)  
+[8、字符串转换整数（atoi）](#字符串转换整数（atoi）)  
+[9、回文数](#回文数)
 [14、最长公共前缀](#最长公共前缀)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
@@ -327,6 +329,73 @@ public:
             ret = ret * 10 + pop;
         }
         return ret;
+    }
+};
+```
+
+<span id="字符串转换整数（atoi）"></span>
+## [8、字符串转换整数（atoi）](#re_)
+```cpp
+输入: "42"
+输出: 42
+
+输入: "4193 with words"
+输出: 4193
+解释: 转换截止于数字 '3' ，因为它的下一个字符不为数字。
+
+输入: "words and 987"
+输出: 0
+解释: 第一个非空字符是 'w', 但它不是数字或正、负号。因此无法执行有效的转换。
+     
+输入: "-91283472332"
+输出: -2147483648
+解释: 数字 "-91283472332" 超过 32 位有符号整数范围。因此返回 INT_MIN (−231) 。
+
+class Solution {
+public:
+    int myAtoi(string str) {
+        int flag = 1, i = 0,res = 0;
+        while (str[i] == ' ') i++;
+        if (str[i] == '-') flag = -1; 
+        if (str[i] == '-' || str[i] == '+') i++; 
+        while (i < str.size() && isdigit(str[i])){
+            int r = str[i] - '0';
+            if (res > INT_MAX / 10 || (res == INT_MAX / 10 && r > 7)) {  // 处理溢出
+                return flag > 0 ? INT_MAX : INT_MIN;
+            }
+            res = 10 * res + r;
+            i++;
+        }
+        return flag > 0 ? res : -res;
+    }
+};
+```
+
+<span id="回文数"></span>
+## 9、回文数
+```cpp
+输入: 121
+输出: true
+
+输入: -121
+输出: false
+解释: 从左向右读, 为 -121 。 从右向左读, 为 121- 。因此它不是一个回文数。
+
+输入: 10
+输出: false
+解释: 从右向左读, 为 01 。因此它不是一个回文数。
+
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x < 0 || (x != 0 && x % 10 == 0)) return false;
+        int expect_num = 0;
+        // 反转一半数字
+        while(x > expect_num){
+            expect_num = expect_num * 10 + x % 10;
+            x = x / 10;
+        }
+        return x == expect_num || x == expect_num / 10;
     }
 };
 ```
