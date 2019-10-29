@@ -40,3 +40,31 @@ pai = [2, 3, 1, 5, 4, 6]
 # quicksort(pai, 0, len(pai) - 1)
 print(findkth(pai, 0, len(pai) - 1, 5))
 ```
+## cpp版
+```cpp
+int partition(vector<int> vec, int low, int high) {
+	int pre = vec[low];
+	while(low < high){
+		while(low < high && vec[high] > pre) high--;
+		while(low < high && vec[low] < pre) low++;
+		int temp = vec[low];
+		num[low] = vec[high];
+		vec[high] = temp;;
+		if(vec[low] == vec[high]) high--;
+	}
+	vec[low] = pre;
+	return low;
+}
+
+// 第K小的数
+int topK(vector<int> vec, int low,int high, int k) {
+	int index = partition(num, low, high);
+	if (index == k) {
+		return vec[low];
+	}
+	if (index < k) {
+		return topk(vec, index + 1, high, k);
+	}
+	else return topk(vec, low, index-1, k);
+}
+```
