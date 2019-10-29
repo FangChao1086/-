@@ -11,6 +11,7 @@
 [8、字符串转换整数（atoi）](#字符串转换整数（atoi）)  
 [9、回文数](#回文数)  
 [10、正则表达式匹配](#正则表达式匹配)  
+[11、盛最多水的容器](#盛最多水的容器)  
 [14、最长公共前缀](#最长公共前缀)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
@@ -440,6 +441,27 @@ public:
             ans = first_con  && dp(x + 1, y + 1, s, p);
         }
         return f[x][y] = ans;
+    }
+};
+```
+
+<span id="盛最多水的容器"></span>
+## [11、盛最多水的容器](#re_)
+```cpp
+给定n个非负整数a1，a2，...，an，每个数代表坐标中的一个点(i, ai)。在坐标内画n条垂直线，垂直线i的两个端点分别为(i, ai)和(i, 0)。找出其中的两条线，使得它们与x轴共同构成的容器可以容纳最多的水。
+说明：你不能倾斜容器，且 n 的值至少为 2。
+
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int i = 0, j = height.size() - 1;
+        int area = (int(height.size()) - 1) * min(height[i], height[j]);
+        while (i < j) {
+            area = max(area, (j - i) * min(height[i], height[j]));
+            if (height[i] < height[j]) i++;
+            else j--;
+        }
+        return area;
     }
 };
 ```
