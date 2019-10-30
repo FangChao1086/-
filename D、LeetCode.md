@@ -13,6 +13,7 @@
 [10、正则表达式匹配](#正则表达式匹配)  
 [11、盛最多水的容器](#盛最多水的容器)  
 [12、整数转罗马数字](#整数转罗马数字)  
+[13、罗马数字转整数](#罗马数字转整数)
 [14、最长公共前缀](#最长公共前缀)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
@@ -524,6 +525,50 @@ public:
             else t--;
         }
         return str;
+    }
+};
+```
+
+<span id="罗马数字转整数"></span>
+## [13、罗马数字转整数](#re_)
+```cpp
+罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
+字符          数值
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+
+输入: "III"
+输出: 3
+
+输入: "LVIII"
+输出: 58
+解释: L = 50, V= 5, III = 3
+
+class Solution {
+public:
+    int romanToInt(string s) {
+        int total[256];
+        total['I'] = 1;
+        total['V'] = 5;
+        total['X'] = 10;
+        total['L'] = 50;
+        total['C'] = 100;
+        total['D'] = 500;
+        total['M'] = 1000;
+        int num = 0;
+        for (int i = 0; i < s.size(); i++){
+            if((i == s.size() - 1) || total[s[i]] >= total[s[i + 1]]) {
+                num += total[s[i]];
+            }
+            else 
+                num -= total[s[i]];
+        }
+        return num;
     }
 };
 ```
