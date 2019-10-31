@@ -589,7 +589,6 @@ public:
 输出: ""
 """
 
-
 class Solution(object):
     # 方法1
     def longestCommonPrefix1(self, strs):
@@ -635,6 +634,29 @@ str = ["flower", "flow", "flight"]
 s = Solution()
 result = s.longestCommonPrefix2(str)
 print("result:", result)
+```
+```cpp
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        int len_ = strs.size();
+        int count_ = INT_MAX;
+        string result = "";
+        for (int i = 0; i < len_; i++) {
+            if(count_ >= strs[i].size()) count_ = strs[i].size();
+        }
+        for (int i = 0; i < count_; i++){
+            int j;
+            for(j = 1; j < len_; j++){
+                if(strs[0][i] == strs[j][i]) continue;
+                else break;
+            }
+            if (j == len_) result += strs[0][i];
+            else break;
+        }
+        return result;
+    }
+};
 ```
 
 <span id="X的平方根"></span>
