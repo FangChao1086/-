@@ -16,6 +16,7 @@
 [13、罗马数字转整数](#罗马数字转整数)  
 [14、最长公共前缀](#最长公共前缀)  
 [15、三数之和](#三数之和)  
+[16、最接近的三数之和](#最接近的三数之和)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -696,6 +697,45 @@ public:
             }
         }
         return res;
+    }
+};
+```
+
+<span id="最接近的三数之和"></span>
+## [16、最接近的三数之和](#re_)
+```cpp
+给定一个包括 n 个整数的数组 nums 和 一个目标值 target。
+找出 nums 中的三个整数，使得它们的和与 target 最接近。
+返回这三个数的和。假定每组输入只存在唯一答案。
+
+例如，给定数组 nums = [-1，2，1，-4], 和 target = 1.
+与 target 最接近的三个数的和为 2. (-1 + 2 + 1 = 2).
+
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        // 和与目标值接近
+        sort(nums.begin(), nums.end());
+        int close_with_target = nums[0] + nums[1] + nums[2];
+        for (int i = 0; i < nums.size() - 2; i++) {
+            int digit1 = i;
+            int digit2 = i + 1;
+            int digit3 = nums.size() - 1;
+            int tmp = nums[digit1] + nums[digit2] + nums[digit3];
+            while (digit2 < digit3) {
+                if (abs(tmp - target) < abs(close_with_target - target)) {
+                    close_with_target = tmp;
+                }
+                int dif = target - tmp;
+                if (dif == 0) return target;
+                if (dif > 0) {
+                    digit2++;
+                }
+                else digit3--;
+                tmp = nums[digit1] + nums[digit2] + nums[digit3];
+            }
+        }
+        return close_with_target;
     }
 };
 ```
