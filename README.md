@@ -1,4 +1,4 @@
-# Data_structures_and_algorithms
+# LeetCode Solutions
 * [数据结构知识点](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/A、数据结构知识点.md)
 * [OJ编程基础](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/B、OJ编程基础.md)
 * [剑指offer](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/C、剑指offer.md)
