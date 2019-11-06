@@ -17,6 +17,7 @@
 [14、最长公共前缀](#最长公共前缀)  
 [15、三数之和](#三数之和)  
 [16、最接近的三数之和](#最接近的三数之和)  
+[17、电话号码的字母组合](#电话号码的字母组合)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -736,6 +737,49 @@ public:
             }
         }
         return close_with_target;
+    }
+};
+```
+
+<span id="电话号码的字母组合"></span>
+## [17、电话号码的字母组合](#re_)
+```cpp
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+
+输入："23"
+输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> res;
+        map<char, string> mp = {{'2', "abc"}, {'3', "def"}, {'4', "ghi"},
+                                {'5', "jkl"}, {'6', "mno"}, {'7', "pqrs"},
+                                {'8', "tuv"}, {'9', "wxyz"}};
+        int size_ = digits.size();
+        queue<string> que;
+        for (int i = 0; i < mp[digits[0]].size(); i++) {
+            string str;
+            str.push_back(mp[digits[0]][i]);  // char转string
+            que.push(str);
+        }
+        for (int i = 1; i < size_; i++) {
+            int len_ = que.size();
+            while (len_--) {
+                for (int j = 0; j < mp[digits[i]].size(); j++) {
+                    string s_front = que.front();
+                    s_front += mp[digits[i]][j];
+                    que.push(s_front);
+                }
+                que.pop();
+            }
+        }
+        while (!que.empty()) {
+            res.push_back(que.front());
+            que.pop();
+        }
+        return res;
     }
 };
 ```
