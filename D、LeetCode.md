@@ -18,6 +18,7 @@
 [15、三数之和](#三数之和)  
 [16、最接近的三数之和](#最接近的三数之和)  
 [17、电话号码的字母组合](#电话号码的字母组合)  
+[18、四数之和](#四数之和)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -778,6 +779,62 @@ public:
         while (!que.empty()) {
             res.push_back(que.front());
             que.pop();
+        }
+        return res;
+    }
+};
+```
+
+<span id="四数之和"></span>
+## [18、四数之和](#re_)
+```cpp
+给定一个包含 n 个整数的数组 nums 和一个目标值 target，
+判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？
+找出所有满足条件且不重复的四元组。
+注意：答案中不可以包含重复的四元组。
+
+给定数组 nums = [1, 0, -1, 0, -2, 2]，和 target = 0。
+满足要求的四元组集合为：
+[
+  [-1,  0, 0, 1],
+  [-2, -1, 1, 2],
+  [-2,  0, 0, 2]
+]
+
+思路：
+使用四个指针(a<b<c<d)。固定最小的a和b在左边，c=b+1,d=_size-1 移动两个指针包夹求解。
+ 保存使得nums[a]+nums[b]+nums[c]+nums[d]==target的解。偏大时d左移，偏小时c右移。c和d相
+ 遇时，表示以当前的a和b为最小值的解已经全部求得。b++,进入下一轮循环b循环，当b循环结束后。
+ a++，进入下一轮a循环。 即(a在最外层循环，里面嵌套b循环，再嵌套双指针c,d包夹求解)
+
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> res;
+        sort(nums.begin(), nums.end());
+        int size_ = nums.size();
+        for (int a = 0; a < size_ - 3; a++) {
+            if(a > 0 && nums[a] == nums[a - 1]) continue;
+            for (int b = a + 1; b < size_ - 2; b++) {
+                if (b > a + 1 && nums[b] == nums[b - 1]) continue;
+                int c = b + 1;
+                int d = size_ - 1;
+                while (c < d) {
+                    if (nums[a] + nums[b] + nums[c] + nums[d] < target) {
+                        c++;
+                    }
+                    else if (nums[a] + nums[b] + nums[c] + nums[d] > target) {
+                        d--;
+                    }
+                    else {
+                        res.push_back({nums[a], nums[b], nums[c], nums[d]});
+                        c++;
+                        while (c < d && nums[c - 1] == nums[c]) c++;
+                        d--;
+                        while (c < d && nums[d + 1] == nums[d]) d--;
+                    }
+                }
+            }
         }
         return res;
     }
