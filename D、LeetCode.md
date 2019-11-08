@@ -19,6 +19,7 @@
 [16、最接近的三数之和](#最接近的三数之和)  
 [17、电话号码的字母组合](#电话号码的字母组合)  
 [18、四数之和](#四数之和)  
+[19、删除链表的倒数第N个节点](#删除链表的倒数第N个节点)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -837,6 +838,40 @@ public:
             }
         }
         return res;
+    }
+};
+```
+
+<span id="删除链表的倒数第N个节点"></span>
+## [19、删除链表的倒数第N个节点](#re_)
+```cpp
+给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+
+给定一个链表: 1->2->3->4->5, 和 n = 2.
+当删除了倒数第二个节点后，链表变为 1->2->3->5.
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* p1 = head;
+        ListNode* p2 = head;
+        int i;
+        for (i = 0; p1 != NULL; i++) {
+            if (i > n) p2 = p2 -> next;
+            p1 = p1 -> next;
+        }
+        if (i == n) return head -> next;
+        ListNode* p3 = p2 -> next;
+        p2 -> next = p3 -> next;
+        return head;
     }
 };
 ```
