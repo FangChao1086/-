@@ -20,6 +20,7 @@
 [17、电话号码的字母组合](#电话号码的字母组合)  
 [18、四数之和](#四数之和)  
 [19、删除链表的倒数第N个节点](#删除链表的倒数第N个节点)  
+[20、有效的括号](#有效的括号)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -872,6 +873,44 @@ public:
         ListNode* p3 = p2 -> next;
         p2 -> next = p3 -> next;
         return head;
+    }
+};
+```
+
+<span id="有效的括号"></span>
+## [20、有效的括号](#re_)
+```cpp
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+有效字符串需满足：
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+注意空字符串可被认为是有效字符串。
+
+输入: "([)]"
+输出: false
+输入: "{[]}"
+输出: true
+
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<int> stk;
+        int len_ = s.size();
+        for (int i = 0; i < len_; i++) {
+            if (s[i] == '(' || s[i] == '[' || s[i] == '{') {
+                stk.push(s[i]);
+            }
+            else{
+                if (stk.empty()) return false;
+                else {
+                    if (s[i] == ')' && stk.top() != '(') return false;
+                    if (s[i] == ']' && stk.top() != '[') return false;
+                    if (s[i] == '}' && stk.top() != '{') return false;
+                    stk.pop();
+                }
+            }
+        }
+        return stk.empty();
     }
 };
 ```
