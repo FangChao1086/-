@@ -21,6 +21,7 @@
 [18、四数之和](#四数之和)  
 [19、删除链表的倒数第N个节点](#删除链表的倒数第N个节点)  
 [20、有效的括号](#有效的括号)  
+[21、合并两个有序链表](合并两个有序链表)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -911,6 +912,51 @@ public:
             }
         }
         return stk.empty();
+    }
+};
+```
+
+<span id="合并两个有序链表"></span>
+## [21、合并两个有序链表](#re_)
+```cpp
+将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+
+输入：1->2->4, 1->3->4
+输出：1->1->2->3->4->4
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        ListNode* head = new ListNode(0);
+        ListNode* p = head;
+        if (l1 == NULL) return l2;
+        if (l2 == NULL) return l1;
+        while (l1 && l2) {
+            if (l1 -> val <= l2 -> val) {
+                head -> next = l1;
+                l1 = l1 -> next;
+            }
+            else {
+                head -> next = l2;
+                l2 = l2 -> next;
+            }
+            head = head -> next;
+        }
+        if (l1) {
+            head -> next = l1;
+        }
+        else {
+            head -> next = l2;
+        }
+        return p -> next;
     }
 };
 ```
