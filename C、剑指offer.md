@@ -1147,6 +1147,7 @@ struct TreeNode {
 			val(x), left(NULL), right(NULL) {
 	}
 };*/
+// 方法1
 class Solution {
 public:
     vector<vector<int>> res;
@@ -1167,6 +1168,24 @@ public:
         path.pop_back();
     }
 };
+
+// 方法2
+class Solution{
+public:
+	vector<vector<int>>  buffer;
+	vector<int> s;
+	vector<vector<int>> FindPath(TreeNode* root, int expectNumber) {
+		if (root == NULL) return buffer;
+		s.push_back(root -> val);
+		if (expectNumber - root -> val == 0 && root -> left == NULL && root ->right == NULL) {
+			buffer.push_back(s);
+		}
+		FindPath(root -> left, expectNumber - root -> val);
+		FindPath(root -> right, expectNumber - root -> val);
+		if (s.size() != 0) s.pop_back();
+		return buffer;
+	}
+}
 ```
 
 <span id="复杂链表的复制"></span>
