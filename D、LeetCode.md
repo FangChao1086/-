@@ -22,6 +22,7 @@
 [19、删除链表的倒数第N个节点](#删除链表的倒数第N个节点)  
 [20、有效的括号](#有效的括号)  
 [21、合并两个有序链表](#合并两个有序链表)  
+[22、括号生成](#括号生成)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -957,6 +958,41 @@ public:
             head -> next = l2;
         }
         return p -> next;
+    }
+};
+```
+
+<span id="括号生成"></span>
+## [22、括号生成](#re_)
+```cpp
+给出 n 代表生成括号的对数，请你写出一个函数，使其能够生成所有可能的并且有效的括号组合。
+
+例如，给出 n = 3，生成结果为：
+[
+  "((()))",
+  "(()())",
+  "(())()",
+  "()(())",
+  "()()()"
+]
+
+class Solution {
+public:
+    // 回溯法
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        backTrack(res, "", n, 0);
+        return res; 
+    }
+
+    // n:可用的左括号(的个数;   index:可用的右括号)的个数;
+    void backTrack(vector<string> &res, string track, int n, int index){
+        if (n == 0 && index == 0) res.push_back(track);
+        else {
+            if (n > 0) backTrack(res, track + "(", n - 1, index + 1);  // 使用一个左括号，就会生成一个右括号要使用
+            if (index > 0) backTrack(res, track + ")", n, index - 1);  // 使用右括号
+        }
+
     }
 };
 ```
