@@ -23,6 +23,7 @@
 [20、有效的括号](#有效的括号)  
 [21、合并两个有序链表](#合并两个有序链表)  
 [22、括号生成](#括号生成)  
+[23、合并K个排序链表](#合并K个排序链表)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -993,6 +994,61 @@ public:
             if (index > 0) backTrack(res, track + ")", n, index - 1);  // 使用右括号
         }
 
+    }
+};
+```
+
+<span id="合并K个排序链表"></span>
+## [23、合并K个排序链表](#re_)
+```cpp
+合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
+
+输入:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+输出: 1->1->2->3->4->4->5->6
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        // merge两两合并
+        int size_ = lists.size();
+        if (size_ == 0) return NULL;
+        if (size_ == 1) return lists[0];
+        ListNode* p = lists[0];
+        for (int i = 1; i < size_; i++) {
+            p = merge(p, lists[i]); 
+        }
+        return p;
+    }
+
+    ListNode* merge(ListNode* L1, ListNode* L2){
+        ListNode* Head = new ListNode(0);
+        ListNode* pHead = Head;
+        while (L1 && L2) {
+            if (L1 -> val < L2 -> val) {
+                Head -> next = L1;
+                L1 = L1 -> next;
+            }
+            else {
+                Head -> next = L2;
+                L2 = L2 -> next;
+            }
+            Head = Head -> next;
+        }
+        Head -> next = L1 ? L1 : L2;
+        return pHead -> next;
     }
 };
 ```
