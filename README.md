@@ -1,5 +1,4 @@
 # LeetCode Solutions
-* [OJ编程基础](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/B、OJ编程基础.md)
 * [剑指offer](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/C、剑指offer.md)
 * [LeetCode](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/D、LeetCode.md)
 * [面试算法题](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/E、面试算法题.md)
