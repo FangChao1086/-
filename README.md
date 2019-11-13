@@ -13,13 +13,38 @@
   * [并查集](https://blog.csdn.net/weixin_43824059/article/details/88535734)
 
 ## 基础
-* 输入数据个数未知
+### 输入
+* 数据个数未知
+  ```cpp
+  1 3 5 10
+
+  // C++
+  vector<int> v;
+  int tmp;
+  while(cin >> tmp){
+      v.push_back(tmp);
+      if (getchar() == '\n')
+          break;
+  }
+  ```
+
+### 生成数组
 ```cpp
-vector<int> v;
-int tmp;
-while(cin >> tmp){
-    v.push_back(tmp);
-    if (getchar() == '\n')
-        break;
-}
+// C++
+
+// 二维数组
+int dp[n][m];  // 方法1
+memset(dp,0,sizeof(dp));  // 用0填充
+
+vector<vector<int>> dp(n,vector<int>(m,0));  // 方法2；n*m填充0
+
+vector<int> res(input.begin(), input.begin() + k);  // 方法3；input是已经存在的vector
 ```
+
+### 数据类型转换
+* char转string
+  ```cpp
+  // 假设mp[0]是char;
+  string str;
+  str.push_back(mp[0])  // str变成了string类型
+  ```
