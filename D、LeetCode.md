@@ -24,6 +24,7 @@
 [21、合并两个有序链表](#合并两个有序链表)  
 [22、括号生成](#括号生成)  
 [23、合并K个排序链表](#合并K个排序链表)  
+[24、两两交换链表中的节点](#两两交换链表中的节点)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -1049,6 +1050,49 @@ public:
         }
         Head -> next = L1 ? L1 : L2;
         return pHead -> next;
+    }
+};
+```
+
+<span id="两两交换链表中的节点"></span>
+## [24、两两交换链表中的节点](#re_)
+```cpp
+给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
+你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+
+给定 1->2->3->4, 你应该返回 2->1->4->3.
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        // // 递归
+        // if(head==NULL || head->next==NULL) return head;
+        // ListNode* pNext = head->next;
+        // head->next = swapPairs(pNext->next);
+        // pNext->next = head;
+        // return pNext;
+
+        // 非递归
+        ListNode* p = new ListNode(0);
+        p->next = head;
+        ListNode* tmp = p; 
+        while (tmp->next != NULL && tmp->next->next !=NULL) {
+            ListNode* start = tmp->next;
+            ListNode* end = tmp->next->next;
+            start->next = end->next;
+            end->next = start;
+            tmp->next = end;
+            tmp = start;
+        }
+        return p->next;
     }
 };
 ```
