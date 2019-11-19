@@ -28,6 +28,7 @@
 [25、K 个一组翻转链表](#K个一组翻转链表)  
 [26、删除排序数组中的重复项](#删除排序数组中的重复项)  
 [27、移除元素](#移除元素)  
+[28、实现str()](#实现str())  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -1209,6 +1210,60 @@ public:
             }
         }
         return i;
+    }
+};
+```
+
+<span id="实现str()"></span>
+## [28、实现str()](#re_)
+```cpp
+实现 strStr() 函数。
+给定一个 haystack 字符串和一个 needle 字符串，
+在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。
+如果不存在，则返回  -1。
+
+输入: haystack = "hello", needle = "ll"
+输出: 2
+
+class Solution {
+public:
+    vector<int> getnext(string p) {
+        int len_p = p.size();
+        vector<int> next;
+        next.push_back(-1);  // 初始值
+        int j = 0, k = -1;  // j:后缀； k:前缀
+        while (j < len_p - 1) {
+            if ((k == -1) || (p[j] == p[k])){
+                j++;
+                k++;
+                next.push_back(k);
+            }
+            else {
+                k = next[k];
+            }
+        }
+        return next;
+    }
+
+    int strStr(string haystack, string needle) {
+        // KMP字符串匹配
+        // 源串不回溯，模式串回溯
+        int  i = 0, j = 0;  // i:源串； j:模式串
+        int len_ha = haystack.size();
+        int len_ne = needle.size();
+        vector<int> next;  // 存储模式串匹配时的跳转情况
+        next = getnext(needle);
+        while ((i < len_ha) && (j < len_ne)) {
+            if ((j == -1) || (haystack[i] == needle[j])){
+                i++;
+                j++;
+            }
+            else {
+                j = next[j];  // 跳转模式串的下一次匹配位置
+            }
+        }
+        if(j == len_ne) return i - j;
+        return -1;
     }
 };
 ```
