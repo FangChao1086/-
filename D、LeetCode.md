@@ -29,6 +29,7 @@
 [26、删除排序数组中的重复项](#删除排序数组中的重复项)  
 [27、移除元素](#移除元素)  
 [28、实现str()](#实现str())  
+[29、两数相除](#两数相除)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -1264,6 +1265,52 @@ public:
         }
         if(j == len_ne) return i - j;
         return -1;
+    }
+};
+```
+
+<span id="两数相除"></span>
+## [29、两数相除](#re_)
+```cpp
+给定两个整数，被除数 dividend 和除数 divisor。将两数相除，要求不使用乘法、除法和 mod 运算符。
+返回被除数 dividend 除以除数 divisor 得到的商。
+
+输入: dividend = 10, divisor = 3
+输出: 3
+
+输入: dividend = 7, divisor = -3
+输出: -2
+
+说明:
+被除数和除数均为 32 位有符号整数。
+除数不为 0。
+假设我们的环境只能存储 32 位有符号整数，其数值范围是 [−2^31,  {2^31} − 1]。
+本题中，如果除法结果溢出，则返回 {2^31} − 1。
+
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        // 全部转换为负数，可以避免正数移位的边界问题
+        int flag = dividend > 0 == divisor > 0;  // dividend 与 divisor 同号返回1，异号返回0；
+        if (dividend > 0) dividend = -dividend;
+        if (divisor > 0) divisor = -divisor;
+        int result = 0;
+        while (dividend <= divisor) {
+            unsigned int temp_result = -1;
+            unsigned int temp_divisor = divisor;
+            while (dividend <= (temp_divisor << 1)) {
+                if (temp_result <= (INT_MIN >> 1)) break;
+                temp_result = temp_result << 1;
+                temp_divisor = temp_divisor << 1;
+            }
+            result += temp_result;
+            dividend -= temp_divisor;
+        }
+        if (flag){
+            if (result <= INT_MIN) return INT_MAX;
+            return -result;
+        }
+        return result;
     }
 };
 ```
