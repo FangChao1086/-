@@ -30,6 +30,7 @@
 [27、移除元素](#移除元素)  
 [28、实现str()](#实现str())  
 [29、两数相除](#两数相除)  
+[30、串联所有单词的子串](#串联所有单词的子串)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -1311,6 +1312,66 @@ public:
             return -result;
         }
         return result;
+    }
+};
+```
+
+<span id="串联所有单词的子串"></span>
+## [30、串联所有单词的子串](#re_)
+```cpp
+给定一个字符串 s 和一些长度相同的单词 words。找出 s 中恰好可以由 words 中所有单词串联形成的子串的起始位置。
+注意子串要与 words 中的单词完全匹配，中间不能有其他字符，但不需要考虑 words 中单词串联的顺序。
+
+输入：
+  s = "barfoothefoobarman",
+  words = ["foo","bar"]
+输出：[0,9]
+解释：
+从索引 0 和 9 开始的子串分别是 "barfoo" 和 "foobar" 。
+输出的顺序不重要, [9,0] 也是有效答案。
+
+输入：
+  s = "wordgoodgoodgoodbestword",
+  words = ["word","good","best","word"]
+输出：[]
+
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        // 滑动窗口
+        // hash表存单词表单词个数，与字符串滑动窗口中单词个数比较 
+        vector<int>  res;
+        unordered_map<string, int> m1;  // 单词->单词个数
+        if (s.empty() || words.empty()) return {};
+        int word_size = words[0].size();  // 单词的大小
+        int words_num = words.size();  // 单词的个数
+        for (auto w : words) m1[w]++;
+
+        for (int i = 0; i < word_size; i++){
+            int left = i, right = i, count_ = 0;
+            unordered_map<string, int> m2;
+            while (right + word_size <= s.size()) {  // 滑动窗口
+                string w = s.substr(right, word_size);  // 从S中提取一个单词拷贝到w
+                right += word_size;  // 有边界右移一个单词的长度；
+                if (m1.count(w) == 0) {  // 单词不在words中
+                    count_ = 0;
+                    left = right;
+                    m2.clear();
+                }
+                else {  // 单词在words中，添加到m2中
+                    m2[w]++;
+                    count_++;
+                    while (m2.at(w) > m1.at(w)) {  // 一个单词匹配多次，需要缩小窗口
+                        string t_w = s.substr(left, word_size);
+                        count_--;
+                        m2[t_w]--;
+                        left += word_size;
+                    }
+                    if (count_ == words_num) res.push_back(left);
+                }
+            }
+        }
+        return res;        
     }
 };
 ```
