@@ -32,6 +32,7 @@
 [29、两数相除](#两数相除)  
 [30、串联所有单词的子串](#串联所有单词的子串)  
 [31、下一个排列](#下一个排列)  
+[32、最长有效括号](#最长有效括号)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -1417,6 +1418,61 @@ public:
             swap(nums[i-1],  nums[j]);
         }
         reverse(nums, i);
+    }
+};
+```
+
+<span id="最长有效括号"></span>
+## [32、最长有效括号](#re_)
+```cpp
+给定一个只包含 '(' 和 ')' 的字符串，找出最长的包含有效括号的子串的长度。
+
+输入: "(()"
+输出: 2
+解释: 最长有效括号子串为 "()"
+
+输入: ")()())"
+输出: 4
+解释: 最长有效括号子串为 "()()"
+
+// 思路：
+// 利用两个计数器 left 和 right 。
+// 首先，我们从左到右遍历字符串，对于遇到的每个 ‘(’，我们增加 left ;
+// 对于遇到的每个 ‘)’ ，我们增加 right 计数器。
+// 每当 left == right ，计算有效字符串的长度，记录找到的最长子字符串。
+// 如果 right > left，我们将 left 和 right 计数器同时变回 0 。
+// 接下来，我们从右到左做一遍类似的工作
+
+// 时间复杂度： O(n) 。遍历两遍字符串。
+// 空间复杂度： O(1) 。仅有两个额外的变量 left 和 right 。
+
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        // 双边遍历; left,right计数
+        int left = 0, right = 0, max_len = 0;
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == '(') left++;
+            else right++;
+            if (left == right) max_len = max(max_len, right * 2);
+            else if (right > left) {
+                left = 0;
+                right = 0;
+            }
+
+        }
+        left = 0, right = 0;
+        for (int i = s.size() - 1; i >= 0; i--) {
+            if (s[i] == ')') right++;
+            else left++;
+            if (left == right) max_len = max(max_len, left * 2);
+            else if (left > right) {
+                left = 0;
+                right = 0;
+            }
+
+        }
+        return max_len;
     }
 };
 ```
