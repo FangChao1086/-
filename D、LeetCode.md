@@ -34,6 +34,7 @@
 [31、下一个排列](#下一个排列)  
 [32、最长有效括号](#最长有效括号)  
 [33、搜索旋转排序数组](#搜索旋转排序数组)  
+[34、在排序数组中查找元素的第一个和最后一个位置](#在排序数组中查找元素的第一个和最后一个位置)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -1511,6 +1512,44 @@ public:
             }
         }
         return -1;
+    }
+};
+```
+
+<span id="在排序数组中查找元素的第一个和最后一个位置"></span>
+## [34、在排序数组中查找元素的第一个和最后一个位置](#re_)
+```cpp
+给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
+你的算法时间复杂度必须是 O(log n) 级别。
+如果数组中不存在目标值，返回 [-1, -1]。
+
+输入: nums = [5,7,7,8,8,10], target = 8
+输出: [3,4]
+
+输入: nums = [5,7,7,8,8,10], target = 6
+输出: [-1,-1]
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        // 二分查找
+        int left = 0, mid = 0,  right = nums.size() - 1;
+        vector<int> res = {-1,-1};
+        if (nums.size() == 0 || nums[left] > target || nums[right] < target) return res;  // 边界
+        while (left < right) {  // 找到左边第一个元素
+            mid = left + right >> 1;
+            if (nums[mid] >= target) right = mid;
+            else left = mid + 1;
+        }
+        if (nums[right] == target) res[0] = right;
+        right = nums.size();  // 原因：考虑数组长度为1的情况，不能设置为right = nums.size()-1
+        while (left < right) {  // 查找右边的第一个元素
+            mid = left + right >> 1;
+            if (nums[mid] > target) right = mid;
+            else left = mid + 1;
+        }
+        if (nums[right - 1] == target) res[1] = right - 1;
+        return res; 
     }
 };
 ```
