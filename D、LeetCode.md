@@ -35,6 +35,7 @@
 [32、最长有效括号](#最长有效括号)  
 [33、搜索旋转排序数组](#搜索旋转排序数组)  
 [34、在排序数组中查找元素的第一个和最后一个位置](#在排序数组中查找元素的第一个和最后一个位置)  
+[35、搜索插入位置](#搜索插入位置)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -1550,6 +1551,43 @@ public:
         }
         if (nums[right - 1] == target) res[1] = right - 1;
         return res; 
+    }
+};
+```
+
+<span id="搜索插入位置"></span>
+## [35、搜索插入位置](#re_)
+```cpp
+给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。
+如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+你可以假设数组中无重复元素。
+
+输入: [1,3,5,6], 5
+输出: 2
+
+输入: [1,3,5,6], 2
+输出: 1
+
+输入: [1,3,5,6], 7
+输出: 4
+
+输入: [1,3,5,6], 0
+输出: 0
+
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        // 二分查找
+        int left = 0, mid = 0, right = nums.size() - 1;
+        if (target < nums[left]) return 0;
+        if (target > nums[right]) return nums.size();
+        while (left < right) {
+            mid = left + right >> 1;
+            if (nums[mid] > target) right = mid;
+            else if(nums[mid] == target) return mid;
+            else left = mid + 1;
+        }
+        return left;
     }
 };
 ```
