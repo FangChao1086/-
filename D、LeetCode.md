@@ -38,6 +38,7 @@
 [35、搜索插入位置](#搜索插入位置)  
 [36、有效的数独](#有效的数独)  
 [38、报数](#报数)  
+[39、组合总和](#组合总和)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -1710,6 +1711,55 @@ public:
         }
         if (begin == str_old[str_old.size() - 1]) str_new += to_string(count_) + begin;
         return str_new;
+    }
+};
+```
+
+<span id="组合总和"></span>
+## [39、组合总和](#re_)
+```cpp
+给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+candidates 中的数字可以无限制重复被选取。
+
+说明：
+所有数字（包括 target）都是正整数。
+解集不能包含重复的组合。 
+
+输入: candidates = [2,3,6,7], target = 7,
+所求解集为:
+[
+  [7],
+  [2,2,3]
+]
+
+输入: candidates = [2,3,5], target = 8,
+所求解集为:
+[
+  [2,2,2,2],
+  [2,3,3],
+  [3,5]
+]
+
+class Solution {
+public:
+    vector<vector<int>> res;  // 所有满足条件的数组集合
+    vector<int> t;  // 单个满足条件的数组
+
+    void helper(vector<int>& candidates, int target) {
+        for(int i = 0; i < candidates.size(); i++){
+            if (candidates[i] > target || (t.size() && candidates[i] < t[t.size() - 1])) continue;  // 防止出现重复的数
+            t.push_back(candidates[i]);
+            if (candidates[i] == target) res.push_back(t); 
+            else helper(candidates, target - candidates[i]);
+            t.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        res.clear();
+        t.clear();
+        helper(candidates, target);
+        return res;
     }
 };
 ```
