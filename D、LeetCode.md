@@ -40,6 +40,7 @@
 [38、报数](#报数)  
 [39、组合总和](#组合总和)  
 [40、组合总和 II](#组合总和2)  
+[41、缺失的第一个正数](#缺失的第一个正数)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -1812,6 +1813,43 @@ public:
         this->candidates = candidates;
         DFS(0, target);
         return res;
+    }
+};
+```
+
+<span id="缺失的第一个正数"></span>
+## [41、缺失的第一个正数](#re_)
+```cpp
+给定一个未排序的整数数组，找出其中没有出现的最小的正整数。
+
+说明:
+你的算法的时间复杂度应为O(n)，并且只能使用常数级别的空间。
+
+输入: [1,2,0]
+输出: 3
+
+输入: [3,4,-1,1]
+输出: 2
+
+输入: [7,8,9,11,12]
+输出: 1
+
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        // 首次出现最小的正整数一定是小于等于size_ + 1
+        int size_ = nums.size();
+        vector<int> tmp(size_ + 1, 0);
+        for(int i = 0; i < size_; i++) {
+            if (nums[i] > 0 && nums[i] <= size_) {
+                tmp[nums[i]] = 1;
+            }
+        }
+        int i = 1;
+        while (i <= size_ && tmp[i] != 0) {
+            i++;
+        }
+        return i;
     }
 };
 ```
