@@ -1858,6 +1858,7 @@ public:
 <span id="接雨水"></span>
 ## [42、接雨水](#re_)
 <div align=center><img src="https://github.com/FangChao1086/LeetCode_Solutions/blob/master/依赖文件/接雨水.jpg"/></div>  
+
 ```cpp
 class Solution {
 public:
