@@ -41,6 +41,7 @@
 [39、组合总和](#组合总和)  
 [40、组合总和 II](#组合总和2)  
 [41、缺失的第一个正数](#缺失的第一个正数)  
+[42、接雨水](#接雨水)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -1850,6 +1851,33 @@ public:
             i++;
         }
         return i;
+    }
+};
+```
+
+<span id="接雨水"></span>
+## [42、接雨水](#re_)
+<div align=center><img src="https://github.com/FangChao1086/LeetCode_Solutions/blob/master/依赖文件/接雨水.jpg"/></div>  
+```cpp
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        // 双指针
+        int left = 0, right = height.size() - 1;
+        int ans = 0, left_max = 0, right_max = 0;
+        while (left < right) {
+            if (height[left] < height[right]) {
+                if (height[left] >= left_max) left_max = height[left];
+                else ans += left_max - height[left];
+                left++;
+            }
+            else {
+                if (height[right] >= right_max) right_max = height[right];
+                else ans += right_max - height[right];
+                right--;
+            }
+        } 
+        return ans;
     }
 };
 ```
