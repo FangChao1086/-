@@ -4,7 +4,7 @@
 [1、两数之和](#两数之和)  
 [2、两数相加](#两数相加)  
 [3、无重复字符的最长子串](#无重复字符的最长子串)  
-[2、两个排序数组的中位数](#两个排序数组的中位数)  
+[4、寻找两个有序数组的中位数](#寻找两个有序数组的中位数)  
 [5、最长回文子串](#最长回文子串)  
 [6、Z字形变换](#Z字形变换)  
 [7、整数反转](#整数反转)  
@@ -167,8 +167,8 @@ public:
 };
 ```
 
-<span id="两个排序数组的中位数"></span>
-## [2、两个排序数组的中位数](#re_)
+<span id="寻找两个有序数组的中位数"></span>
+## [4、两个有序数组的中位数](#re_)
 ```py
 """
 给定两个大小为 m 和 n 的有序数组 nums1 和 nums2 。
@@ -207,6 +207,32 @@ print("result", result)
 """
 result 2.5
 """
+```
+```cpp
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        // 参考：https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/4-xun-zhao-liang-ge-you-xu-shu-zu-de-zhong-wei-shu/
+        int n = nums1.size();
+        int m = nums2.size();
+        if (n > m) return findMedianSortedArrays(nums2, nums1);
+        int L_max1, L_max2, R_min1, R_min2, c1, c2, lo = 0, hi = 2 * n;
+        while (lo <= hi) {
+            c1 = lo + hi >> 1;  // 二分
+            c2 = n + m - c1;
+
+            L_max1 = (c1 == 0) ? INT_MIN : nums1[(c1 - 1) / 2];
+            R_min1 = (c1 == 2 * n) ? INT_MAX : nums1[c1 / 2];
+            L_max2 = (c2 == 0) ? INT_MIN : nums2[(c2 - 1) / 2];
+            R_min2 = (c2 == 2 * m) ? INT_MAX : nums2[c2 / 2];
+
+            if (L_max1 > R_min2) hi = c1 - 1;
+            else if (L_max2 > R_min1) lo = c1 + 1;
+            else break;  // L_max1 <= R_min2 && L_max2 <= R_min1 时停止
+        } 
+        return (max(L_max1, L_max2) + min(R_min1, R_min2)) / 2.0;
+    }
+};
 ```
 
 <span id="最长回文子串"></span>
