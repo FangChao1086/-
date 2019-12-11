@@ -45,6 +45,7 @@
 [43、字符串相乘](#字符串相乘)  
 [44、通配符匹配](#通配符匹配)  
 [45、跳跃游戏 II](#跳跃游戏2)  
+[46、全排列](#全排列)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -2052,6 +2053,42 @@ public:
             }
         }
         return steps;
+    }
+};
+```
+
+<span id="全排列"></span>
+## [46、全排列](#re_)
+```cpp
+给定一个没有重复数字的序列，返回其所有可能的全排列。
+
+输入: [1,2,3]
+输出:
+[
+  [1,2,3],
+  [1,3,2],
+  [2,1,3],
+  [2,3,1],
+  [3,1,2],
+  [3,2,1]
+]
+
+class Solution {
+public:
+    // 回溯
+    void backTrack(int n, vector<int> &nums, vector<vector<int>> &res, int first) {
+        if (first == n) res.push_back(nums);
+        for(int i = first; i < n; i++) {
+            swap(nums[first], nums[i]);
+            backTrack(n, nums, res, first + 1);
+            swap(nums[first], nums[i]);
+        }
+    } 
+
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> res;
+        backTrack(nums.size(), nums, res, 0);
+        return res;
     }
 };
 ```
