@@ -46,6 +46,7 @@
 [44、通配符匹配](#通配符匹配)  
 [45、跳跃游戏 II](#跳跃游戏2)  
 [46、全排列](#全排列)  
+[47、全排列 II](#全排列2)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -2086,6 +2087,48 @@ public:
     } 
 
     vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> res;
+        backTrack(nums.size(), nums, res, 0);
+        return res;
+    }
+};
+```
+
+<span id="全排列2"></span>
+## [47、全排列 II](#re_)
+```cpp
+给定一个可包含重复数字的序列，返回所有不重复的全排列。
+
+输入: [1,1,2]
+输出:
+[
+  [1,1,2],
+  [1,2,1],
+  [2,1,1]
+]
+
+class Solution {
+public:
+    // 回溯（辅助函数）
+    void backTrack(int n, vector<int> &nums, vector<vector<int>> &res, int first) {
+        if (first == n) res.push_back(nums);
+        for (int i = first; i < n; i++) {
+            bool flag = false;
+            for (int j = first; j < i; j++) {
+                if (nums[j] == nums[i]) {
+                    flag = true;
+                    break;
+                } 
+            } 
+            if (flag) continue;
+            swap(nums[first], nums[i]);
+            backTrack(n, nums, res, first + 1);
+            swap(nums[first], nums[i]);            
+        }
+    }
+
+
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
         vector<vector<int>> res;
         backTrack(nums.size(), nums, res, 0);
         return res;
