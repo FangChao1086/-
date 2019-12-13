@@ -47,6 +47,7 @@
 [45、跳跃游戏 II](#跳跃游戏2)  
 [46、全排列](#全排列)  
 [47、全排列 II](#全排列2)  
+[48、旋转图像](#旋转图像)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -2132,6 +2133,29 @@ public:
         vector<vector<int>> res;
         backTrack(nums.size(), nums, res, 0);
         return res;
+    }
+};
+```
+
+<span id="旋转图像"></span>
+## [48、旋转图像](#re_)
+<div align=center><img src="https://github.com/FangChao1086/LeetCode_Solutions/blob/master/依赖文件/48_旋转图像.jpg"/></div>  
+
+```cpp
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        for (int loop = 0; loop < n / 2 ; loop++)  // 外层循环
+            for (int i = loop, j = loop; i < n - 1 - loop; i++) {  // 中层循环
+                int temp = matrix[i][j];
+                for (int z = 0; z < 4; z++){  // 4个位置旋转
+                    int tmpi = i;
+                    i = j;
+                    j = n - 1 - tmpi;
+                    swap(temp,matrix[i][j]);
+                }
+            }
     }
 };
 ```
