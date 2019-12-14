@@ -48,6 +48,7 @@
 [46、全排列](#全排列)  
 [47、全排列 II](#全排列2)  
 [48、旋转图像](#旋转图像)  
+[49、 字母异位词分组](#字母异位词分组)  
 [69、X的平方根](#X的平方根)    
 [386、字典序排数](#字典序排数)
 
@@ -2190,6 +2191,41 @@ public:
                     swap(temp,matrix[i][j]);
                 }
             }
+    }
+};
+```
+
+<span id="字母异位词分组"></span>
+## [49、字母异位词分组](#re_)
+```cpp
+给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
+
+输入: ["eat", "tea", "tan", "ate", "nat", "bat"],
+输出:
+[
+  ["ate","eat","tea"],
+  ["nat","tan"],
+  ["bat"]
+]
+
+说明：
+所有输入均为小写字母。
+不考虑答案输出的顺序。
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<vector<string>> res;
+        map<string, vector<string>> mp;
+        for(auto str:strs){
+            string tmp = str;
+            sort(tmp.begin(), tmp.end());
+            mp[tmp].push_back(str);
+        }
+        for(auto m:mp){
+            res.push_back(m.second);
+        }
+        return res;
     }
 };
 ```
