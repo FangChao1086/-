@@ -645,23 +645,27 @@ public:
 <span id="数值的整数次方"></span>
 ## 12、数值的整数次方
 ```
-给定一个double类型的浮点数base和int类型的整数exponent。
-求base的exponent次方。
+给定一个double类型的浮点数x和int类型的整数n。
+求x的n次方。
 ```
 ```cpp
 class Solution {
 public:
-    double Power(double base, int exponent) {
-        int E = abs(exponent);
-        double s = 1;
-        while(E){
-            if(E & 1){ // E % 2 == 1
-                s *= base;
-            }
-            base *= base;
-            E >>= 1;  // E /= 2;
+    double myPow(double x, int n) {
+        double res = 1;
+        long long m = n;
+        if (m < 0) {
+            x = 1 / x;
+            m = -m;
         }
-        return exponent >= 0 ? s : 1 / s;
+        while (m) {
+            if (m & 1) {  // E % 2 == 1
+                res *= x;
+            }
+            x *= x;
+            m >>= 1;  // m /= 2
+        }
+        return res;
     }
 };
 ```
