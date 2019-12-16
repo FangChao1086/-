@@ -2299,8 +2299,8 @@ n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，�
 解释: 4 皇后问题存在两个不同的解法。
 
 实现方式：回溯
-hills： \ 向右的斜线
-dales： / 向左的斜线    
+hills： \ 向右的斜线 row - col == 常数(同一斜线上)
+dales： / 向左的斜线 row + col == 常数(同一斜线上)
 
 class Solution {
 public:
