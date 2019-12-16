@@ -50,6 +50,7 @@
 [48、旋转图像](#旋转图像)  
 [49、 字母异位词分组](#字母异位词分组)  
 [50、Pow(x, n)](#Pow)  
+[51、N皇后](#N皇后)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -2273,6 +2274,95 @@ public:
 复杂度分析:
 时间复杂度：O(logn) 对每一个 n 的二进制位表示，我们都至多需要累乘 1 次，所以总的时间复杂度为 O(logn) 。
 空间复杂的：O(1) 我们只需要用到 1 个变量来保存当前的乘积结果。
+```
+
+<span id="N皇后"></span>
+## [51、N皇后](#re_)
+```cpp
+n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+给定一个整数 n，返回所有不同的 n 皇后问题的解决方案。
+每一种解法包含一个明确的 n 皇后问题的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
+（横竖与左右斜线上仅仅只能出现1个皇后）
+
+输入: 4
+输出: [
+ [".Q..",  // 解法 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // 解法 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+解释: 4 皇后问题存在两个不同的解法。
+
+实现方式：回溯
+hills： \ 向右的斜线
+dales： / 向左的斜线    
+
+class Solution {
+public:
+    int n;
+    int rows[100];
+    int hills[100];
+    int dales[100];
+    int queens[100];
+    vector<vector<string>> output;
+
+    bool isNotUnderAttack(int row, int col) {
+        int res = rows[col] + hills[row - col + n] + dales[row + col];
+        return  (res == 0) ? true : false;
+    }
+
+    void placeQueen(int row, int col) {
+        queens[row] = col;
+        rows[col] = 1;
+        hills[row - col + n] = 1;
+        dales[row + col] = 1;
+    }
+
+    void addSolution() {
+        vector<string> solution;
+        for (int i = 0; i < n; i++) {
+            int col = queens[i];
+            string s_;
+            for (int j = 0; j < col; j++) s_ += ".";
+            s_ += "Q";
+            for (int j = col + 1; j < n; j++) s_ += ".";
+            solution.push_back(s_);
+        }
+        output.push_back(solution);
+    }
+
+    void removeQueen(int row, int col) {
+        queens[row] = 0;
+        rows[col] = 0;
+        hills[row - col + n] = 0;
+        dales[row + col] = 0;
+    }
+
+    // 回溯
+    void backTrack(int row) {
+        for (int col = 0; col < n; col++) {
+            if (isNotUnderAttack(row, col)) {
+                placeQueen(row, col);
+                if (row == n - 1) addSolution();
+                else backTrack(row + 1);
+                removeQueen(row, col);
+            }
+        }
+    }
+
+    vector<vector<string>> solveNQueens(int n) {
+        // hills \
+        // dales /       
+        this -> n = n;
+        backTrack(0);
+        return output;
+    }
+};
 ```
 
 <span id="X的平方根"></span>
