@@ -51,6 +51,7 @@
 [49、 字母异位词分组](#字母异位词分组)  
 [50、Pow(x, n)](#Pow)  
 [51、N皇后](#N皇后)  
+[52、N皇后 II](#N皇后2)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -2361,6 +2362,72 @@ public:
         this -> n = n;
         backTrack(0);
         return output;
+    }
+};
+```
+
+<span id="N皇后2"></span>
+## [52、N皇后 II](#re_)
+```cpp
+n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+给定一个整数 n，返回 n 皇后不同的解决方案的数量。
+
+输入: 4
+输出: 2
+解释: 4 皇后问题存在如下两个不同的解法。
+[
+ [".Q..",  // 解法 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // 解法 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+
+class Solution {
+public:
+    int n, res = 0;
+    int rows[100];
+    int pie[100];
+    int na[100];
+
+    bool isNotAttrack(int row, int col) {
+        return rows[col] + pie[row + col] + na[row - col + n] == 0;
+    }
+
+    void placeQueen(int row, int col) {
+        rows[col] = 1;
+        pie[row + col] = 1;
+        na[row - col + n] = 1;
+    }
+
+    void removeQueen(int row, int col) {
+        rows[col] = 0;
+        pie[row + col] = 0;
+        na[row - col + n] = 0;
+    }
+
+    // 回溯
+    void backTrack(int row) {
+        for (int col = 0; col < n; col++) {
+            if (isNotAttrack(row, col)) {
+                placeQueen(row, col);
+                if (row == n - 1) {
+                    res++;
+                }
+                else backTrack(row + 1);
+                removeQueen(row, col);
+            }
+        }
+    }
+    
+    int totalNQueens(int n) {
+        this -> n = n;
+        backTrack(0);
+        return res;
     }
 };
 ```
