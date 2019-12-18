@@ -52,6 +52,7 @@
 [50、Pow(x, n)](#Pow)  
 [51、N皇后](#N皇后)  
 [52、N皇后 II](#N皇后2)  
+[53、最大子序和](#最大子序和)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -2430,6 +2431,36 @@ public:
         return res;
     }
 };
+```
+
+<span id="最大子序和"></span>
+## [53、最大子序和](#re_)
+```cpp
+给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+输入: [-2,1,-3,4,-1,2,1,-5,4],
+输出: 6
+解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+
+进阶:
+如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的分治法求解。
+
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+        int max_1 = nums[0], max_all = nums[0];
+        for (int i = 1; i < nums.size(); i++) {
+            max_1 = max(max_1 + nums[i], nums[i]);
+            max_all = max(max_1, max_all);
+        }
+        return max_all;
+    }
+};
+
+复杂度分析
+时间复杂度：O(N) 只遍历一次数组。
+空间复杂度：O(1) 只使用了常数空间。
 ```
 
 <span id="X的平方根"></span>
