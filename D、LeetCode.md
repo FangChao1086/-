@@ -53,6 +53,7 @@
 [51、N皇后](#N皇后)  
 [52、N皇后 II](#N皇后2)  
 [53、最大子序和](#最大子序和)  
+[54、螺旋矩阵](#螺旋矩阵)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -2461,6 +2462,55 @@ public:
 复杂度分析
 时间复杂度：O(N) 只遍历一次数组。
 空间复杂度：O(1) 只使用了常数空间。
+```
+
+<span id="螺旋矩阵"></span>
+## [54、螺旋矩阵](#re_)
+```cpp
+给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
+
+输入:
+[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+输出: [1,2,3,6,9,8,7,4,5]
+
+输入:
+[
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9,10,11,12]
+]
+输出: [1,2,3,4,8,12,11,10,9,5,6,7]
+
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> res;
+        if (matrix.size() == 0) return res;
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        int left = 0, right = cols - 1, top = 0, bottom = rows - 1;
+        while (left <= right && top <= bottom) {
+            if (left <= right)  // ->
+                for (int i = left; i <= right; i++) 
+                    res.push_back(matrix[top][i]);
+            if (top < bottom && left <= right)  // 向下
+                for (int i = top + 1; i <= bottom; i++)
+                    res.push_back(matrix[i][right]);
+            if (top < bottom && left < right)  // <-
+                for (int i = right - 1; i >= left; i--)
+                    res.push_back(matrix[bottom][i]);
+            if (top + 1 < bottom && left < right)  // 向上
+                for (int i = bottom - 1; i > top; i--)
+                    res.push_back(matrix[i][left]);
+            left++, right--, top++, bottom--;
+        }
+        return res;
+    }
+};
 ```
 
 <span id="X的平方根"></span>
