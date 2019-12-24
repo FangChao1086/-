@@ -55,6 +55,7 @@
 [53、最大子序和](#最大子序和)  
 [54、螺旋矩阵](#螺旋矩阵)  
 [55、跳跃游戏](#跳跃游戏)  
+[56、合并区间](#合并区间)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -2538,6 +2539,43 @@ public:
             if (i + nums[i] >= index)  // 表示从 i 可以跳到 index 位置，则更新 index ; 其中 index 最初指向终点
                 index = i;
         return index == 0;
+    }
+};
+```
+
+<span id="合并区间"></span>
+## [56、合并区间](#re_)
+```cpp
+给出一个区间的集合，请合并所有重叠的区间。
+
+输入: [[1,3],[2,6],[8,10],[15,18]]
+输出: [[1,6],[8,10],[15,18]]
+解释: 区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+
+输入: [[1,4],[4,5]]
+输出: [[1,5]]
+解释: 区间 [1,4] 和 [4,5] 可被视为重叠区间。
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> res;
+        int len_in = intervals.size();
+        if(len_in == 0) return res;
+        sort(intervals.begin(), intervals.end());
+        res.push_back(intervals[0]);
+        for (int i = 1, j = 0; i < len_in; i++) {
+            if (res[j][1] >= intervals[i][0]) {
+                if (res[j][1] < intervals[i][1]) {
+                    res[j][1] = intervals[i][1];
+                }
+            }
+            else {
+                j++;
+                res.push_back(intervals[i]);
+            }
+        }
+        return res; 
     }
 };
 ```
