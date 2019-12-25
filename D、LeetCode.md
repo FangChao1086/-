@@ -56,6 +56,7 @@
 [54、螺旋矩阵](#螺旋矩阵)  
 [55、跳跃游戏](#跳跃游戏)  
 [56、合并区间](#合并区间)  
+[57、插入区间](#插入区间)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -2576,6 +2577,42 @@ public:
             }
         }
         return res; 
+    }
+};
+```
+
+<span id="插入区间"></span>
+## [57、插入区间](#re_)
+```cpp
+给出一个无重叠的 ，按照区间起始端点排序的区间列表。
+在列表中插入一个新的区间，你需要确保列表中的区间仍然有序且不重叠（如果有必要的话，可以合并区间）。
+
+输入: intervals = [[1,3],[6,9]], newInterval = [2,5]
+输出: [[1,5],[6,9]]
+
+输入: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+输出: [[1,2],[3,10],[12,16]]
+解释: 这是因为新的区间 [4,8] 与 [3,5],[6,7],[8,10] 重叠。
+
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        intervals.push_back(newInterval);
+        vector<vector<int>> res;
+        sort(intervals.begin(), intervals.end());
+        res.push_back(intervals[0]);
+        for (int i = 1, j = 0; i < intervals.size(); i++) {
+            if (res[j][1] >= intervals[i][0]) {
+                if (res[j][1] < intervals[i][1]) {
+                    res[j][1] = intervals[i][1];
+                }
+            }
+            else {
+                j++;
+                res.push_back(intervals[i]);
+            }
+        }
+        return res;
     }
 };
 ```
