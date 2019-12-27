@@ -58,6 +58,7 @@
 [56、合并区间](#合并区间)  
 [57、插入区间](#插入区间)  
 [58、最后一个单词的长度](#最后一个单词的长度)  
+[59、螺旋矩阵 II](#螺旋矩阵2)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -2643,6 +2644,51 @@ public:
             }
         }
         return end - start;
+    }
+};
+```
+
+<span id="螺旋矩阵2"></span>
+## [59、螺旋矩阵 II](#re_)
+```cpp
+给定一个正整数 n，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵。
+
+输入: 3
+输出:
+[
+ [ 1, 2, 3 ],
+ [ 8, 9, 4 ],
+ [ 7, 6, 5 ]
+]
+
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> res(n, vector<int> (n, 0));
+        int num = 0;
+        int left = 0, right = n - 1, top = 0, bottom = n - 1;
+        while (left <= right && top <= bottom) {
+            for (int i = left; i <= right; i++) {
+                res[top][i] = ++num;
+            }
+            if (left <= right && top < bottom) {
+                for (int i = top + 1; i <= bottom; i++) {
+                    res[i][right] = ++num;
+                }
+            }
+            if (left < right && top < bottom ) {
+                for (int i = right - 1; i >= left; i--) {
+                    res[bottom][i] = ++num;
+                }
+            }
+            if (left < right && top + 1 < bottom) {
+                for (int i = bottom - 1; i > top; i--) {
+                    res[i][left] = ++num;
+                }
+            }
+            left++, right--, top++, bottom--;
+        }
+        return res;
     }
 };
 ```
