@@ -61,6 +61,7 @@
 [59、螺旋矩阵 II](#螺旋矩阵2)  
 [60、第k个排列](#第k个排列)  
 [61、旋转链表](#旋转链表)  
+[62、不同路径](#不同路径)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -2814,6 +2815,60 @@ public:
         head = head -> next;  // 新的头
         pHead -> next = NULL;
         return head;
+    }
+};
+```
+
+<span id="不同路径"></span>
+## [62、不同路径](#re_)
+```cpp
+一个机器人位于一个 m x n 网格的左上角。
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角。
+问总共有多少条不同的路径？
+说明：m 和 n 的值均不超过 100。
+
+输入: m = 3, n = 2
+输出: 3
+解释:
+从左上角开始，总共有 3 条路径可以到达右下角。
+1. 向右 -> 向右 -> 向下
+2. 向右 -> 向下 -> 向右
+3. 向下 -> 向右 -> 向右
+
+输入: m = 7, n = 3
+输出: 28
+
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        // // 动态规划
+        // vector<vector<int>> dp(m, vector<int> (n, 1));
+        // for (int i = 1; i < m; i++) {
+        //     for (int j = 1; j < n; j++) {
+        //         dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+        //     }
+        // }
+        // return dp[m -1 ][n - 1];
+
+        // // 优化1
+        // vector<int> pre(n, 1);
+        // vector<int> cur(n, 1);
+        // for (int i = 1; i < m; i++) {
+        //     for (int j = 1; j < n; j++) {
+        //         cur[j] = pre[j] + cur[j - 1];
+        //     }
+        //     pre = cur;
+        // }
+        // return cur[n - 1];
+
+        // 优化2
+        vector<int> cur(n, 1);
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                cur[j] += cur[j-1];
+            }
+        }
+        return cur[n - 1];
     }
 };
 ```
