@@ -37,6 +37,7 @@
 [34、在排序数组中查找元素的第一个和最后一个位置](#在排序数组中查找元素的第一个和最后一个位置)  
 [35、搜索插入位置](#搜索插入位置)  
 [36、有效的数独](#有效的数独)  
+[37、解数独](#解数独)  
 [38、报数](#报数)  
 [39、组合总和](#组合总和)  
 [40、组合总和 II](#组合总和2)  
@@ -1716,6 +1717,88 @@ public:
             }
         }
         return true;
+    }
+};
+```
+
+<span id="解数独"></span>
+## [37、解数独](#re_)
+```cpp
+编写一个程序，通过已填充的空格来解决数独问题。
+一个数独的解法需遵循如下规则：
+数字 1-9 在每一行只能出现一次。
+数字 1-9 在每一列只能出现一次。
+数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。
+空白格用 '.' 表示。
+
+Note:
+给定的数独序列只包含数字 1-9 和字符 '.' 。
+你可以假设给定的数独只有唯一解。
+给定数独永远是 9x9 形式的。
+
+class Solution {
+public:
+    vector<set<int>> rows, cols, boxes;
+
+    void update(vector<vector<char>> & board) {
+        set<int> s = {1,2,3,4,5,6,7,8,9};
+        for (int i = 0 ; i < 9; i++) {
+            rows.push_back(s);
+            cols.push_back(s);
+            boxes.push_back(s);
+        }
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.') {
+                    int tmp = board[i][j] - '0';
+                    rows[i].erase(tmp);
+                    cols[j].erase(tmp);
+                    boxes[i / 3 + j / 3 * 3].erase(tmp);
+                }
+            }
+        }
+        return ;
+    }
+
+    bool check(vector<vector<char>> &board, const int &i, const int &j, int num) {
+        if (rows[i].find(num) != rows[i].end() && cols[j].find(num) != cols[j].end() && boxes[i / 3 + j / 3 * 3].find(num) != boxes[i / 3 + j / 3 * 3].end()) return true;
+        return false;
+    }
+
+    int flag = 0;
+
+    // dfs + 回溯
+    void dfs(vector<vector<char>> & board, int count) {
+        if(count == 81) {
+            flag = 1;
+            return ;
+        }
+        int i = count / 9, j = count % 9;
+        if ( board[i][j] == '.' ){
+            for (int k = 1; k < 10; k++) {  // 检查 1 ～ 9 中数字哪一个可以放入该位置
+                if (check(board, i, j, k)) {
+                    rows[i].erase(k);
+                    cols[j].erase(k);
+                    boxes[i / 3 + j / 3 * 3].erase(k);
+                    board[i][j] = k + '0';
+                    dfs(board, count + 1);
+                    if (!flag) {
+                    rows[i].insert(k);
+                    cols[j].insert(k);
+                    boxes[i / 3 + j / 3 * 3].insert(k);
+                    board[i][j] = '.';
+                    }
+                    else return ;
+                }
+            }
+        }
+        else dfs(board, count + 1);
+        return ;
+    }
+
+    void solveSudoku(vector<vector<char>>& board) {
+        update(board);
+        dfs(board, 0); 
     }
 };
 ```
