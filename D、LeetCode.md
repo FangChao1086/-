@@ -65,6 +65,7 @@
 [62、不同路径](#不同路径)  
 [63、不同路径 II](#不同路径2)  
 [64、最小路径和](#最小路径和)  
+[65、有效数字](#有效数字)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -3034,6 +3035,71 @@ public:
             }
         }
         return grid[rows - 1][cols - 1];
+    }
+};
+```
+
+<span id="有效数字"></span>
+## [65、有效数字](#re_)
+```cpp
+验证给定的字符串是否可以解释为十进制数字。
+
+"0" => true
+" 0.1 " => true
+"abc" => false
+"1 a" => false
+"2e10" => true
+" -90e3   " => true
+" 1e" => false
+"e3" => false
+" 6e-1" => true
+" 99e2.5 " => false
+"53.5e93" => true
+" --6 " => false
+"-+3" => false
+"95a54e53" => false
+
+说明: 我们有意将问题陈述地比较模糊。在实现代码之前，你应当事先思考所有可能的情况。
+这里给出一份可能存在于有效十进制数字中的字符列表：
+数字 0-9
+指数 - "e"
+正/负号 - "+"/"-"
+小数点 - "."
+当然，在输入中，这些字符的上下文也很重要。
+
+class Solution {
+public:
+    bool isNumber(string s) {
+        int len_s = s.size();
+        if (len_s == 0) return false;
+        int i = 0, j = s.size() - 1;
+        while (s[i] == ' ') i++;
+        while (s[j] == ' ') j--;
+        if (j == -1) return false;
+        s = s.substr(i, j + 1 - i);
+        if (s[0] == '+' || s[0] == '-') s = s.substr(1, s.size() - 1);
+        if (s.size() == 1 && s[0] == '.') return false;
+        int count_n = 0, count_dot = 0, count_e = 0;
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] >= '0' && s[i] <= '9') {
+                count_n = 1;
+                continue;
+            }
+            else if (s[i] == '.') {
+                if (count_dot != 0 || count_e != 0) return false;
+                count_dot = 1;
+            }
+            else if (s[i] == 'e' || s[i] == 'E') {
+                if (count_e != 0 || count_n == 0) return false;
+                count_e = 1;
+                int c = i + 1;
+                if (s[c] == '+' || s[c] == '-') c = c + 1;
+                if (s[c] == '\0') return false;
+                i = c - 1;
+            }
+            else return false;
+        }
+        return true;
     }
 };
 ```
