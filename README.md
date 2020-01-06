@@ -39,6 +39,11 @@ vector<vector<int>> dp(n,vector<int>(m,0));  // 方法2；n*m填充0
 
 vector<int> res(input.begin(), input.begin() + k);  // 方法3；input是已经存在的vector
 ```
+### 数据处理
+```cpp
+// 将res（vector类型）中的元素反向
+vector<int>(res.rbegin(), res.rend()); 
+```
 
 ### 数据类型转换
 * char转string
