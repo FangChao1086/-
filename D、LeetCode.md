@@ -66,6 +66,7 @@
 [63、不同路径 II](#不同路径2)  
 [64、最小路径和](#最小路径和)  
 [65、有效数字](#有效数字)  
+[66、加一](#加一)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -3100,6 +3101,48 @@ public:
             else return false;
         }
         return true;
+    }
+};
+```
+
+<span id="加一"></span>
+## [66、加一](#re_)
+```cpp
+给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。
+最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。
+你可以假设除了整数 0 之外，这个整数不会以零开头。
+
+输入: [1,2,3]
+输出: [1,2,4]
+解释: 输入数组表示数字 123。
+
+输入: [4,3,2,1]
+输出: [4,3,2,2]
+解释: 输入数组表示数字 4321。
+
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        int len_digits = digits.size();
+        if (len_digits == 1) {
+            if (digits[0] == 9) {
+                digits[0] = 0;
+                digits.insert(digits.begin(), 1);
+            }
+            else digits[0]++;
+        }
+        else digits[len_digits - 1] += 1;
+        for (int i = len_digits - 1; i > 0; i--) {
+            if (digits[i] % 10 == 0) {
+                digits[i] = 0;
+                digits[i - 1] = (digits[i - 1] + 1) % 10;
+            }
+            else {
+                break;
+            }
+        }
+        if(digits[0] == 0) digits.insert(digits.begin(), 1);
+        return digits;
     }
 };
 ```
