@@ -67,6 +67,7 @@
 [64、最小路径和](#最小路径和)  
 [65、有效数字](#有效数字)  
 [66、加一](#加一)  
+[67、二进制求和](#二进制求和)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -3143,6 +3144,49 @@ public:
         }
         if(digits[0] == 0) digits.insert(digits.begin(), 1);
         return digits;
+    }
+};
+```
+
+<span id="二进制求和"></span>
+## [67、二进制求和](#re_)
+```cpp
+给定两个二进制字符串，返回他们的和（用二进制表示）。
+输入为非空字符串且只包含数字 1 和 0。
+
+输入: a = "11", b = "1"
+输出: "100"
+
+输入: a = "1010", b = "1011"
+输出: "10101"
+
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        // 补全长度
+        // 相加
+        int len_a = a.size(), len_b = b.size();
+        while (len_a < len_b) {
+            a = '0' + a;
+            len_a++;
+        }
+        while (len_a > len_b) {
+            b = '0' + b;
+            len_b++;
+        }
+        for (int i = len_a - 1; i > 0; i--) {
+            a[i] = a[i] - '0' + b[i];
+            if ( a[i] >= '2' ) {
+                a[i] = a[i] % 2 + '0';
+                a[i - 1] += 1;
+            }
+        }
+        a[0] = a[0] - '0' + b[0];
+        if (a[0] >= '2') {
+            a[0] = (a[0] - '0') % 2 + '0';
+            a = '1' + a;
+        }
+        return a;
     }
 };
 ```
