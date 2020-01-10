@@ -68,6 +68,7 @@
 [65、有效数字](#有效数字)  
 [66、加一](#加一)  
 [67、二进制求和](#二进制求和)  
+[68、文本左右对齐](#文本左右对齐)  
 [69、X的平方根](#X的平方根)  
 [386、字典序排数](#字典序排数)
 
@@ -3187,6 +3188,113 @@ public:
             a = '1' + a;
         }
         return a;
+    }
+};
+```
+
+<span id="文本左右对齐"></span>
+## [68、文本左右对齐](#re_)
+```cpp
+
+给定一个单词数组和一个长度 maxWidth，重新排版单词，使其成为每行恰好有 maxWidth 个字符，且左右两端对齐的文本。
+你应该使用“贪心算法”来放置给定的单词；也就是说，尽可能多地往每行中放置单词。必要时可用空格 ' ' 填充，使得每行恰好有 maxWidth 个字符。
+要求尽可能均匀分配单词间的空格数量。如果某一行单词间的空格不能均匀分配，则左侧放置的空格数要多于右侧的空格数。
+文本的最后一行应为左对齐，且单词之间不插入额外的空格。
+
+说明:
+单词是指由非空格字符组成的字符序列。
+每个单词的长度大于 0，小于等于 maxWidth。
+输入单词数组 words 至少包含一个单词。
+
+输入:
+words = ["This", "is", "an", "example", "of", "text", "justification."]
+maxWidth = 16
+输出:
+[
+   "This    is    an",
+   "example  of text",
+   "justification.  "
+]
+
+输入:
+words = ["What","must","be","acknowledgment","shall","be"]
+maxWidth = 16
+输出:
+[
+  "What   must   be",
+  "acknowledgment  ",
+  "shall be        "
+]
+解释: 注意最后一行的格式应为 "shall be    " 而不是 "shall     be",
+     因为最后一行应为左对齐，而不是左右两端对齐。       
+     第二行同样为左对齐，这是因为这行只包含一个单词。
+
+输入:
+words = ["Science","is","what","we","understand","well","enough","to","explain",
+         "to","a","computer.","Art","is","everything","else","we","do"]
+maxWidth = 20
+输出:
+[
+  "Science  is  what we",
+  "understand      well",
+  "enough to explain to",
+  "a  computer.  Art is",
+  "everything  else  we",
+  "do                  "
+]
+
+class Solution {
+public:
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        vector<string> res;
+        int n = words.size();
+        for ( int i = 0; i < n; ) {
+            int len = 0, num = -1;  // len：当前行的单词总长度；num：当前行包含的空格的数量，单词数 - 1
+            while ( len + num <= maxWidth && i < n ) {  // 当前行尚未达到最大，还可以增加单词
+                len += words[i].size();
+                num++;
+                i++;
+            }
+            if ( len + num > maxWidth ) {  // 当前行已经达到最大，不能增加新的单词
+                i--;
+                num--;
+                len -= words[i].size();
+            }
+            if ( i != n ) {  // 尚未遍历到最后一个单词
+                i -= num + 1;
+                int blank = maxWidth - len;
+                if ( num > 0) {
+                     vector<int> blanks(num, blank / num);
+                    for ( int j = 0; j < blank % num; j++ ) blanks[j] += 1;
+                    string s;
+                    int j;
+                    for ( j = 0; j < blanks.size(); j++) {  // 当前行去除最后一个单词后添加
+                        s.append(words[i + j]);
+                        s.append(blanks[j], ' ');
+                    }
+                    for ( ; j < num + 1; j++) s.append(words[i+j]);  // 当前行的最后一个单词添加
+                    res.push_back(s);
+                }
+                else {  // 当前行只能有一个单词
+                    string s = words[i];
+                    s.append(blank, ' ');
+                    res.push_back(s);
+                }
+            }
+            else {  // 遍历到最后一个单词
+                i -= num + 1;
+                string s;
+                for ( int j = 0; j < num; j++ ) {  // 当前行去除最后一个单词后的添加
+                    s.append(words[i + j]);
+                    s.append(" ");
+                }
+                s.append(words[i + num]);
+                s.append(maxWidth - len - num, ' ');
+                res.push_back(s);
+            }
+            i += num + 1;
+        }
+        return res;
     }
 };
 ```
