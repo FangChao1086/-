@@ -73,6 +73,7 @@
 [70、爬楼梯](#爬楼梯)  
 [71、简化路径](#简化路径)  
 [72、编辑距离](#编辑距离)  
+[73、矩阵置零](#矩阵置零)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -3486,6 +3487,70 @@ public:
             }
         }
         return dp[n][m];
+    }
+};
+```
+
+<span id="矩阵置零"></span>
+## [72、矩阵置零](#re_)
+```cpp
+给定一个 m x n 的矩阵，如果一个元素为 0，则将其所在行和列的所有元素都设为 0。请使用原地算法。
+
+输入: 
+[
+  [1,1,1],
+  [1,0,1],
+  [1,1,1]
+]
+输出: 
+[
+  [1,0,1],
+  [0,0,0],
+  [1,0,1]
+]
+
+输入: 
+[
+  [0,1,2,0],
+  [3,4,5,2],
+  [1,3,1,5]
+]
+输出: 
+[
+  [0,0,0,0],
+  [0,4,5,0],
+  [0,3,1,0]
+]
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        bool row = false;  // 第一行是否需要置零
+        bool col = false;  // 第一列是否需要置零
+        for (int i = 0; i < matrix.size(); i++) {
+            for (int j = 0; j < matrix[i].size(); j++) {
+                if (matrix[i][j] == 0) {
+                    if (i == 0) row = true;  // 第 1 行需要置零
+                    if (j == 0) col = true;  // 第 1 列需要置零
+                    matrix[i][0] = 0;  // 第 i 行的第一个元素置零，表示第 i 行需要全部置零
+                    matrix[0][j] = 0;  // 第 j 列的第一个元素置零，表示第 j 列需要全部置零
+                }
+            }
+        }
+        for (int i = 1; i < matrix.size(); i++)  // 第 i 行的第一个元素置零，表示第 i 行需要全部置零
+            if (matrix[i][0] == 0) 
+                for (int j = 1; j < matrix[i].size(); j++) 
+                    matrix[i][j] = 0;
+        for (int j = 1; j < matrix[0].size(); j++)  // 第 j 列的第一个元素置零，表示第 j 列需要全部置零
+            if (matrix[0][j] == 0)
+                for (int i = 1; i < matrix.size(); i++) 
+                    matrix[i][j] = 0;
+        if (row == true)  // 第 1 行置零
+            for (int i = 0; i < matrix[0].size(); i++) 
+                matrix[0][i] = 0;
+        if (col == true)  // 第 1 列置零
+            for (int j = 0 ; j < matrix.size(); j++) 
+                matrix[j][0] = 0;
     }
 };
 ```
