@@ -74,6 +74,7 @@
 [71、简化路径](#简化路径)  
 [72、编辑距离](#编辑距离)  
 [73、矩阵置零](#矩阵置零)  
+[74、搜索二维矩阵](#搜索二维矩阵)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -3551,6 +3552,51 @@ public:
         if (col == true)  // 第 1 列置零
             for (int j = 0 ; j < matrix.size(); j++) 
                 matrix[j][0] = 0;
+    }
+};
+```
+
+<span id="搜索二维矩阵"></span>
+## [74、搜索二维矩阵](#re_)
+```cpp
+编写一个高效的算法来判断 m x n 矩阵中，是否存在一个目标值。该矩阵具有如下特性：
+每行中的整数从左到右按升序排列。
+每行的第一个整数大于前一行的最后一个整数。
+
+输入:
+matrix = [
+  [1,   3,  5,  7],
+  [10, 11, 16, 20],
+  [23, 30, 34, 50]
+]
+target = 3
+输出: true
+
+输入:
+matrix = [
+  [1,   3,  5,  7],
+  [10, 11, 16, 20],
+  [23, 30, 34, 50]
+]
+target = 13
+输出: false
+
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int rows = matrix.size();
+        if (rows == 0) return false;
+        int cols = matrix[0].size();
+        // 二分查找
+        int left = 0, right = rows * cols - 1;
+        while (left <= right) {
+            int mid = left + right >> 1;
+            if (matrix[mid / cols][mid % cols] == target) return true;
+            else if (matrix[mid / cols][mid % cols] > target)
+                right = mid - 1;
+            else left = mid + 1;
+        }
+        return false;
     }
 };
 ```
