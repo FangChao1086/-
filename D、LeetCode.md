@@ -76,6 +76,7 @@
 [73、矩阵置零](#矩阵置零)  
 [74、搜索二维矩阵](#搜索二维矩阵)  
 [75、颜色分类](#颜色分类)  
+[76、最小覆盖子串](#最小覆盖子串)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -3635,6 +3636,57 @@ public:
                 i--;
             }
         }
+    }
+};
+```
+
+<span id="最小覆盖子串"></span>
+## [76、最小覆盖子串](#re_)
+```cpp
+给你一个字符串 S、一个字符串 T，请在字符串 S 里面找出：包含 T 所有字母的最小子串。
+
+输入: S = "ADOBECODEBANC", T = "ABC"
+输出: "BANC"
+
+说明：
+如果 S 中不存这样的子串，则返回空字符串 ""。
+如果 S 中存在这样的子串，我们保证它是唯一的答案。
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        // 双指针滑窗方法
+        // 1、指针left, right; 指针right向右遍历直到出现满足条件的子串
+        // 2、找到子串后，指针left再向右遍历，直到窗口中的内容不满足条件
+        // 3、重复1,2；
+        unordered_map<char, int> window;  // 滑窗中含有模式串中字符的情况
+        unordered_map<char, int> needs;  // 记录模式串中的字符情况
+        string res;
+        int start = 0, minLen = INT_MAX;  // 为了截取子串
+        int left = 0, right = 0;  // 双指针
+        for (char t_ : t) needs[t_]++;
+        int match = 0;  // 用于判断匹配的条件
+        while (right < s.size()) {
+            char s_ = s[right];
+            if (needs.count(s_) != 0) {
+                window[s_]++;
+                if (window[s_] == needs[s_]) match++;
+            }
+            right++;
+            while (match == needs.size()) {  // 当滑窗中的内容符合条件
+                if (right - left < minLen) {
+                    start = left;
+                    minLen = right - left;
+                }
+                char s1_ = s[left];
+                if (needs.count(s1_) != 0) {
+                    window[s1_]--;
+                    if (window[s1_] < needs[s1_]) match--;
+                }
+                left++;
+            }
+        }
+        return minLen == INT_MAX ? "" : s.substr(start, minLen);
     }
 };
 ```
