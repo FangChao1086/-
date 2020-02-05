@@ -77,6 +77,7 @@
 [74、搜索二维矩阵](#搜索二维矩阵)  
 [75、颜色分类](#颜色分类)  
 [76、最小覆盖子串](#最小覆盖子串)  
+[77、组合](#组合)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -3687,6 +3688,46 @@ public:
             }
         }
         return minLen == INT_MAX ? "" : s.substr(start, minLen);
+    }
+};
+```
+
+<span id="组合"></span>
+## [77、组合](#re_)
+```cpp
+给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
+
+输入: n = 4, k = 2
+输出:
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> tmp;
+    void find(int a, int n, int k) {
+        if (k <= 0) {
+            ans.push_back(tmp);
+            return ;
+        }
+        for (int i = a; i <= n; i++) {
+            tmp.push_back(i);
+            find(i + 1, n, k - 1);
+            tmp.pop_back();
+        }
+    }
+
+    vector<vector<int>> combine(int n, int k) {
+    	// 回溯法（递归方式的dfs）
+        find(1, n, k);
+        return ans;
     }
 };
 ```
