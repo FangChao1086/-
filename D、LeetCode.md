@@ -78,6 +78,7 @@
 [75、颜色分类](#颜色分类)  
 [76、最小覆盖子串](#最小覆盖子串)  
 [77、组合](#组合)  
+[78、子集](#子集)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -3728,6 +3729,45 @@ public:
     	// 回溯法（递归方式的dfs）
         find(1, n, k);
         return ans;
+    }
+};
+```
+
+<span id="子集"></span>
+```cpp
+给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+说明：解集不能包含重复的子集。
+
+输入: nums = [1,2,3]
+输出:
+[
+  [3],
+  [1],
+  [2],
+  [1,2,3],
+  [1,3],
+  [2,3],
+  [1,2],
+  []
+]
+
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<int> vec;
+
+    void find(int step, int num, vector<int> nums) {
+        if (num <= nums.size()) res.push_back(vec);
+        for (int i = step; i < nums.size(); i++) {
+            vec.push_back(nums[i]);
+            find(i + 1, num + 1, nums);
+            vec.pop_back();
+        }
+    }
+
+    vector<vector<int>> subsets(vector<int>& nums) {
+        find(0, 0, nums);
+        return res;
     }
 };
 ```
