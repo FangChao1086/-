@@ -79,6 +79,7 @@
 [76、最小覆盖子串](#最小覆盖子串)  
 [77、组合](#组合)  
 [78、子集](#子集)  
+[79、单词搜索](#单词搜索)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -3769,6 +3770,59 @@ public:
     vector<vector<int>> subsets(vector<int>& nums) {
         find(0, 0, nums);
         return res;
+    }
+};
+```
+
+<span id="单词搜索"></span>
+## [79、单词搜索](#re_)
+```cpp
+给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+board =
+[
+  ['A','B','C','E'],
+  ['S','F','C','S'],
+  ['A','D','E','E']
+]
+
+给定 word = "ABCCED", 返回 true.
+给定 word = "SEE", 返回 true.
+给定 word = "ABCB", 返回 false.
+
+class Solution {
+public:
+    int dir[4][4] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    bool dfs(int x, int y, int index, vector<vector<char>>& board, string &word, vector<vector<bool>>& flag) {
+        if (index == word.size() - 1) return word[index] == board[x][y];
+        if (word[index] == board[x][y]) {
+            flag[x][y] = true;
+            for (int i = 0; i < 4; i++) {
+                int new_x = x + dir[i][0];
+                int new_y = y + dir[i][1];
+                if (new_x >= 0 && new_x < board.size() && new_y >= 0 && new_y < board[0].size() && !flag[new_x][new_y])
+                    if(dfs(new_x, new_y, index + 1, board, word, flag))
+                        return true;
+            }
+            flag[x][y] = false;
+        }
+        return false;
+    }
+
+    bool exist(vector<vector<char>>& board, string word) {
+        int rows = board.size();
+        int cols = board[0].size();
+        vector<vector<bool>> flag(rows, vector<bool> (cols, false));
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if(dfs(i, j, 0, board, word, flag))
+                    return true;
+            }
+        }
+        return false;
     }
 };
 ```
