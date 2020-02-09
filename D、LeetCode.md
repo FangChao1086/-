@@ -82,6 +82,7 @@
 [79、单词搜索](#单词搜索)  
 [80、删除排序数组中的重复项 II](#删除排序数组中的重复项2)  
 [81、搜索旋转排序数组 II](#搜索旋转排序数组2)  
+[82、删除排序链表中的重复元素 II](#删除排序链表中的重复元素2)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -3902,6 +3903,44 @@ public:
             }
         }
         return false;
+    }
+};
+```
+
+<span id="删除排序链表中的重复元素2"></span>
+## [82、删除排序链表中的重复元素 II](#re_)
+```cpp
+给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。
+
+输入: 1->2->3->3->4->4->5
+输出: 1->2->5
+
+输入: 1->1->1->2->3
+输出: 2->3
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode* pDummy = new ListNode(0);
+        pDummy -> next = head;
+        ListNode* p = pDummy;
+        while(p -> next) {
+            ListNode* tmp = p -> next;
+            while (tmp && p -> next ->val == tmp -> val) 
+                tmp = tmp -> next;
+            if (p -> next -> next == tmp) 
+                p = p -> next;
+            else p -> next = tmp;
+        }
+        return pDummy -> next;
     }
 };
 ```
