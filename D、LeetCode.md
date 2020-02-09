@@ -84,6 +84,7 @@
 [81、搜索旋转排序数组 II](#搜索旋转排序数组2)  
 [82、删除排序链表中的重复元素 II](#删除排序链表中的重复元素2)  
 [83、删除排序链表中的重复元素](#删除排序链表中的重复元素)  
+[84、柱状图中最大的矩形](#柱状图中最大的矩形)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -3994,6 +3995,54 @@ public:
             else p = p -> next;
         }
         return head;
+    }
+};
+```
+
+<span id="柱状图中最大的矩形"></span>
+## [84、柱状图中最大的矩形](#re_)
+```
+给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+求在该柱状图中，能够勾勒出来的矩形的最大面积。
+```
+
+<div align=center><img src=https://github.com/FangChao1086/LeetCode_Solutions/blob/master/依赖文件/leetcode84_柱状图1.png></div>
+
+```
+以上是柱状图的示例，其中每个柱子的宽度为 1，给定的高度为 [2,1,5,6,2,3]。
+```
+
+<div align=center><img src=https://github.com/FangChao1086/LeetCode_Solutions/blob/master/依赖文件/leetcode84_柱状图2.png></div>
+
+```cpp
+图中阴影部分为所能勾勒出的最大矩形面积，其面积为 10 个单位。
+
+输入: [2,1,5,6,2,3]
+输出: 10
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        // 分治法
+        // 找到最小高度的索引值 min_index，用其得到使用此索引的最大面积 min_index* (end - start + 1)
+        // 在索引左边（不包括索引 min_index ）再继续找最小高度的索引，计算左边的最大面积
+        // 同样在右边也找到一个最大面积
+        //  3 者的最大面积即为所求
+        return fenzhi(heights, 0, heights.size() - 1);
+    }
+
+    int fenzhi(vector<int>& heights, int start, int end) {
+        if (start > end) return 0;
+        int min_index = start;
+        for (int i = start; i <= end; i++) 
+            if (heights[min_index] > heights[i])
+                min_index = i;
+        int left_min = min_index - 1;
+        int right_min = min_index + 1;
+        // 找到左边比分界线大的数
+        while (left_min > 0 && heights[left_min] <= heights[min_index]) left_min--;
+        while (right_min < end && heights[right_min] <= heights[min_index]) right_min++;
+        return max(heights[min_index] * (end - start + 1), max(fenzhi(heights, start, left_min), fenzhi(heights, right_min, end)));
     }
 };
 ```
