@@ -83,6 +83,7 @@
 [80、删除排序数组中的重复项 II](#删除排序数组中的重复项2)  
 [81、搜索旋转排序数组 II](#搜索旋转排序数组2)  
 [82、删除排序链表中的重复元素 II](#删除排序链表中的重复元素2)  
+[83、删除排序链表中的重复元素](#删除排序链表中的重复元素)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -3941,6 +3942,58 @@ public:
             else p -> next = tmp;
         }
         return pDummy -> next;
+    }
+};
+```
+
+<span id="删除排序链表中的重复元素"></span>
+## [83、删除排序链表中的重复元素](#re_)
+```cpp
+给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
+
+输入: 1->1->2
+输出: 1->2
+
+输入: 1->1->2->3->3
+输出: 1->2->3
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        // // 方法1
+        // ListNode* pDummy = new ListNode(0);
+        // pDummy -> next = head;
+        // ListNode* p = pDummy;
+        // while(p -> next) {
+        //     ListNode* tmp = p -> next;
+        //     ListNode* tmp_ = tmp;
+        //     while (tmp && p -> next ->val == tmp -> val) {
+        //         tmp_ = tmp;
+        //         tmp = tmp -> next;
+        //     }
+        //     if (p -> next -> next == tmp) 
+        //         p = p -> next;
+        //     else p -> next = tmp_;
+        // }
+        // return pDummy -> next;
+        
+        // 方法2
+        ListNode* p = head;
+        while (p != NULL && p -> next != NULL) {
+            if (p -> next -> val == p -> val) {
+                p -> next = p -> next -> next;
+            }
+            else p = p -> next;
+        }
+        return head;
     }
 };
 ```
