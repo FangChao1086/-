@@ -81,6 +81,7 @@
 [78、子集](#子集)  
 [79、单词搜索](#单词搜索)  
 [80、删除排序数组中的重复项 II](#删除排序数组中的重复项2)  
+[81、搜索旋转排序数组 II](#搜索旋转排序数组2)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -3857,6 +3858,50 @@ public:
             j++;
         }
         return i;
+    }
+};
+```
+
+<span id="搜索旋转排序数组2"></span>
+## [81、搜索旋转排序数组 II](#re_)
+```cpp
+假设按照升序排序的数组在预先未知的某个点上进行了旋转。
+( 例如，数组 [0,0,1,2,2,5,6] 可能变为 [2,5,6,0,0,1,2] )。
+编写一个函数来判断给定的目标值是否存在于数组中。若存在返回 true，否则返回 false。
+
+输入: nums = [2,5,6,0,0,1,2], target = 0
+输出: true
+
+输入: nums = [2,5,6,0,0,1,2], target = 3
+输出: false
+
+进阶:
+这是 搜索旋转排序数组 的延伸题目，本题中的 nums  可能包含重复元素。
+这会影响到程序的时间复杂度吗？会有怎样的影响，为什么？
+
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+    	// 二分查找
+        int left = 0, right = nums.size() - 1;
+        while (left <= right) {
+            int mid = left + right >> 1;
+            if (nums[mid] == target) return true;
+            if (nums[left] == nums[mid]) {
+                left++;
+                continue;
+            }
+            if (nums[left] < nums[mid]) {  // 左半边有序
+                if (target < nums[mid] && nums[left] <= target) right = mid - 1;
+                else left = mid + 1;
+
+            }
+            else {  // 右半边有序
+                if (nums[mid] < target && target <= nums[right]) left = mid + 1;
+                else right = mid - 1;
+            }
+        }
+        return false;
     }
 };
 ```
