@@ -85,6 +85,7 @@
 [82、删除排序链表中的重复元素 II](#删除排序链表中的重复元素2)  
 [83、删除排序链表中的重复元素](#删除排序链表中的重复元素)  
 [84、柱状图中最大的矩形](#柱状图中最大的矩形)  
+[85、最大矩形](#最大矩形)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4043,6 +4044,62 @@ public:
         while (left_min > 0 && heights[left_min] <= heights[min_index]) left_min--;
         while (right_min < end && heights[right_min] <= heights[min_index]) right_min++;
         return max(heights[min_index] * (end - start + 1), max(fenzhi(heights, start, left_min), fenzhi(heights, right_min, end)));
+    }
+};
+```
+
+<span id="最大矩形"></span>
+## [85、最大矩形](#re_)
+```cpp
+给定一个仅包含 0 和 1 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。
+
+输入:
+[
+  ["1","0","1","0","0"],
+  ["1","0","1","1","1"],
+  ["1","1","1","1","1"],
+  ["1","0","0","1","0"]
+]
+输出: 6
+
+class Solution {
+public:
+    void update(vector<vector<vector<int>>>& dp, int i, int j) {
+        int line_min = dp[i][j][0];
+        int rows  = dp[i][j][1];
+        for (int count_ = 0; count_ < rows; count_++) {
+            line_min = min(line_min, dp[i - count_][j][0]);
+            dp[i][j][2] = max(dp[i][j][2], line_min * (count_ + 1));
+        }
+    }
+
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        // 动态规划 参考：https://leetcode-cn.com/problems/maximal-rectangle/solution/geng-zhi-bai-yi-dian-de-dong-tai-gui-hua-by-vsym/
+        if (matrix.size() == 0) return 0;
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        vector<vector<vector<int>>> dp(rows, vector<vector<int>> (cols, {0, 0, 0}));
+        int res = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] == '0') ;
+                else {
+                    if (i == 0 && j == 0)
+                        dp[i][j] = {1, 1, 1};
+                    else if (i == 0)
+                            dp[i][j] = {dp[i][j - 1][0] + 1, 1, dp[i][j - 1][2] + 1};
+                    else if (j == 0) 
+                            dp[i][j] = {1, dp[i - 1][j][1] + 1, dp[i - 1][j][2] + 1};
+                    else {
+                        dp[i][j][0] = dp[i][j - 1][0] + 1;
+                        dp[i][j][1] = dp[i - 1][j][1] + 1;
+                        update(dp, i, j);
+                    }
+                    res = max(res, dp[i][j][2]);
+                }
+            }
+        }
+        return res;
     }
 };
 ```
