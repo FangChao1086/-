@@ -86,6 +86,7 @@
 [83、删除排序链表中的重复元素](#删除排序链表中的重复元素)  
 [84、柱状图中最大的矩形](#柱状图中最大的矩形)  
 [85、最大矩形](#最大矩形)  
+[86、分隔链表](#分隔链表)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4100,6 +4101,51 @@ public:
             }
         }
         return res;
+    }
+};
+```
+
+<span id="分隔链表"></span>
+## [86、分隔链表](#re_)
+```cpp
+给定一个链表和一个特定值 x，对链表进行分隔，使得所有小于 x 的节点都在大于或等于 x 的节点之前。
+你应当保留两个分区中每个节点的初始相对位置。
+
+输入: head = 1->4->3->2->5->2, x = 3
+输出: 1->2->2->4->3->5
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        // 双指针
+        // first 存值小于 x 的节点
+        // last 存值大于等于 x 的节点
+        ListNode* first = new ListNode(0);
+        ListNode* first_head = first;
+        ListNode* last = new ListNode(0);
+        ListNode* last_head = last;
+        while (head != NULL) {
+            if (head -> val < x) {
+                first -> next = head;
+                first = first -> next;
+            }
+            else {
+                last -> next = head;
+                last = last -> next;
+            }
+            head = head -> next;
+        }
+        last -> next = NULL;
+        first -> next = last_head -> next;
+        return first_head -> next;
     }
 };
 ```
