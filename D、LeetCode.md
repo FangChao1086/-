@@ -94,6 +94,7 @@
 [91、解码方法](#解码方法)  
 [92、反转链表 II](#反转链表2)  
 [93、复原IP地址](#复原IP地址)  
+[94、二叉树的中序遍历](#二叉树的中序遍历)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4480,6 +4481,65 @@ public:
 
 private:
     vector<string> res;
+};
+```
+
+<span id="二叉树的中序遍历"></span>
+## [94、二叉树的中序遍历](#re_)
+```cpp
+给定一个二叉树，返回它的中序 遍历。
+
+输入: [1,null,2,3]
+   1
+    \
+     2
+    /
+   3
+
+输出: [1,3,2]
+进阶: 递归算法很简单，你可以通过迭代算法完成吗？
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        mid(root, res);
+        return res;
+    }
+
+    // void mid(TreeNode* root, vector<int>& res) {
+    //     if (root == NULL) return;
+    //     mid(root -> left, res);
+    //     res.push_back(root -> val);
+    //     mid(root -> right, res);
+    // }
+
+    void mid(TreeNode* root, vector<int>& res) {
+        // 方法2 非递归
+        stack<TreeNode*> s;
+        TreeNode* cur = root;
+        while(!s.empty() || cur != NULL) {
+            if (cur != NULL) {
+                s.push(cur);
+                cur = cur -> left;
+            }
+            else {
+                cur = s.top();
+                res.push_back(cur ->val);
+                cur = cur -> right;
+                s.pop();
+            }
+        }
+    }
 };
 ```
 
