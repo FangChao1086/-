@@ -92,6 +92,7 @@
 [89、格雷编码](#格雷编码)  
 [90、子集 II](#子集2)  
 [91、解码方法](#解码方法)  
+[92、反转链表 II](#反转链表2)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4398,6 +4399,52 @@ public:
 };
 ```
 
+<span id="反转链表2"></span>
+## [92、反转链表 II](#re_)
+```cpp
+反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
+说明:
+1 ≤ m ≤ n ≤ 链表长度。
+
+输入: 1->2->3->4->5->NULL, m = 2, n = 4
+输出: 1->4->3->2->5->NULL
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        ListNode* pDummy  = new ListNode(0);
+        pDummy -> next = head;
+        auto left = pDummy, right = head;
+        int cnt = m - 1; 
+        while (cnt--) {
+            left = right;
+            right = right -> next;
+        }
+        auto savehead = left;
+        auto savetail = right;
+        left = right;
+        right = right -> next;
+        cnt = n - m;
+        while (cnt--) {
+            auto next_ = right -> next;
+            right -> next = left;
+            left = right;
+            right = next_;
+        }
+        savehead -> next = left;
+        savetail -> next = right;
+        return pDummy -> next;
+    }
+};
+```
 
 <span id="字典序排数"></span>
 ## [386、字典序排数](#re_)
