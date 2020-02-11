@@ -90,6 +90,7 @@
 [87、扰乱字符串](#扰乱字符串)  
 [88、合并两个有序数组](#合并两个有序数组)  
 [89、格雷编码](#格雷编码)  
+[90、子集 II](#子集2)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4312,6 +4313,45 @@ public:
             }
         }
         return result;
+    }
+};
+```
+
+<span id="子集2"></span>
+## [90、子集 II](#re_)
+```cpp
+给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+说明：解集不能包含重复的子集。
+
+输入: [1,2,2]
+输出:
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        // 重复的数字在已经出现过的地方才能出现，在没有出现过的地方只能出现那个领头的数字
+        vector<vector<int>> res = {{}};  // res.size() = 1;
+        sort(nums.begin(), nums.end());
+        int start = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            start = (i && nums[i] == nums[i - 1]) ? start : 0;
+            int len = res.size();
+            for (int j = start; j < len; j++) {
+                auto tmp = res[j];
+                tmp.push_back(nums[i]);
+                res.push_back(tmp);
+            }
+            start = len;
+        }
+        return res;
     }
 };
 ```
