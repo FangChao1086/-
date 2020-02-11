@@ -88,6 +88,7 @@
 [85、最大矩形](#最大矩形)  
 [86、分隔链表](#分隔链表)  
 [87、扰乱字符串](#扰乱字符串)  
+[88、合并两个有序数组](#合并两个有序数组)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4226,6 +4227,47 @@ public:
             }
         }
         return dp[N][0][0];
+    }
+};
+```
+
+<span id="合并两个有序数组"></span>
+## [88、合并两个有序数组](#re_)
+```cpp
+给定两个有序整数数组 nums1 和 nums2，将 nums2 合并到 nums1 中，使得 num1 成为一个有序数组。
+
+说明:
+初始化 nums1 和 nums2 的元素数量分别为 m 和 n。
+你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。
+
+输入:
+nums1 = [1,2,3,0,0,0], m = 3
+nums2 = [2,5,6],       n = 3
+输出: [1,2,2,3,5,6]
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        if (n == 0) return ;
+        if (m == 0) {
+            nums1 = nums2;
+            return ;
+        }
+        int len = m + n - 1;
+        m--;n--;
+        while (n >= 0 && m >= 0) {
+            if (nums1[m] <= nums2[n]) {
+                nums1[len--] = nums2[n--];
+            }
+            else {
+                nums1[len--] = nums1[m--];
+            }
+        }
+        if (m < 0) {
+            while (n >= 0) {
+                nums1[len--] = nums2[n--];
+            }
+        }
     }
 };
 ```
