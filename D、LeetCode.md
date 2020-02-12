@@ -95,6 +95,7 @@
 [92、反转链表 II](#反转链表2)  
 [93、复原IP地址](#复原IP地址)  
 [94、二叉树的中序遍历](#二叉树的中序遍历)  
+[95、不同的二叉搜索树 II](#不同的二叉搜索树2)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4539,6 +4540,67 @@ public:
                 s.pop();
             }
         }
+    }
+};
+```
+
+<span id="不同的二叉搜索树2"></span>
+## [95、不同的二叉搜索树 II](#re_)
+```cpp
+给定一个整数 n，生成所有由 1 ... n 为节点所组成的二叉搜索树。
+
+输入: 3
+输出:
+[
+  [1,null,3,2],
+  [3,2,null,1],
+  [3,1,null,null,2],
+  [2,1,3],
+  [1,null,2,null,3]
+]
+解释:
+以上的输出对应以下 5 种不同结构的二叉搜索树：
+
+   1         3     3      2      1
+    \       /     /      / \      \
+     3     2     1      1   3      2
+    /     /       \                 \
+   2     1         2                 3
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode*> helper(int start, int end) {
+        vector<TreeNode*> res;
+        if (start > end) res.push_back(NULL);
+        for (int i = start; i <= end; i++) {
+            vector<TreeNode*> left = helper(start, i - 1);
+            vector<TreeNode*> right = helper(i + 1, end);
+            for (auto l : left) {
+                for (auto r : right) {
+                    TreeNode* root = new TreeNode(i);
+                    root -> left = l;
+                    root -> right = r;
+                    res.push_back(root);
+                }
+            }
+        }
+        return res;
+    }
+
+    vector<TreeNode*> generateTrees(int n) {
+        vector<TreeNode*> res;
+        if (n == 0) return res;
+        res = helper(1, n); 
+        return res;
     }
 };
 ```
