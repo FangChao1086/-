@@ -98,6 +98,7 @@
 [95、不同的二叉搜索树 II](#不同的二叉搜索树2)  
 [96、不同的二叉搜索树](#不同的二叉搜索树)  
 [97、交错字符串](#交错字符串)  
+[98、验证二叉搜索树](#验证二叉搜索树)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4670,6 +4671,55 @@ public:
             }
         }
         return dp[N1][N2];
+    }
+};
+```
+
+<span id="验证二叉搜索树"></span>
+## [98、验证二叉搜索树](#re_)
+```cpp
+给定一个二叉树，判断其是否是一个有效的二叉搜索树。
+假设一个二叉搜索树具有如下特征：
+节点的左子树只包含小于当前节点的数。
+节点的右子树只包含大于当前节点的数。
+所有左子树和右子树自身必须也是二叉搜索树。
+
+输入:
+    2
+   / \
+  1   3
+输出: true
+
+输入:
+    5
+   / \
+  1   4
+     / \
+    3   6
+输出: false
+解释: 输入为: [5,1,4,null,null,3,6]。
+     根节点的值为 5 ，但是其右子节点值为 4 。
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool helper(TreeNode* root, long low, long high) {
+        if (root == NULL) return true;
+        long val = root -> val;
+        if (val <= low || val >= high) return false;
+        return helper(root -> left, low, val) && helper(root -> right, val, high);
+    }
+
+    bool isValidBST(TreeNode* root) {
+        return helper(root, LONG_MIN, LONG_MAX);  // 上界下界
     }
 };
 ```
