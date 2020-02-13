@@ -97,6 +97,7 @@
 [94、二叉树的中序遍历](#二叉树的中序遍历)  
 [95、不同的二叉搜索树 II](#不同的二叉搜索树2)  
 [96、不同的二叉搜索树](#不同的二叉搜索树)  
+[97、交错字符串](#交错字符串)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4635,6 +4636,40 @@ public:
             }
         }        
         return dp[n];
+    }
+};
+```
+
+<span id="交错字符串"></span>
+## [97、交错字符串](#re_)
+```cpp
+给定三个字符串 s1, s2, s3, 验证 s3 是否是由 s1 和 s2 交错组成的。
+
+输入: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbcbcac"
+输出: true
+
+输入: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbbaccc"
+输出: false
+
+class Solution {
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        // 动态规划
+        int N1 = s1.size();
+        int N2 = s2.size();
+        int N3 = s3.size();
+        if (N1 + N2 != N3) return false;
+        vector<vector<bool>> dp(N1 + 1, vector<bool> (N2 + 1, false));
+        dp[0][0] = true;
+        for (int i = 0; i <= N1; i++) {
+            for (int j = 0; j <= N2; j++) {
+                if (i > 0 && s1[i - 1] == s3[i + j - 1])
+                    dp[i][j] = dp[i][j] || dp[i - 1][j];
+                if (j > 0 && s2[j - 1] == s3[i + j - 1])
+                    dp[i][j] = dp[i][j] || dp[i][j - 1];
+            }
+        }
+        return dp[N1][N2];
     }
 };
 ```
