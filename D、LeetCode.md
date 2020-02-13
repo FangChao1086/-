@@ -100,6 +100,7 @@
 [97、交错字符串](#交错字符串)  
 [98、验证二叉搜索树](#验证二叉搜索树)  
 [99、恢复二叉搜索树](#恢复二叉搜索树)  
+[100、相同的树](#相同的树)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4803,6 +4804,55 @@ public:
             vec.push_back(root);
         pre = root;
         recoverTree(root -> right, vec, pre);
+    }
+};
+```
+
+<span id="相同的树"></span>
+## [100、相同的树](#re_)
+```cpp
+给定两个二叉树，编写一个函数来检验它们是否相同。
+如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+
+输入:       1         1
+          / \       / \
+         2   3     2   3
+
+        [1,2,3],   [1,2,3]
+
+输出: true
+
+输入:      1          1
+          /           \
+         2             2
+
+        [1,2],     [1,null,2]
+
+输出: false
+
+输入:       1         1
+          / \       / \
+         2   1     1   2
+
+        [1,2,1],   [1,1,2]
+
+输出: false
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        if (p == NULL && q == NULL) return true;
+        else if (p == NULL || q == NULL ||p -> val != q -> val) return false;
+        return isSameTree(p -> left, q -> left) && isSameTree(p -> right, q -> right);
     }
 };
 ```
