@@ -99,6 +99,7 @@
 [96、不同的二叉搜索树](#不同的二叉搜索树)  
 [97、交错字符串](#交错字符串)  
 [98、验证二叉搜索树](#验证二叉搜索树)  
+[99、恢复二叉搜索树](#恢复二叉搜索树)  
 [386、字典序排数](#字典序排数)
 
 <span id="两数之和"></span>
@@ -4720,6 +4721,88 @@ public:
 
     bool isValidBST(TreeNode* root) {
         return helper(root, LONG_MIN, LONG_MAX);  // 上界下界
+    }
+};
+```
+
+<span id="恢复二叉搜索树"></span>
+## [99、恢复二叉搜索树](#re_)
+```cpp
+二叉搜索树中的两个节点被错误地交换。
+请在不改变其结构的情况下，恢复这棵树。
+
+输入: [1,3,null,null,2]
+
+   1
+  /
+ 3
+  \
+   2
+输出: [3,1,null,null,2]
+
+   3
+  /
+ 1
+  \
+   2
+
+输入: [3,1,4,null,null,2]
+
+  3
+ / \
+1   4
+   /
+  2
+输出: [2,1,4,null,null,3]
+
+  2
+ / \
+1   4
+   /
+  3
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+    	// 参考链接：https://leetcode-cn.com/problems/recover-binary-search-tree/solution/yin-yong-chang-shu-kong-jian-jie-jue-by-newbie-19/
+        vector<TreeNode*> vec;
+        TreeNode* pre = NULL;
+        recoverTree(root, vec, pre);
+        if (vec.size() == 2) {
+            int tmp = vec[0] -> val;
+            vec[0] -> val = vec[1] -> val;
+            vec[1] -> val = tmp;
+        }
+        else {
+            int tmp = vec[0] -> val;
+            vec[0] -> val = vec[2] -> val;
+            vec[2] -> val = tmp;
+        }
+        
+    }
+
+    void recoverTree(TreeNode* root, vector<TreeNode*>& vec, TreeNode*& pre) {
+        if (!root) return ;
+        recoverTree(root -> left, vec, pre);
+        if (pre && vec.size() == 0) {
+            if (root -> val < pre -> val) {
+                vec.push_back(pre);
+                vec.push_back(root);
+            }
+        }
+        else if (vec.size() == 2 && (pre && root -> val < pre -> val))
+            vec.push_back(root);
+        pre = root;
+        recoverTree(root -> right, vec, pre);
     }
 };
 ```
