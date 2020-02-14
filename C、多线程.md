@@ -2,6 +2,7 @@
 # 多线程_CPP版题目及答案
 
 [1、按序打印](#按序打印)  
+[2、交替打印FooBar](#交替打印FooBar)  
 
 <span id="按序打印"></span>
 ## [1、按序打印](#re_)
@@ -73,6 +74,69 @@ public:
         // printThird() outputs "third". Do not change or remove this line.
         sem_wait(&secondJobDone);
         printThird();
+    }
+};
+```
+
+<span id="交替打印FooBar"></span>
+## [2、交替打印FooBar](#re_)
+```cpp
+我们提供一个类：
+class FooBar {
+  public void foo() {
+    for (int i = 0; i < n; i++) {
+      print("foo");
+    }
+  }
+
+  public void bar() {
+    for (int i = 0; i < n; i++) {
+      print("bar");
+    }
+  }
+}
+两个不同的线程将会共用一个 FooBar 实例。其中一个线程将会调用 foo() 方法，另一个线程将会调用 bar() 方法。
+请设计修改程序，以确保 "foobar" 被输出 n 次。
+
+输入: n = 1
+输出: "foobar"
+解释: 这里有两个线程被异步启动。其中一个调用 foo() 方法, 另一个调用 bar() 方法，"foobar" 将被输出一次。
+
+输入: n = 2
+输出: "foobarfoobar"
+解释: "foobar" 将被输出两次。
+
+class FooBar {
+private:
+    int n;
+    mutex foo_mutex;
+    mutex bar_mutex;
+
+public:
+    FooBar(int n) {
+        this->n = n;
+        foo_mutex.unlock();
+        bar_mutex.lock();
+    }
+
+    void foo(function<void()> printFoo) {
+        
+        for (int i = 0; i < n; i++) {
+            foo_mutex.lock();
+        	// printFoo() outputs "foo". Do not change or remove this line.
+        	printFoo();
+            bar_mutex.unlock();
+        }
+    }
+
+    void bar(function<void()> printBar) {
+        
+        for (int i = 0; i < n; i++) {
+            bar_mutex.lock();
+        	// printBar() outputs "bar". Do not change or remove this line.
+        	printBar();
+            foo_mutex.unlock();
+        }
     }
 };
 ```
