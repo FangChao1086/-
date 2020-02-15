@@ -2,6 +2,7 @@
 # shell
 [1、统计词频](#统计词频)  
 [2、有效电话号码](#有效电话号码)  
+[3、转置文件](#转置文件)  
 
 <span id="统计词频"></span>
 ## [1、统计词频](#back)
@@ -66,4 +67,45 @@ sort -rnk 2
 
 # Read from the file file.txt and output all valid phone numbers to stdout.
 grep -P '^([0-9]{3}-|\([0-9]{3}\) )[0-9]{3}-[0-9]{4}$' file.txt
+```
+
+<span id="转置文件"></span>
+## [3、转置文件](#back)
+```shell
+给定一个文件 file.txt，转置它的内容。
+你可以假设每行列数相同，并且每个字段由 ' ' 分隔.
+
+假设 file.txt 文件内容如下：
+name age
+alice 21
+ryan 30
+应当输出：
+name alice ryan
+age 21 30
+
+解答：
+ awk 常量：NF 是当前行的 field 字段数；NR 是正在处理的当前行数。
+数组res来储存新文本，将新文本的每一行存为数组res的一个元素。
+在 END 之前我们遍历 file.txt 的每一行，并做一个判断：
+在第一行时，每碰到一个字段就将其按顺序放在res数组中；
+从第二行开始起，每碰到一个字段就将其追加到对应元素的末尾（中间添加一个空格）。
+文本处理完了，最后需要输出。
+在 END 后遍历数组，输出每一行。
+注意printf不会自动换行，而print会自动换行。
+
+# Read from the file file.txt and print its transposed content to stdout.
+awk '{
+    for(i=1;i<=NF;i++){
+        if (NR==1) {
+            res[i]=$i;
+        }
+        else {
+            res[i]=res[i]" "$i
+        }
+    }
+}END{
+    for(j=1;j<=NF;j++){
+        print res[j]
+    }
+}' file.txt
 ```
