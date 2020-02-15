@@ -3,6 +3,7 @@
 [1、统计词频](#统计词频)  
 [2、有效电话号码](#有效电话号码)  
 [3、转置文件](#转置文件)  
+[4、第十行](#第十行)  
 
 <span id="统计词频"></span>
 ## [1、统计词频](#back)
@@ -108,4 +109,30 @@ awk '{
         print res[j]
     }
 }' file.txt
+```
+
+<span id="第十行"></span>
+## [4、第十行](#back)
+```shell
+给定一个文本文件 file.txt，请只打印这个文件中的第十行。
+
+假设 file.txt 有如下内容：
+Line 1
+Line 2
+Line 3
+Line 4
+Line 5
+Line 6
+Line 7
+Line 8
+Line 9
+Line 10
+你的脚本应当显示第十行：
+Line 10
+说明:
+1. 如果文件少于十行，你应当输出什么？
+2. 至少有三种不同的解法，请尝试尽可能多的方法来解题。
+
+# Read from the file file.txt and output the tenth line to stdout.
+awk 'NR==10' file.txt
 ```
