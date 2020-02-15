@@ -134,5 +134,7 @@ Line 10
 2. 至少有三种不同的解法，请尝试尽可能多的方法来解题。
 
 # Read from the file file.txt and output the tenth line to stdout.
+sed -n '10p' file.txt
 awk 'NR==10' file.txt
+head -10 file.txt | tail -1
 ```
