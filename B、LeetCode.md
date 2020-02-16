@@ -4877,7 +4877,7 @@ public:
 说明:
 如果你可以运用递归和迭代两种方法解决这个问题，会很加分。
 
-/**
+/**/**
  * Definition for a binary tree node.
  * struct TreeNode {
  *     int val;
@@ -4889,9 +4889,29 @@ public:
 class Solution {
 public:
     bool isSymmetric(TreeNode* root) {
-        return isSymmetric(root, root);
-    }
+        // return isSymmetric(root, root);  // 常用递归，简单
 
+        // 迭代
+        // 每次取 que 中两个节点进行比较；将左右节点的子左右节点按相反（右左）方向压进 que 中；
+        queue<TreeNode*> que;
+        que.push(root);
+        que.push(root);
+        while (!que.empty()) {
+            TreeNode* t1 = que.front();
+            que.pop();
+            TreeNode* t2 = que.front();
+            que.pop();
+            if (t1 == NULL && t2 == NULL) continue;
+            if (t1 == NULL || t2 == NULL || t1 -> val != t2 -> val) return false;
+            que.push(t1 -> left);
+            que.push(t2 -> right);
+            que.push(t1 -> right);
+            que.push(t2 -> left);
+        }
+        return true;
+    }
+    
+    // 递归辅助函数
     bool isSymmetric(TreeNode* root1, TreeNode* root2) {
         if (root1 == NULL && root2 == NULL) return true;
         if (root1 == NULL || root2 == NULL || root1 -> val != root2 -> val) return false;
