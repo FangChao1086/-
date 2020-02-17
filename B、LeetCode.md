@@ -103,6 +103,7 @@
 [100、相同的树](#相同的树)  
 [101、对称二叉树](#对称二叉树)  
 [102、二叉树的层次遍历](#二叉树的层次遍历)  
+[103、二叉树的锯齿形层次遍历](#二叉树的锯齿形层次遍历)  
 [386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -4967,6 +4968,60 @@ public:
             }
             res.push_back(vec);
         } 
+        return res;
+    }
+};
+```
+
+<span id="二叉树的锯齿形层次遍历"></span>
+## [103、二叉树的锯齿形层次遍历](#back)
+```cpp
+给定一个二叉树，返回其节点值的锯齿形层次遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+
+给定二叉树 [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回锯齿形层次遍历如下：
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        if (root == NULL) return res;
+        queue<TreeNode*> que;
+        que.push(root);
+        bool flag = false;
+        while (!que.empty()) {
+            int len_Q = que.size();
+            vector<int> vec;
+            for (int i = 0; i < len_Q; i++) {
+                TreeNode* tmp = que.front();
+                que.pop();
+                vec.push_back(tmp -> val);
+                if (tmp -> left) que.push(tmp -> left);
+                if (tmp -> right) que.push(tmp -> right);
+            }
+            if (flag) reverse(vec.begin(), vec.end());
+            res.push_back(vec);
+            flag = !flag;
+        }
         return res;
     }
 };
