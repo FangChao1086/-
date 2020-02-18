@@ -105,6 +105,7 @@
 [102、二叉树的层次遍历](#二叉树的层次遍历)  
 [103、二叉树的锯齿形层次遍历](#二叉树的锯齿形层次遍历)  
 [104、二叉树的最大深度](#二叉树的最大深度)  
+[105、从前序与中序遍历序列构造二叉树](#从前序与中序遍历序列构造二叉树)  
 [386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5059,6 +5060,58 @@ public:
         int left = maxDepth(root -> left);
         int right = maxDepth(root -> right);
         return max(left + 1, right + 1);
+    }
+};
+```
+
+<span id="从前序与中序遍历序列构造二叉树"></span>
+## [105、从前序与中序遍历序列构造二叉树](#back)
+```cpp
+根据一棵树的前序遍历与中序遍历构造二叉树。
+你可以假设树中没有重复的元素。
+
+前序遍历 preorder = [3,9,20,15,7]
+中序遍历 inorder = [9,3,15,20,7]
+返回如下的二叉树：
+    3
+   / \
+  9  20
+    /  \
+   15   7
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(preorder.size() == 0 || preorder.size() != inorder.size()) return NULL;
+        int index_i = 0;
+        for (int i = 0; i < inorder.size(); i++) {
+            if (inorder[i] == preorder[0]) {
+                index_i = i;
+                break;
+            }
+        }
+        TreeNode* root = new TreeNode(preorder[0]);
+        vector<int> pre_left, pre_right, in_left, in_right;
+        for (int i = 0; i < index_i; i++) {
+            pre_left.push_back(preorder[i + 1]);
+            in_left.push_back(inorder[i]);
+        }
+        for (int i = index_i + 1; i < preorder.size(); i++) {
+            pre_right.push_back(preorder[i]);
+            in_right.push_back(inorder[i]);
+        }
+        root -> left = buildTree(pre_left, in_left);
+        root -> right = buildTree(pre_right, in_right);
+        return root;
     }
 };
 ```
