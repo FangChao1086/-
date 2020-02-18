@@ -104,6 +104,7 @@
 [101、对称二叉树](#对称二叉树)  
 [102、二叉树的层次遍历](#二叉树的层次遍历)  
 [103、二叉树的锯齿形层次遍历](#二叉树的锯齿形层次遍历)  
+[104、二叉树的最大深度](#二叉树的最大深度)  
 [386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5023,6 +5024,41 @@ public:
             flag = !flag;
         }
         return res;
+    }
+};
+```
+
+<span id="二叉树的最大深度"></span>
+## [104、二叉树的最大深度](#back)
+```cpp
+给定一个二叉树，找出其最大深度。
+二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+说明: 叶子节点是指没有子节点的节点。
+
+给定二叉树 [3,9,20,null,null,15,7]，
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回它的最大深度 3 
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if (root == NULL) return 0;
+        int left = maxDepth(root -> left);
+        int right = maxDepth(root -> right);
+        return max(left + 1, right + 1);
     }
 };
 ```
