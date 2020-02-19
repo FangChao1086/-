@@ -107,6 +107,7 @@
 [104、二叉树的最大深度](#二叉树的最大深度)  
 [105、从前序与中序遍历序列构造二叉树](#从前序与中序遍历序列构造二叉树)  
 [106、从中序与后序遍历序列构造二叉树](#从中序与后序遍历序列构造二叉树)  
+[107、二叉树的层次遍历 II](#二叉树的层次遍历2)  
 [386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5165,6 +5166,58 @@ public:
         root ->left = buildTree(in_left, post_left);
         root -> right = buildTree(in_right, post_right);
         return root;
+    }
+};
+```
+
+<span id="二叉树的层次遍历2"></span>
+## [107、二叉树的层次遍历 II](#back)
+```cpp
+给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
+
+给定二叉树 [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其自底向上的层次遍历为：
+[
+  [15,7],
+  [9,20],
+  [3]
+]
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        vector<vector<int>> res;
+        if (root == NULL) return res;
+        queue<TreeNode*> que;
+        que.push(root);
+        while (!que.empty()) {
+            int len_q = que.size();
+            vector<int> vec;
+            for (int i = 0; i < len_q; i++) {
+                TreeNode* tmp = que.front();
+                que.pop();
+                vec.push_back(tmp -> val);
+                if (tmp -> left) que.push(tmp -> left);
+                if (tmp -> right) que.push(tmp -> right);
+            }
+            res.push_back(vec);
+        }
+        reverse(res.begin(), res.end());
+        return res;
     }
 };
 ```
