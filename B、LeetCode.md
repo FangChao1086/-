@@ -108,6 +108,7 @@
 [105、从前序与中序遍历序列构造二叉树](#从前序与中序遍历序列构造二叉树)  
 [106、从中序与后序遍历序列构造二叉树](#从中序与后序遍历序列构造二叉树)  
 [107、二叉树的层次遍历 II](#二叉树的层次遍历2)  
+[108、将有序数组转换为二叉搜索树](#将有序数组转换为二叉搜索树)  
 [386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5218,6 +5219,48 @@ public:
         }
         reverse(res.begin(), res.end());
         return res;
+    }
+};
+```
+
+<span id="将有序数组转换为二叉搜索树"></span>
+## [108、将有序数组转换为二叉搜索树](#back)
+```cpp
+将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。
+本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。
+
+给定有序数组: [-10,-3,0,5,9],
+一个可能的答案是：[0,-3,9,-10,null,5]，它可以表示下面这个高度平衡二叉搜索树：
+      0
+     / \
+   -3   9
+   /   /
+ -10  5
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        if (nums.size() == 0) return NULL;
+        if (nums.size() == 1) {
+            return new TreeNode(nums[0]);
+        }
+        TreeNode* root = new TreeNode(nums[(nums.size()) / 2]);
+        vector<int> nums1;
+        vector<int> nums2;
+        for (int i = 0; i < (nums.size()) / 2; i++) nums1.push_back(nums[i]);
+        for (int i = (nums.size()) / 2 + 1 ; i < nums.size(); i++) nums2.push_back(nums[i]);
+        root -> left = sortedArrayToBST(nums1);
+        root -> right = sortedArrayToBST(nums2);
+        return root;
     }
 };
 ```
