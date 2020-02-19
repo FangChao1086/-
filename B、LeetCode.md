@@ -109,6 +109,7 @@
 [106、从中序与后序遍历序列构造二叉树](#从中序与后序遍历序列构造二叉树)  
 [107、二叉树的层次遍历 II](#二叉树的层次遍历2)  
 [108、将有序数组转换为二叉搜索树](#将有序数组转换为二叉搜索树)  
+[109、有序链表转换二叉搜索树](#有序链表转换二叉搜索树)  
 [386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5261,6 +5262,60 @@ public:
         root -> left = sortedArrayToBST(nums1);
         root -> right = sortedArrayToBST(nums2);
         return root;
+    }
+};
+```
+
+<span id="有序链表转换二叉搜索树"></span>
+## [109、有序链表转换二叉搜索树](#back)
+```cpp
+给定一个单链表，其中的元素按升序排序，将其转换为高度平衡的二叉搜索树。
+本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。
+
+给定的有序链表： [-10, -3, 0, 5, 9],
+一个可能的答案是：[0, -3, 9, -10, null, 5], 它可以表示下面这个高度平衡二叉搜索树：
+      0
+     / \
+   -3   9
+   /   /
+ -10  5
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        if (head == NULL) return NULL;
+        if (head -> next == NULL) return new TreeNode(head -> val);
+        ListNode* L1 = head;
+        int index_i = 0;
+        for (; L1 != NULL; index_i++) 
+            L1 = L1 -> next;
+        L1 = head;
+        for (int i = 1 ; i < index_i / 2; i++) {
+            L1 = L1 -> next;
+        }
+        TreeNode* root = new TreeNode(L1 -> next -> val);
+        ListNode* L_last = L1 -> next -> next;
+        L1 -> next = NULL;
+        root -> left = sortedListToBST(head);  // 此时的 head 只包含前半部分，如 [-10,-3,0,5,9] 中的 [-10, -3]
+        root -> right = sortedListToBST(L_last);
+        return root;        
     }
 };
 ```
