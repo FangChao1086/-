@@ -111,6 +111,7 @@
 [108、将有序数组转换为二叉搜索树](#将有序数组转换为二叉搜索树)  
 [109、有序链表转换二叉搜索树](#有序链表转换二叉搜索树)  
 [110、平衡二叉树](#平衡二叉树)  
+[111、二叉树的最小深度](#二叉树的最小深度)  
 [386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5371,6 +5372,44 @@ public:
         int left = getDepth(root -> left);
         int right = getDepth(root -> right);
         return max(left, right) + 1;
+    }
+};
+```
+
+<span id="二叉树的最小深度"></span>
+## [111、二叉树的最小深度](#back)
+```cpp
+给定一个二叉树，找出其最小深度。
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+说明: 叶子节点是指没有子节点的节点。
+
+给定二叉树 [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回它的最小深度  2.
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if (root == NULL) return 0;
+        int left = minDepth(root -> left);
+        int right = minDepth(root -> right);
+        if (root -> left == NULL || root -> right == NULL)  // 非叶子节点
+            return left == 0 ? right + 1 : left + 1;
+        else 
+            return min(left, right) + 1;
     }
 };
 ```
