@@ -110,6 +110,7 @@
 [107、二叉树的层次遍历 II](#二叉树的层次遍历2)  
 [108、将有序数组转换为二叉搜索树](#将有序数组转换为二叉搜索树)  
 [109、有序链表转换二叉搜索树](#有序链表转换二叉搜索树)  
+[110、平衡二叉树](#平衡二叉树)  
 [386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5316,6 +5317,60 @@ public:
         root -> left = sortedListToBST(head);  // 此时的 head 只包含前半部分，如 [-10,-3,0,5,9] 中的 [-10, -3]
         root -> right = sortedListToBST(L_last);
         return root;        
+    }
+};
+```
+
+<span id="平衡二叉树"></span>
+## [110、平衡二叉树](#back)
+```cpp
+给定一个二叉树，判断它是否是高度平衡的二叉树。
+本题中，一棵高度平衡二叉树定义为：
+一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过1。
+
+
+给定二叉树 [3,9,20,null,null,15,7]
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回 true 。
+
+给定二叉树 [1,2,2,3,3,null,null,4,4]
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+返回 false 。
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        if (root == NULL) return true;
+        int left = getDepth(root -> left);
+        int right = getDepth(root -> right);
+        if (abs(left - right) > 1) return false;
+        return isBalanced(root -> left) && isBalanced(root -> right); 
+    }
+
+    int getDepth(TreeNode* root) {
+        if (root == NULL) return 0;
+        int left = getDepth(root -> left);
+        int right = getDepth(root -> right);
+        return max(left, right) + 1;
     }
 };
 ```
