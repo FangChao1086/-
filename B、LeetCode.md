@@ -114,6 +114,7 @@
 [111、二叉树的最小深度](#二叉树的最小深度)  
 [112、路径总和](#路径总和)  
 [113、路径总和 II](#路径总和2)  
+[114、二叉树展开为链表](#二叉树展开为链表)  
 [386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5501,6 +5502,56 @@ public:
     vector<vector<int>> pathSum(TreeNode* root, int sum) {
         pathSum_helper(root, sum);
         return res;        
+    }
+};
+```
+
+<span id="二叉树展开为链表"></span>
+## [114、二叉树展开为链表](#back)
+```cpp
+给定一个二叉树，原地将它展开为链表。
+
+例如，给定二叉树
+    1
+   / \
+  2   5
+ / \   \
+3   4   6
+将其展开为：
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        while (root != nullptr) {
+            if (root -> left != nullptr) {
+                auto left_root = root -> left;
+                while (left_root -> right != nullptr) left_root = left_root -> right;
+                left_root -> right = root -> right;
+                root -> right = root -> left;
+                root -> left = nullptr;
+            }
+            root = root -> right;
+        }
     }
 };
 ```
