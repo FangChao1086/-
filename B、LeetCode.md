@@ -117,6 +117,7 @@
 [114、二叉树展开为链表](#二叉树展开为链表)  
 [115、不同的子序列](#不同的子序列)  
 [116、填充每个节点的下一个右侧节点指针](#填充每个节点的下一个右侧节点指针)  
+[117、填充每个节点的下一个右侧节点指针 II](#填充每个节点的下一个右侧节点指针2)  
 [386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5649,6 +5650,60 @@ class Solution {
 public:
     Node* connect(Node* root) {
         // 层序遍历，每层最后一个节点指向 NULL, 其他指向当前层的下一个节点
+        if (root == NULL) return root;
+        queue<Node*> que;
+        que.push(root);
+        while (!que.empty()) {
+            int len_q = que.size();
+            for(int i = 1; i <= len_q; i++) {
+                Node* tmp = que.front();
+                que.pop();
+                if (i == len_q) tmp -> next = NULL;
+                else tmp -> next = que.front();
+                if (tmp -> left) que.push(tmp -> left);
+                if (tmp -> right) que.push(tmp -> right);
+            }
+        }
+        return root;
+    }
+};
+```
+
+<span id="填充每个节点的下一个右侧节点指针2"></span>
+## [117、填充每个节点的下一个右侧节点指针 II](#back)
+```cpp
+给定一个二叉树
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
+初始状态下，所有 next 指针都被设置为 NULL。
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+class Solution {
+public:
+    Node* connect(Node* root) {
+        // 层序遍历，每层最后一个节点指向 NULL, 其他指向当前层的下一个节点
+	// 普通二叉树，解法可以用 116 题解法
         if (root == NULL) return root;
         queue<Node*> que;
         que.push(root);
