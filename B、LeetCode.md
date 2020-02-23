@@ -5680,17 +5680,27 @@ public:
 class Solution {
 public:
     vector<int> getRow(int rowIndex) {
-        if (rowIndex == 0) return {1};
-        vector<vector<int>> res(rowIndex + 1);
-        res[0].push_back(1);
-        for (int i = 1; i < rowIndex + 1; i++) {
-            res[i].push_back(1);
-            for (int j = 1; j < i; j++) {
-                res[i].push_back(res[i - 1][j - 1] + res[i - 1][j]);
+        // if (rowIndex == 0) return {1};
+        // vector<vector<int>> res(rowIndex + 1);
+        // res[0].push_back(1);
+        // for (int i = 1; i < rowIndex + 1; i++) {
+        //     res[i].push_back(1);
+        //     for (int j = 1; j < i; j++) {
+        //         res[i].push_back(res[i - 1][j - 1] + res[i - 1][j]);
+        //     }
+        //     res[i].push_back(1);
+        // }
+        // return res[rowIndex];
+
+        // 更优解
+        vector<int> result;
+        for (int i = 0 ; i <= rowIndex; i++) {
+            result.push_back(1); 
+            for (int j = i - 1; j > 0; j--) {
+                result[j] += result[j - 1];
             }
-            res[i].push_back(1);
         }
-        return res[rowIndex];
+        return result;
     }
 };
 ```
