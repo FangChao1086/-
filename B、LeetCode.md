@@ -26,7 +26,7 @@
 |[106、从中序与后序遍历序列构造二叉树](#从中序与后序遍历序列构造二叉树)  |[107、二叉树的层次遍历 II](#二叉树的层次遍历2)  |[108、将有序数组转换为二叉搜索树](#将有序数组转换为二叉搜索树)  |[109、有序链表转换二叉搜索树](#有序链表转换二叉搜索树)  |[110、平衡二叉树](#平衡二叉树)  
 |[111、二叉树的最小深度](#二叉树的最小深度)  |[112、路径总和](#路径总和)  |[113、路径总和 II](#路径总和2)  |[114、二叉树展开为链表](#二叉树展开为链表)  |[115、不同的子序列](#不同的子序列)  
 |[116、填充每个节点的下一个右侧节点指针](#填充每个节点的下一个右侧节点指针)  |[117、填充每个节点的下一个右侧节点指针 II](#填充每个节点的下一个右侧节点指针2)  |[118、杨辉三角](#杨辉三角)|[119、杨辉三角 II](#杨辉三角2)|[120、三角形最小路径和](#三角形最小路径和)|
-|[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|
+|[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|[124、二叉树中的最大路径和](#二叉树中的最大路径和)|
 |[386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5867,6 +5867,56 @@ public:
             }
         }
         return dp[n - 1][2][0];
+    }
+};
+```
+
+<span id="二叉树中的最大路径和"></span>
+## [124、二叉树中的最大路径和](#back)
+```cpp
+给定一个非空二叉树，返回其最大路径和。
+本题中，路径被定义为一条从树中任意节点出发，达到任意节点的序列。该路径至少包含一个节点，且不一定经过根节点。
+
+输入: [1,2,3]
+       1
+      / \
+     2   3
+输出: 6
+
+输入: [-10,9,20,null,null,15,7]
+   -10
+   / \
+  9  20
+    /  \
+   15   7
+输出: 42
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int maxPathSum(TreeNode* root, int &val) {
+        if(root == NULL) return 0;
+        int left = maxPathSum(root -> left, val);
+        int right = maxPathSum(root -> right, val);
+        int lm = root -> val + max(0, left) + max(0, right);
+        int ret = root -> val + max(0, max(left, right));
+        val = max(val, max(lm, ret));
+        return ret;
+    }
+
+    int maxPathSum(TreeNode* root) {
+        // 参考：https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/solution/er-cha-shu-zhong-de-zui-da-lu-jing-he-by-ikaruga/
+        int val = INT_MIN;
+        maxPathSum(root, val);
+        return val;
     }
 };
 ```
