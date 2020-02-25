@@ -27,6 +27,7 @@
 |[111、二叉树的最小深度](#二叉树的最小深度)  |[112、路径总和](#路径总和)  |[113、路径总和 II](#路径总和2)  |[114、二叉树展开为链表](#二叉树展开为链表)  |[115、不同的子序列](#不同的子序列)  
 |[116、填充每个节点的下一个右侧节点指针](#填充每个节点的下一个右侧节点指针)  |[117、填充每个节点的下一个右侧节点指针 II](#填充每个节点的下一个右侧节点指针2)  |[118、杨辉三角](#杨辉三角)|[119、杨辉三角 II](#杨辉三角2)|[120、三角形最小路径和](#三角形最小路径和)|
 |[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|[124、二叉树中的最大路径和](#二叉树中的最大路径和)|[125、验证字符串](#验证字符串)|
+||[127、单词接龙](#单词接龙)|
 |[386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -5954,6 +5955,72 @@ public:
             else return false;
         }
         return true;
+    }
+};
+```
+
+<span id="单词接龙"></span>
+## [127、单词接龙](#back)
+```cpp
+给定两个单词（beginWord 和 endWord）和一个字典，找到从 beginWord 到 endWord 的最短转换序列的长度。
+转换需遵循如下规则：
+*每次转换只能改变一个字母。
+*转换过程中的中间单词必须是字典中的单词。
+说明:
+*如果不存在这样的转换序列，返回 0。
+*所有单词具有相同的长度。
+*所有单词只由小写字母组成。
+*字典中不存在重复的单词。
+*你可以假设 beginWord 和 endWord 是非空的，且二者不相同。
+
+输入:
+beginWord = "hit",
+endWord = "cog",
+wordList = ["hot","dot","dog","lot","log","cog"]
+输出: 5
+解释: 一个最短转换序列是 "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+     返回它的长度 5。
+
+输入:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log"]
+输出: 0
+解释: endWord "cog" 不在字典中，所以无法进行转换。
+
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        // hit,1 -> hot,2 -> dot,3 -> log,4 -> log,5
+        //                -> lot,3
+        unordered_set<string> s;
+        for (auto &i : wordList) s.insert(i);
+        queue<pair<string, int>> q;
+        q.push({beginWord, 1});  // 加入beginword
+        string tmp;  // 每个节点的字符
+        int step;  // 到达该节点的step
+        while (!q.empty()) {
+            if(q.front().first == endWord)
+                return q.front().second;
+            tmp = q.front().first;
+            step = q.front().second;
+            q.pop();
+            // 寻找写一个单词
+            char ch;
+            for (int i = 0; i < tmp.size(); i++) {
+                ch = tmp[i];
+                for (char c = 'a'; c <= 'z'; c++) {
+                    if (ch == c) continue;
+                    tmp[i] = c;
+                    if (s.find(tmp) != s.end()) {  // 如果在 s 中找的到
+                        q.push({tmp, step + 1});
+                        s.erase(tmp);  // 删除该节点
+                    }
+                    tmp[i] = ch;  // 复原
+                }
+            }
+        }
+        return 0;
     }
 };
 ```
