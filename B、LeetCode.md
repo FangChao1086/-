@@ -27,7 +27,7 @@
 |[111、二叉树的最小深度](#二叉树的最小深度)  |[112、路径总和](#路径总和)  |[113、路径总和 II](#路径总和2)  |[114、二叉树展开为链表](#二叉树展开为链表)  |[115、不同的子序列](#不同的子序列)  
 |[116、填充每个节点的下一个右侧节点指针](#填充每个节点的下一个右侧节点指针)  |[117、填充每个节点的下一个右侧节点指针 II](#填充每个节点的下一个右侧节点指针2)  |[118、杨辉三角](#杨辉三角)|[119、杨辉三角 II](#杨辉三角2)|[120、三角形最小路径和](#三角形最小路径和)|
 |[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|[124、二叉树中的最大路径和(hard)](#二叉树中的最大路径和)|[125、验证字符串(easy)](#验证字符串)|
-||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|
+||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
 |[386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -6052,6 +6052,121 @@ public:
             res = max(res, len);
         }
         return res;
+    }
+};
+```
+
+<span id="求根到叶子节点数字之和"></span>
+## [129、求根到叶子节点数字之和(medium)](#back)
+```cpp
+给定一个二叉树，它的每个结点都存放一个 0-9 的数字，每条从根到叶子节点的路径都代表一个数字。
+例如，从根到叶子节点路径 1->2->3 代表数字 123。
+计算从根到叶子节点生成的所有数字之和。
+说明: 叶子节点是指没有子节点的节点。
+
+输入: [1,2,3]
+    1
+   / \
+  2   3
+输出: 25
+解释:
+从根到叶子节点路径 1->2 代表数字 12.
+从根到叶子节点路径 1->3 代表数字 13.
+因此，数字总和 = 12 + 13 = 25.
+
+输入: [4,9,0,5,1]
+    4
+   / \
+  9   0
+ / \
+5   1
+输出: 1026
+解释:
+从根到叶子节点路径 4->9->5 代表数字 495.
+从根到叶子节点路径 4->9->1 代表数字 491.
+从根到叶子节点路径 4->0 代表数字 40.
+因此，数字总和 = 495 + 491 + 40 = 1026.
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void sumNumberDFS(TreeNode* root, int path, int& all_path) {
+        if (!root) return ;
+        path = path * 10 + root -> val;
+        if (root -> left == NULL && root -> right == NULL) {
+            all_path += path;
+            return ;
+        }
+        sumNumberDFS(root -> left, path, all_path);
+        sumNumberDFS(root -> right, path, all_path);
+    }
+
+    int sumNumbers(TreeNode* root) {
+        int path = 0, all_path = 0;
+        sumNumberDFS(root, path, all_path);
+        return all_path;
+    } 
+};
+```
+
+<span id="被围绕的区域"></span>
+## [130、被围绕的区域(medium)](#back)
+```cpp
+给定一个二维的矩阵，包含 'X' 和 'O'（字母 O）。
+找到所有被 'X' 围绕的区域，并将这些区域里所有的 'O' 用 'X' 填充。
+
+X X X X
+X O O X
+X X O X
+X O X X
+运行你的函数后，矩阵变为：
+X X X X
+X X X X
+X X X X
+X O X X
+解释:
+被围绕的区间不会存在于边界上，换句话说，任何边界上的 'O' 都不会被填充为 'X'。 任何不在边界上，或不与边界上的 'O' 相连的 'O' 最终都会被填充为 'X'。如果两个元素在水平或垂直方向相邻，则称它们是“相连”的。
+
+class Solution {
+public:
+    void solve(vector<vector<char>>& board) {
+        int rows = board.size();
+        if (rows == 0) return ;
+        int cols = board[0].size();
+        for (int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                bool edge = i == 0 || i == rows - 1 || j == 0 || j == cols - 1;
+                if (edge && board[i][j] == 'O') {
+                    dfs(board, i , j);
+                }
+            }
+        }
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == '#') {
+                    board[i][j] = 'O';
+                }
+                else board[i][j] = 'X';
+            }
+        }
+    }
+
+    void dfs(vector<vector<char>>& board, int i, int j) {
+        if (i < 0 || i >= board.size() || j < 0 || j >= board[0].size() || board[i][j] == 'X' || board[i][j] == '#')
+            return ;
+        board[i][j] = '#';
+        dfs(board, i - 1, j);
+        dfs(board, i + 1, j);
+        dfs(board, i, j - 1);
+        dfs(board, i, j + 1);
     }
 };
 ```
