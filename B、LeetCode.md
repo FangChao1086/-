@@ -28,6 +28,7 @@
 |[116、填充每个节点的下一个右侧节点指针](#填充每个节点的下一个右侧节点指针)  |[117、填充每个节点的下一个右侧节点指针 II](#填充每个节点的下一个右侧节点指针2)  |[118、杨辉三角](#杨辉三角)|[119、杨辉三角 II](#杨辉三角2)|[120、三角形最小路径和](#三角形最小路径和)|
 |[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|[124、二叉树中的最大路径和(hard)](#二叉树中的最大路径和)|[125、验证字符串(easy)](#验证字符串)|
 ||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
+|[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|
 |[386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -6167,6 +6168,95 @@ public:
         dfs(board, i + 1, j);
         dfs(board, i, j - 1);
         dfs(board, i, j + 1);
+    }
+};
+```
+
+<span id="分割回文串"></span>
+## [131、分割回文串(medium)](#back)
+```cpp
+给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串。
+返回 s 所有可能的分割方案。
+
+输入: "aab"
+输出:
+[
+  ["aa","b"],
+  ["a","a","b"]
+]
+
+class Solution {
+public:
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> res;
+        vector<string> cur;
+        dfs(s, cur, res);
+        return res;
+    }
+
+    bool isPalindrome(string s) {
+        return s == string(s.rbegin(), s.rend());
+    }
+
+    void dfs(string s, vector<string>& cur, vector<vector<string>>& res) {
+        if (s == "") {
+            res.push_back(cur);
+            return ;
+        }
+        for (int i = 1; i <= s.size(); i++) {
+            string tmp = s.substr(0, i);
+            if (isPalindrome(tmp)) {
+                cur.push_back(tmp);
+                dfs(s.substr(i, s.size() - 1), cur, res);
+                cur.pop_back();
+            }
+        }
+    }
+};
+```
+
+<span id="分割回文串2"></span>
+## [132、分割回文串 II(hard)](#back)
+```cpp
+给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串。
+返回符合要求的最少分割次数。
+
+输入: "aab"
+输出: 1
+解释: 进行一次分割就可将 s 分割成 ["aa","b"] 这样两个回文子串。
+
+class Solution {
+public:
+    int minCut(string s) {
+        // 动态规划
+        // dp[i]: s[0 : i] 是回文需要的分割次数
+        // dp[i] = min(dp[i], dp[j] + 1) if dp[j + 1 : i] 是回文
+        int len = s.size();
+        int dp[len];
+        // 初始化
+        for (int i = 0; i < len; i++)
+            dp[i] = i;
+        // 记录子串 s[a : b]是否是回文，一开始初始化为false
+        vector<vector<bool>> checkPalindrome(len, vector<bool> (len, false));
+        for (int right = 0; right < len; right++) {
+            for (int left = 0; left <= right; left++) {
+                if (s[left] == s[right] && (right - left <= 2 || checkPalindrome[left + 1][right - 1]))
+                    checkPalindrome[left][right] = true;
+            }
+        }
+        // 状态转移
+        for (int i = 0; i < len; i++) {
+            if (checkPalindrome[0][i]) {
+                dp[i] = 0;
+                continue;
+            }
+            for (int j = 0; j < i; j++) {
+                if(checkPalindrome[j + 1][i]) {
+                    dp[i] = min(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        return dp[len - 1];
     }
 };
 ```
