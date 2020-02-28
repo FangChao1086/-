@@ -28,7 +28,7 @@
 |[116、填充每个节点的下一个右侧节点指针](#填充每个节点的下一个右侧节点指针)  |[117、填充每个节点的下一个右侧节点指针 II](#填充每个节点的下一个右侧节点指针2)  |[118、杨辉三角](#杨辉三角)|[119、杨辉三角 II](#杨辉三角2)|[120、三角形最小路径和](#三角形最小路径和)|
 |[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|[124、二叉树中的最大路径和(hard)](#二叉树中的最大路径和)|[125、验证字符串(easy)](#验证字符串)|
 ||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
-|[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|
+|[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|
 |[386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -6259,6 +6259,109 @@ public:
             }
         }
         return dp[len - 1];
+    }
+};
+```
+
+<span id="克隆图"></span>
+## [133、克隆图(medium)](#back)
+<div align=center><img src="https://github.com/FangChao1086/LeetCode_Solutions/blob/master/依赖文件/LeetCode133_克隆图.png"></div>
+
+```cpp
+给你无向 连通 图中一个节点的引用，请你返回该图的 深拷贝（克隆）。
+图中的每个节点都包含它的值 val（int） 和其邻居的列表（list[Node]）。
+class Node {
+    public int val;
+    public List<Node> neighbors;
+}
+ 
+测试用例格式：
+简单起见，每个节点的值都和它的索引相同。
+例如，第一个节点值为 1，第二个节点值为 2，以此类推。
+该图在测试用例中使用邻接列表表示。
+邻接列表是用于表示有限图的无序列表的集合。每个列表都描述了图中节点的邻居集。
+给定节点将始终是图中的第一个节点（值为 1）。你必须将给定节点的拷贝作为对克隆图的引用返回。
+
+输入：adjList = [[2,4],[1,3],[2,4],[1,3]]
+输出：[[2,4],[1,3],[2,4],[1,3]]
+解释：
+图中有 4 个节点。
+节点 1 的值是 1，它有两个邻居：节点 2 和 4 。
+节点 2 的值是 2，它有两个邻居：节点 1 和 3 。
+节点 3 的值是 3，它有两个邻居：节点 2 和 4 。
+节点 4 的值是 4，它有两个邻居：节点 1 和 3 。
+
+输入：adjList = [[]]
+输出：[[]]
+解释：输入包含一个空列表。该图仅仅只有一个值为 1 的节点，它没有任何邻居。
+
+输入：adjList = []
+输出：[]
+解释：这个图是空的，它不含任何节点。
+
+输入：adjList = [[2],[1]]
+输出：[[2],[1]]
+
+提示：
+节点数介于 1 到 100 之间。
+每个节点值都是唯一的。
+无向图是一个简单图，这意味着图中没有重复的边，也没有自环。
+由于图是无向的，如果节点 p 是节点 q 的邻居，那么节点 q 也必须是节点 p 的邻居。
+图是连通图，你可以从给定节点访问到所有节点。
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        // BFS + map
+        // 1、根据原来节点的节点数，和节点值创建新的节点
+        // 2、根据原来节点的对应关系，连接新的对应节点
+        if (!node) return NULL;
+        queue<Node*> que;
+        que.push(node);
+        map<Node*, Node*> mp;
+        while (!que.empty()) {
+            Node* temp = que.front();
+            que.pop();
+            // 新节点创建
+            Node* p = new Node(temp -> val, {});
+            mp.insert({temp, p});  // 将新节点 p 与旧节点 temp 之间形成映射
+            for (Node* neighborsNode : temp -> neighbors) {
+                if (mp.find(neighborsNode) == mp.end()) {
+                    que.push(neighborsNode);
+                }
+            }
+        }
+        // 遍历所有节点 完成边的连接
+        map<Node*, Node*>::iterator iter;
+        for (iter = mp.begin(); iter != mp.end(); iter++) {
+            for (Node* neighborsNode : iter -> first ->neighbors){
+                iter -> second ->neighbors.push_back(mp.find(neighborsNode) -> second);
+            }
+        }
+        return mp.find(node) -> second;
     }
 };
 ```
