@@ -6176,7 +6176,6 @@ public:
 ## [131、分割回文串(medium)](#back)
 <div align=center><img src="https://github.com/FangChao1086/LeetCode_Solutions/blob/master/依赖文件/LeetCode131_分割字符串.png"></div>
 
-
 ```cpp
 给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串。
 返回 s 所有可能的分割方案。
