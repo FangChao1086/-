@@ -29,7 +29,7 @@
 |[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|[124、二叉树中的最大路径和(hard)](#二叉树中的最大路径和)|[125、验证字符串(easy)](#验证字符串)|
 ||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
-|[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|
+|[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|
 |[386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -6519,6 +6519,74 @@ public:
             res ^= (tmp % 3) << i;
         }
         return res;
+    }
+};
+```
+
+<span id="复制带随机指针的链表"></span>
+## [138、复制带随机指针的链表(medium)](#back)
+```cpp
+给定一个链表，每个节点包含一个额外增加的随机指针，该指针可以指向链表中的任何节点或空节点。
+要求返回这个链表的 深拷贝。 
+我们用一个由 n 个节点组成的链表来表示输入/输出中的链表。每个节点用一个 [val, random_index] 表示：
+val：一个表示 Node.val 的整数。
+random_index：随机指针指向的节点索引（范围从 0 到 n-1）；如果不指向任何节点，则为  null 。
+
+输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
+
+输入：head = [[1,1],[2,1]]
+输出：[[1,1],[2,1]]
+
+输入：head = [[3,null],[3,0],[3,null]]
+输出：[[3,null],[3,0],[3,null]]
+
+输入：head = []
+输出：[]
+解释：给定的链表为空（空指针），因此返回 null。
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if (head == NULL) return head;
+        Node* p = head;
+        while (p != nullptr) {
+            Node* new_ = new Node(p -> val);
+            new_ -> next = p -> next;
+            p -> next = new_;
+            p = new_ -> next;
+        }
+        p = head;
+        while (p != nullptr) {
+            Node* copy_next = p -> next;
+            if (p -> random) {
+                copy_next -> random = p -> random -> next;
+            }
+            p = copy_next -> next;
+        }
+        p = head;
+        Node* copy_ = p -> next;
+        while (p -> next != nullptr) {
+            Node* tmp = p -> next;
+            p -> next = tmp -> next;
+            p = tmp;
+        }
+        return copy_;
     }
 };
 ```
