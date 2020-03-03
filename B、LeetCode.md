@@ -29,7 +29,7 @@
 |[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|[124、二叉树中的最大路径和(hard)](#二叉树中的最大路径和)|[125、验证字符串(easy)](#验证字符串)|
 ||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
-|[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|
+|[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)|
 |[386、字典序排数](#字典序排数)  
 
 <span id="两数之和"></span>
@@ -6587,6 +6587,48 @@ public:
             p = tmp;
         }
         return copy_;
+    }
+};
+```
+
+<span id="单词拆分"></span>
+## [139、单词拆分](#back)
+```cpp
+给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
+说明：
+拆分时可以重复使用字典中的单词。
+你可以假设字典中没有重复的单词。
+
+输入: s = "leetcode", wordDict = ["leet", "code"]
+输出: true
+解释: 返回 true 因为 "leetcode" 可以被拆分成 "leet code"。
+
+输入: s = "applepenapple", wordDict = ["apple", "pen"]
+输出: true
+解释: 返回 true 因为 "applepenapple" 可以被拆分成 "apple pen apple"。
+     注意你可以重复使用字典中的单词。
+
+输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+输出: false
+
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        // 动态规划
+        vector<bool> dp(s.size() + 1, false);
+        dp[0] = true;
+        for (int i = 0; i <= s.size(); i++) {
+            for (auto word : wordDict) {
+                int word_size = word.size();
+                if (i - word_size >= 0) {
+                    // s 中 i - word_size 开始，长度为 word_size 的子串与 word 相比较，相同则返回 0
+                    int cur = s.compare(i - word_size, word_size, word);
+                    if (cur == 0 && dp[i - word_size]) 
+                        dp[i] = true;
+                }
+            }
+        }
+        return dp[s.size()];
     }
 };
 ```
