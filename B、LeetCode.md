@@ -30,7 +30,7 @@
 ||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
-|[141、环形链表(easy)](#环形链表)|
+|[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|
 ||[386、字典序排数](#字典序排数)  |
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 
@@ -6681,6 +6681,64 @@ public:
             if (p1 == p2) return true;
         }
         return false;
+    }
+};
+```
+
+<span id="环形链表2"></span>
+## [142、环形链表 II(medium)](#back)
+```cpp
+给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 
+如果 pos 是 -1，则在该链表中没有环。
+说明：不允许修改给定的链表。
+
+3 -> 2 -> 0 -> -4
+     ^          | 
+     | -------- V
+输入：head = [3,2,0,-4], pos = 1
+输出：tail connects to node index 1
+解释：链表中有一个环，其尾部连接到第二个节点。
+
+
+1 - 2
+^   |
+|---V
+输入：head = [1,2], pos = 0
+输出：tail connects to node index 0
+解释：链表中有一个环，其尾部连接到第一个节点。
+
+输入：head = [1], pos = -1
+输出：no cycle
+解释：链表中没有环。
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(head == NULL || head -> next == NULL) return NULL;
+        ListNode* p1 = head;  // 慢指针
+        ListNode* p2 = head;  // 快指针
+        while (p2 != NULL && p2 -> next != NULL) {
+            p1 = p1 -> next;
+            p2 = p2 -> next -> next;
+            if (p1 == p2) {
+                p2 = head;
+                while(p1 != p2) {
+                    p1 = p1 -> next;
+                    p2 = p2 -> next;
+                } 
+                return p1;
+            }
+        }
+        return NULL;
     }
 };
 ```
