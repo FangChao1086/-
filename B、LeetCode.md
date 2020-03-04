@@ -30,7 +30,8 @@
 ||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)|
-|[386、字典序排数](#字典序排数)  
+|[386、字典序排数](#字典序排数)  |
+||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 
 <span id="两数之和"></span>
 ## [1、两数之和](#back)
@@ -6658,6 +6659,74 @@ public:
             }
         }
         return res;
+    }
+};
+```
+
+<span id="腐烂的橘子"></span>
+## [994、腐烂的橘子(easy)](#back)
+
+<div align=center><img src="https://github.com/FangChao1086/LeetCode_Solutions/blob/master/依赖文件/LeetCode994_腐烂的橘子.png"></div>
+
+```cpp
+在给定的网格中，每个单元格可以有以下三个值之一：
+值 0 代表空单元格；
+值 1 代表新鲜橘子；
+值 2 代表腐烂的橘子。
+每分钟，任何与腐烂的橘子（在 4 个正方向上）相邻的新鲜橘子都会腐烂。
+返回直到单元格中没有新鲜橘子为止所必须经过的最小分钟数。如果不可能，返回 -1。
+
+输入：[[2,1,1],[1,1,0],[0,1,1]]
+输出：4
+
+输入：[[2,1,1],[0,1,1],[1,0,1]]
+输出：-1
+解释：左下角的橘子（第 2 行， 第 0 列）永远不会腐烂，因为腐烂只会发生在 4 个正向上。
+
+输入：[[0,2]]
+输出：0
+解释：因为 0 分钟时已经没有新鲜橘子了，所以答案就是 0 。
+ 
+提示：
+1 <= grid.length <= 10
+1 <= grid[0].length <= 10
+grid[i][j] 仅为 0、1 或 2
+
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        // bfs
+        int min_ = 0, count_one = 0; 
+        queue<pair<int, int>> que;
+        int rows = grid.size();
+        int cols = grid[0].size();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == 1) count_one++;
+                else if(grid[i][j] == 2)  que.push({i, j});
+            }
+        }
+        vector<pair<int, int>> dirs = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+        while (!que.empty()) {
+            int que_size = que.size();
+            bool rotten = 0;  // 记录是否发生变质
+            for (int i = 0; i < que_size; i++) {
+                auto tmp = que.front();
+                que.pop();
+                for(auto dir : dirs) {
+                    int new_i = dir.first + tmp.first;
+                    int new_j = dir.second + tmp.second;
+                    if (new_i >= 0 && new_i < rows && new_j >= 0 && new_j < cols && grid[new_i][new_j] == 1) {
+                        grid[new_i][new_j] = 2;
+                        que.push({new_i, new_j});   
+                        rotten = true;
+                        count_one--;
+                    }
+                }
+            }
+            if(rotten) min_++;
+        }
+        return count_one > 0 ? -1 : min_;
     }
 };
 ```
