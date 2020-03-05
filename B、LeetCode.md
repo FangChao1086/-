@@ -30,7 +30,7 @@
 ||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
-|[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|
+|[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|
 ||[386、字典序排数](#字典序排数)  |
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 
@@ -6739,6 +6739,72 @@ public:
             }
         }
         return NULL;
+    }
+};
+```
+
+<span id="重排链表"></span>
+## [143、重排链表(medium)](#back)
+```cpp
+给定一个单链表 L：L0→L1→…→Ln-1→Ln ，
+将其重新排列后变为： L0→Ln→L1→Ln-1→L2→Ln-2→…
+你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+
+给定链表 1->2->3->4, 重新排列为 1->4->2->3.
+
+给定链表 1->2->3->4->5, 重新排列为 1->5->2->4->3.
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverse(ListNode* head) {
+        ListNode* p_head = head;
+        ListNode* p_pre = NULL;
+        while (p_head) {
+            ListNode* tmp = p_head -> next;
+            p_head -> next = p_pre;
+            p_pre = p_head;
+            p_head = tmp;
+        }
+        return p_pre;
+    }
+
+    void reorderList(ListNode* head) {
+        // 找中间节点
+        // 中间节点反转
+        // 合并
+        if (head == NULL || head -> next == NULL) return ;
+        ListNode* p_slow = head;
+        ListNode* p_fast = head;
+        while (p_fast != NULL &&  p_fast -> next != NULL) {
+            p_slow = p_slow -> next;
+            p_fast = p_fast -> next ->next;
+        }
+        ListNode* p_mid = p_slow -> next;  // 中间节点之后的节点
+        p_slow -> next = NULL;  // 左边 head -...-p_slow - NULL;  p_mid(p_slow -> next) ...
+        p_mid = reverse(p_mid);
+        ListNode* left = head;
+        while (left -> next != NULL && p_mid != NULL) {
+            // 保存下一个节点
+            ListNode* leftTemp = left -> next;
+            ListNode* rightTemp = p_mid -> next;
+
+            // 左 1->2->3 右 5->4
+            // 左 1->5->2->3
+            left -> next = p_mid;
+            p_mid -> next = leftTemp;
+            
+            // 左 2->3 右 4
+            left = leftTemp;
+            p_mid = rightTemp;
+        }
     }
 };
 ```
