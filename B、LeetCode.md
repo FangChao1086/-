@@ -30,7 +30,7 @@
 ||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
-|[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|
+|[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
 ||[386、字典序排数](#字典序排数)  |
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 |||[1103、分糖果 II(easy)](#分糖果2)|||
@@ -6855,6 +6855,63 @@ public:
     }
 
     vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> res;
+        if (root == NULL) return res;
+        // recursive(root, res);  // 递归
+        iteration(root, res);  // 迭代
+        return res;
+    }
+};
+```
+
+<span id="二叉树的后序遍历"></span>
+## [145、二叉树的后序遍历(hard)](#back)
+```cpp
+给定一个二叉树，返回它的 后序 遍历。
+
+输入: [1,null,2,3]  
+   1
+    \
+     2
+    /
+   3 
+输出: [3,2,1]
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void recursive(TreeNode* root, vector<int>& res) {
+        if(root == NULL) return ;
+        recursive(root -> left, res);
+        recursive(root -> right, res);
+        res.push_back(root -> val);
+    }
+
+    void iteration(TreeNode* root, vector<int>& res) {
+        stack<TreeNode*> stk1, stk2;
+        stk1.push(root);
+        while (!stk1.empty()) {
+            TreeNode* tmp = stk1.top();
+            stk1.pop();
+            stk2.push(tmp);
+            if (tmp -> left) stk1.push(tmp -> left);
+            if (tmp -> right) stk1.push(tmp -> right);
+        }
+        while(!stk2.empty()) {
+            res.push_back(stk2.top() -> val);
+            stk2.pop();
+        }
+    }
+
+    vector<int> postorderTraversal(TreeNode* root) {
         vector<int> res;
         if (root == NULL) return res;
         // recursive(root, res);  // 递归
