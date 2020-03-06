@@ -48,9 +48,14 @@ vector<int>(res.rbegin(), res.rend());
 ```
 
 ### 数据类型转换
-* char转string
-  ```cpp
-  // 假设mp[0]是char;
-  string str;
-  str.push_back(mp[0])  // str变成了string类型
-  ```
+```cpp
+// char 转 string
+// 假设mp[0]是char;
+string str;
+str.push_back(mp[0]);
+
+// string 转 int
+string str = "123";
+int n = atoi(str.c_str());  // 其中 .c_str() 必须要有
+cout << n;  // 123
+```
