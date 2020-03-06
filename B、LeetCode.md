@@ -31,7 +31,7 @@
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
 |[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
-|[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)|[148、排序链表(medium)](#排序链表)|||
+|[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)|[148、排序链表(medium)](#排序链表)|[149、直线上最多的点数(hard)](#直线上最多的点数)||
 ||[386、字典序排数](#字典序排数)  |
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 |||[1103、分糖果 II(easy)](#分糖果2)|||
@@ -7107,6 +7107,63 @@ public:
 };
 ```
 
+<span id="直线上最多的点数"></span>
+## [149、直线上最多的点数(hard)](#back)
+```cpp
+给定一个二维平面，平面上有 n 个点，求最多有多少个点在同一条直线上。
+
+输入: [[1,1],[2,2],[3,3]]
+输出: 3
+解释:
+^
+|
+|        o
+|     o
+|  o  
++------------->
+0  1  2  3  4
+
+输入: [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]
+输出: 4
+解释:
+^
+|
+|  o
+|     o        o
+|        o
+|  o        o
++------------------->
+0  1  2  3  4  5  6
+
+class Solution {
+public:
+    int maxPoints(vector<vector<int>>& points) {
+        // 暴力解
+        int size_ = points.size();
+        if (size_ <= 2) return size_;
+        int num_oneline = 0, max_num = 0;
+        for (int i = 0; i < size_; i++) {
+            int x1 = points[i][0];
+            int y1 = points[i][1];
+            for (int j = i + 1; j < size_; j++) {
+                if(points[j][0] == x1 && points[j][1] == y1) continue; 
+                int x2 = points[j][0];
+                int y2 = points[j][1];
+                num_oneline = 0;
+                for(int z = 0; z < size_; z++) {
+                    if(points[z][0] == x1 && points[z][1] == y1)  num_oneline++;
+                    else if(points[z][0] == x2 && points[z][1] == y2)  num_oneline++;
+                    else if (long(points[z][1] - y1) * (x2 - x1) == long(points[z][0] - x1) * (y2 - y1)) num_oneline++;
+                }
+                max_num = max(max_num, num_oneline);
+            }
+        }
+        if(max_num == 0) return points.size();  // 解决全是一个点的问题
+        return max_num;
+    }
+};
+```
+	
 <span id="字典序排数"></span>
 ## [386、字典序排数](#back)
 ```
