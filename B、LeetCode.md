@@ -31,7 +31,7 @@
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
 |[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
-|[146、LRU缓存机制(medium)](#LRU缓存机制)|||||
+|[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)||||
 ||[386、字典序排数](#字典序排数)  |
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 |||[1103、分糖果 II(easy)](#分糖果2)|||
@@ -6994,6 +6994,64 @@ public:
  * int param_1 = obj->get(key);
  * obj->put(key,value);
  */
+```
+
+<span id="对链表进行插入排序"></span>
+## [147、对链表进行插入排序(medium)](#back)
+
+<div align=center><img src="https://github.com/FangChao1086/LeetCode_Solutions/blob/master/依赖文件/LeetCode147_对链表进行插入排序.gif"></div>
+
+```cpp
+对链表进行插入排序。
+
+插入排序的动画演示如上。从第一个元素开始，该链表可以被认为已经部分排序（用黑色表示）。
+每次迭代时，从输入数据中移除一个元素（用红色表示），并原地将其插入到已排好序的链表中。
+插入排序算法：
+插入排序是迭代的，每次只移动一个元素，直到所有元素可以形成一个有序的输出列表。
+每次迭代中，插入排序只从输入数据中移除一个待排序的元素，找到它在序列中适当的位置，并将其插入。
+重复直到所有输入数据插入完为止。
+
+输入: 4->2->1->3
+输出: 1->2->3->4
+
+输入: -1->5->3->4->0
+输出: -1->0->3->4->5
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if (head == nullptr || head -> next == nullptr) return head;
+        ListNode* pDummy = new ListNode(0);
+        pDummy -> next = head;
+        ListNode* p_pre = head;
+        ListNode* node = head -> next;
+        while (node) {
+            if (node -> val < p_pre -> val) {
+                ListNode* temp = pDummy;
+                while (temp -> next ->val < node -> val) {
+                    temp = temp -> next;
+                }
+                p_pre -> next = node -> next;
+                node -> next = temp -> next;
+                temp -> next = node;
+                node = p_pre -> next;
+            }
+            else {
+                p_pre = p_pre -> next;
+                node = node -> next;
+            }
+        }
+        return pDummy -> next;
+    }
+};
 ```
 
 <span id="字典序排数"></span>
