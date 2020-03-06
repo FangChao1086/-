@@ -31,7 +31,7 @@
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
 |[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
-|[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)||||
+|[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)|[148、排序链表(medium)](#排序链表)|||
 ||[386、字典序排数](#字典序排数)  |
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 |||[1103、分糖果 II(easy)](#分糖果2)|||
@@ -7050,6 +7050,59 @@ public:
             }
         }
         return pDummy -> next;
+    }
+};
+```
+
+<span id="排序链表"></span>
+## [148、排序链表(medium)](#back)
+```cpp
+在 O(nlogn) 时间复杂度和常数级空间复杂度下，对链表进行排序。
+
+输入: 4->2->1->3
+输出: 1->2->3->4
+
+输入: -1->5->3->4->0
+输出: -1->0->3->4->5
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        // 归并排序
+        if (head == nullptr || head -> next == nullptr) return head;
+        ListNode* p_fast = head -> next;  // 注意这里的 p_fast 不是 head, 而是 head -> next
+        ListNode* p_slow = head;
+        while (p_fast != nullptr && p_fast -> next != nullptr) {
+            p_slow = p_slow -> next;
+            p_fast = p_fast -> next;
+        }
+        ListNode* tmp = p_slow -> next;
+        p_slow -> next = nullptr;
+        ListNode* left = sortList(head);  // 左边归并后正序链表
+        ListNode* right = sortList(tmp);  // 右边归并后正序链表
+        ListNode* p_dummy = new ListNode(0);
+        ListNode* p_new = p_dummy;
+        while(left != nullptr && right != nullptr) {
+            if (left -> val < right -> val) {
+                p_new -> next = left;
+                left = left -> next;
+            }
+            else {
+                p_new -> next = right;
+                right = right -> next;
+            }
+            p_new = p_new -> next;
+        }
+        p_new -> next = left != nullptr ? left : right;
+        return p_dummy -> next;
     }
 };
 ```
