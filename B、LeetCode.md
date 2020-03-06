@@ -31,6 +31,7 @@
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
 |[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
+|[146、LRU缓存机制(medium)](#LRU缓存机制)|||||
 ||[386、字典序排数](#字典序排数)  |
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 |||[1103、分糖果 II(easy)](#分糖果2)|||
@@ -6919,6 +6920,80 @@ public:
         return res;
     }
 };
+```
+
+<span id="LRU缓存机制"></span>
+## [146、LRU缓存机制(medium)](#back)
+```cpp
+运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制。它应该支持以下操作： 获取数据 get 和 写入数据 put 。
+获取数据 get(key) - 如果密钥 (key) 存在于缓存中，则获取密钥的值（总是正数），否则返回 -1。
+写入数据 put(key, value) - 如果密钥不存在，则写入其数据值。当缓存容量达到上限时，它应该在写入新数据之前删除最近最少使用的数据值，从而为新的数据值留出空间。
+进阶:
+你是否可以在 O(1) 时间复杂度内完成这两种操作？
+
+LRUCache cache = new LRUCache( 2 /* 缓存容量 */ );
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // 返回  1
+cache.put(3, 3);    // 该操作会使得密钥 2 作废
+cache.get(2);       // 返回 -1 (未找到)
+cache.put(4, 4);    // 该操作会使得密钥 1 作废
+cache.get(1);       // 返回 -1 (未找到)
+cache.get(3);       // 返回  3
+cache.get(4);       // 返回  4
+
+class LRUCache {
+private:
+    int cap;
+    // 双链表：存储 (key, value) 元组
+    list<pair<int , int>> cache;
+    // 哈希表：key 映射到 (key, value) 在 cache 中的位置
+    unordered_map<int, list<pair<int, int>>::iterator> un_mp;
+public:
+    LRUCache(int capacity) {
+        this -> cap = capacity;
+    }
+    
+    int get(int key) {
+        auto it = un_mp.find(key);
+        if (it == un_mp.end()) return -1;  // 访问的 key 不存在
+        // 将 (key, value) 放到队头
+        pair<int, int> kv = *un_mp[key];
+        cache.erase(un_mp[key]);
+        cache.push_front(kv);
+        // 更新 (key, value) 在cache中的位置
+        un_mp[key] = cache.begin();
+        return kv.second;
+    }
+    
+    void put(int key, int value) {
+        auto it = un_mp.find(key);
+        if (it == un_mp.end()) {  // 如果 key 不存在
+            if (cache.size() == cap) {  // cache 已满
+                auto last_pair = cache.back();
+                int last_key = last_pair.first;
+                un_mp.erase(last_key);
+                cache.pop_back();
+            }
+            // 没满
+            cache.push_front(make_pair(key, value));
+            un_mp[key] = cache.begin();
+        }
+        else {
+            // 如果 key 存在，更改value并换到队头
+            cache.erase(un_mp[key]);
+            cache.push_front(make_pair(key, value));
+            un_mp[key] = cache.begin();
+        }
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
 ```
 
 <span id="字典序排数"></span>
