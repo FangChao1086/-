@@ -32,6 +32,7 @@
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
 |[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
 |[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)|[148、排序链表(medium)](#排序链表)|[149、直线上最多的点数(hard)](#直线上最多的点数)|[150、逆波兰表达式求值(medium)](#逆波兰表达式求值)|
+||[322、零钱兑换(medium)](#零钱兑换)||||
 ||[386、字典序排数](#字典序排数)  |
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 |||[1103、分糖果 II(easy)](#分糖果2)|||
@@ -7232,6 +7233,39 @@ public:
             }
         }
         return stk.top();
+    }
+};
+```
+
+<span id="零钱兑换"></span>
+## [322、零钱兑换](#back)
+```cpp
+给定不同面额的硬币 coins 和一个总金额 amount。
+编写一个函数来计算可以凑成总金额所需的最少的硬币个数。
+如果没有任何一种硬币组合能组成总金额，返回 -1。
+
+输入: coins = [1, 2, 5], amount = 11
+输出: 3 
+解释: 11 = 5 + 5 + 1
+
+输入: coins = [2], amount = 3
+输出: -1
+
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        // dp[i] : 组成金额 i 所需要的最少硬币数目
+        // dp[i] = min ( dp[i - coins[j]] ) + 1; coins[j] 为硬币数组中的单个硬币元素
+        int max_ = amount + 1;
+        vector<int> dp(amount + 1,  max_); 
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < coins.size(); j++) {
+                if (coins[j] <= i)
+                    dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+            }
+        }
+        return dp[amount] == max_ ? -1 : dp[amount];
     }
 };
 ```
