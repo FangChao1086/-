@@ -12,6 +12,7 @@
   * [动态规划](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/专题/动态规划.md)
   * [回溯](https://github.com/FangChao1086/data_structures_and_algorithms/blob/master/专题/回溯.md)
   * [栈与队列](https://github.com/FangChao1086/data_structures_and_algorithms/blob/master/专题/栈与队列.md)
+  * [数位问题](https://github.com/FangChao1086/data_structures_and_algorithms/blob/master/专题/数位问题.md)
   * [并查集](https://blog.csdn.net/weixin_43824059/article/details/88535734)
 
 ## 基础
