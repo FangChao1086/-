@@ -5771,21 +5771,30 @@ public:
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
+		// 方法1
         if (prices.size() == 0) return 0;
         int min_ = prices[0], max_ = prices[0], max_all = 0;
         for (int i = 1;i < prices.size(); i++) {
-            if (prices[i] < min_) {
+            if (prices[i] < min_) {  // 当出现最小时, min_ 和 max_ 重置
                 min_ = prices[i];
                 max_ = prices[i];
             }
-            if (prices[i] > max_) {
+            if (prices[i] > max_) {  // 当之后出现的值大于 max_ , 需要更新 max_
                 max_ = prices[i];
             }
             max_all = max(max_ - min_, max_all);
         }
         return max_all;
-
-
+		
+		// 方法2
+		// 最大收益 = 每个当前的卖出值 - 最小值
+		// if(prices.size() == 0) return 0;
+        // int min_ = prices[0], max_profit = 0;
+        // for (int i = 1; i < prices.size(); i++) {
+        //     max_profit = max(max_profit, prices[i] - min_);
+        //     min_ = min(prices[i], min_);
+        // }
+        // return max_profit;
     }
 };
 ```
