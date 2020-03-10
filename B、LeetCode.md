@@ -32,6 +32,7 @@
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
 |[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
 |[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)|[148、排序链表(medium)](#排序链表)|[149、直线上最多的点数(hard)](#直线上最多的点数)|[150、逆波兰表达式求值(medium)](#逆波兰表达式求值)|
+|[206、反转链表(easy)](#反转链表)||
 ||[322、零钱兑换(medium)](#零钱兑换)||||
 ||[386、字典序排数](#字典序排数)  |
 |||[543、二叉树的直径(easy)](#二叉树的直径)|
@@ -7243,6 +7244,50 @@ public:
             }
         }
         return stk.top();
+    }
+};
+```
+
+<span id="反转链表"></span>
+## [206、反转链表(easy)](#back)
+```cpp
+反转一个单链表。
+
+输入: 1->2->3->4->5->NULL
+输出: 5->4->3->2->1->NULL
+进阶:
+你可以迭代或递归地反转链表。你能否用两种方法解决这道题？
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* recur_pre = nullptr;  // 递归使用
+    ListNode* reverseList(ListNode* head) {
+        // // 非递归
+        // ListNode* cur = head;
+        // ListNode* pre = nullptr;
+        // while (cur != nullptr) {
+        //     ListNode* tmp = cur -> next;
+        //     cur -> next = pre;
+        //     pre = cur;
+        //     cur = tmp; 
+        // }
+        // return pre;
+
+        // 递归
+        if (head == nullptr) return recur_pre;
+        ListNode* tmp = head -> next;
+        head -> next = recur_pre;
+        recur_pre = head;
+        head = tmp;
+        return reverseList(head);
     }
 };
 ```
