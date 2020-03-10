@@ -763,7 +763,7 @@ class Solution {
 public:
     ListNode* recur_pre = nullptr;  // 递归使用
     ListNode* ReverseList(ListNode* pHead) {
-	    // // 非递归（较多使用）
+	// // 非递归（容易理解）
         // ListNode* pNew = pHead;
         // ListNode* pPre = NULL;
         // while(pNew){
@@ -773,8 +773,8 @@ public:
         //     pNew = pNext;
         // }
         // return pPre;
-		// 递归
-		if (head == nullptr) return recur_pre;
+	// 递归
+	if (head == nullptr) return recur_pre;
         ListNode* tmp = head -> next;
         head -> next = recur_pre;
         recur_pre = head;
