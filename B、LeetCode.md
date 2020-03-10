@@ -7270,7 +7270,7 @@ class Solution {
 public:
     ListNode* recur_pre = nullptr;  // 递归使用
     ListNode* reverseList(ListNode* head) {
-        // // 非递归
+        // // 非递归（较多使用）
         // ListNode* cur = head;
         // ListNode* pre = nullptr;
         // while (cur != nullptr) {

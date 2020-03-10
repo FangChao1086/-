@@ -761,16 +761,25 @@ struct ListNode {
 };*/
 class Solution {
 public:
+    ListNode* recur_pre = nullptr;  // 递归使用
     ListNode* ReverseList(ListNode* pHead) {
-        ListNode* pNew = pHead;
-        ListNode* pPre = NULL;
-        while(pNew){
-            ListNode* pNext = pNew -> next;
-            pNew -> next = pPre;
-            pPre = pNew;
-            pNew = pNext;
-        }
-        return pPre;
+	    // // 非递归（较多使用）
+        // ListNode* pNew = pHead;
+        // ListNode* pPre = NULL;
+        // while(pNew){
+        //     ListNode* pNext = pNew -> next;
+        //     pNew -> next = pPre;
+        //     pPre = pNew;
+        //     pNew = pNext;
+        // }
+        // return pPre;
+		// 递归
+		if (head == nullptr) return recur_pre;
+        ListNode* tmp = head -> next;
+        head -> next = recur_pre;
+        recur_pre = head;
+        head = tmp;
+        return reverseList(head);
     }
 };
 ```
