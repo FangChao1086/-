@@ -32,6 +32,7 @@
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
 |[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
 |[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)|[148、排序链表(medium)](#排序链表)|[149、直线上最多的点数(hard)](#直线上最多的点数)|[150、逆波兰表达式求值(medium)](#逆波兰表达式求值)|
+|[151、翻转字符串里的单词(medium)](#翻转字符串里的单词)||
 |[206、反转链表(easy)](#反转链表)||
 ||[322、零钱兑换(medium)](#零钱兑换)||||
 ||[386、字典序排数](#字典序排数)  |
@@ -7245,6 +7246,61 @@ public:
             }
         }
         return stk.top();
+    }
+};
+```
+
+<span id="翻转字符串里的单词"></span>
+## [151、翻转字符串里的单词(medium)](#back)
+```cpp
+给定一个字符串，逐个翻转字符串中的每个单词。
+
+输入: "the sky is blue"
+输出: "blue is sky the"
+
+输入: "  hello world!  "
+输出: "world! hello"
+解释: 输入字符串可以在前面或者后面包含多余的空格，但是反转后的字符不能包括。
+
+输入: "a good   example"
+输出: "example good a"
+解释: 如果两个单词间有多余的空格，将反转后单词间的空格减少到只含一个。
+ 
+说明：
+无空格字符构成一个单词。
+输入字符串可以在前面或者后面包含多余的空格，但是反转后的字符不能包括。
+如果两个单词间有多余的空格，将反转后单词间的空格减少到只含一个。
+
+class Solution {
+public:
+    void reverse(string& s, int left, int right) {
+        while(left < right) {
+            swap(s[left], s[right]);
+            left++;
+            right--;
+        }
+    }
+
+    string reverseWords(string s) {
+        int l_= 0, r_ = s.size() - 1;
+        while(s[l_] == ' ') l_++;
+        while(s[r_] == ' ') r_--;
+        s = s.substr(l_, r_ - l_ + 1);  // 去除首尾空格
+        reverse(s, 0, s.size() - 1);
+        s += ' ';
+        int index = 0;
+        string s_new;
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == ' ') {
+                reverse(s, index, i - 1);
+                s_new += s.substr(index, i - index) + ' ';
+                while(s[i] == ' '){  // 当中间分隔出现多个空格，反转后只需要一个空格
+                    i++;
+                }
+                index = i;
+            }
+        }
+        return s_new.substr(0, s_new.size() - 1);
     }
 };
 ```
