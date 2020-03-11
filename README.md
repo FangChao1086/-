@@ -49,7 +49,7 @@ vector<int> res(input.begin(), input.begin() + k);  // 方法3；input是已经�
 vector<int>(res.rbegin(), res.rend()); 
 
 // 累加 vector 中的值
-int sum = accumulate(A.begin, A.end(), 0); 其中 A 是vector， 0是代表累加的初值为0；
+int sum = accumulate(A.begin(), A.end(), 0); 其中 A 是vector， 0是代表累加的初值为0；
 ```
 
 ### 数据类型转换
