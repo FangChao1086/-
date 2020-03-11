@@ -148,7 +148,7 @@ head -10 file.txt | tail -1
 # 方法1
 # awk 'NR==10' file.txt
 # 方法2
-cat file.txt | head -n 10 | tail -n +10
+# cat file.txt | head -n 10 | tail -n +10
 # 方法3
 cat file.txt | tail -n +10 | head -n 1
 ```
