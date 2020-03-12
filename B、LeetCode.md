@@ -39,6 +39,7 @@
 |||[543、二叉树的直径(easy)](#二叉树的直径)|
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 |||[1013、将数组分成和相等的三个部分(easy)](#将数组分成和相等的三个部分)|||
+|[1071、字符串的最大公因子(easy)](#字符串的最大公因子)||
 |||[1103、分糖果 II(easy)](#分糖果2)|||
 
 <span id="两数之和"></span>
@@ -7562,6 +7563,43 @@ public:
             if(count_ == 3) return true;
         }
         return false;
+    }
+};
+```
+
+<span id="字符串的最大公因子"></span>
+## [1071、字符串的最大公因子(easy)](#back)
+```cpp
+对于字符串 S 和 T，只有在 S = T + ... + T（T 与自身连接 1 次或多次）时，我们才认定 “T 能除尽 S”。
+返回最长字符串 X，要求满足 X 能除尽 str1 且 X 能除尽 str2。
+
+输入：str1 = "ABCABC", str2 = "ABC"
+输出："ABC"
+
+输入：str1 = "ABABAB", str2 = "ABAB"
+输出："AB"
+
+输入：str1 = "LEET", str2 = "CODE"
+输出：""
+
+class Solution {
+public:
+    // 求最大公约数， 辗转相除法
+    int gcd(int x, int y) {
+        int z = y;
+        while (x % y != 0) {
+            z = x % y;
+            x = y;
+            y = z;
+        }
+        return z;
+    }
+
+    string gcdOfStrings(string str1, string str2) {
+        // 数学方法
+        // 当 str1 + str2 == str2 + str1 时必然存在，不相等时则不存在
+        if (str1 + str2 != str2 + str1) return "";
+        return str1.substr(0, gcd(str1.size(), str2.size()));
     }
 };
 ```
