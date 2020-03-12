@@ -7323,7 +7323,8 @@ class Solution {
 public:
     int maxProduct(vector<int>& nums) {
         // 动态规划
-        // i_max : 当前位置是乘积最大值
+        // i_max : 当前位置乘积的最大值
+	// i_min : 为解决数字中含有的负数
         int max_ = INT_MIN, i_max = 1, i_min = 1;
         for (int i = 0; i < nums.size(); i++) {
             if (nums[i] < 0) {
