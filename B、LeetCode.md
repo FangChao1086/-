@@ -32,7 +32,7 @@
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
 |[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
 |[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)|[148、排序链表(medium)](#排序链表)|[149、直线上最多的点数(hard)](#直线上最多的点数)|[150、逆波兰表达式求值(medium)](#逆波兰表达式求值)|
-|[151、翻转字符串里的单词(medium)](#翻转字符串里的单词)|[152、乘积最大子序列(medium)](#乘积最大子序列)||
+|[151、翻转字符串里的单词(medium)](#翻转字符串里的单词)|[152、乘积最大子序列(medium)](#乘积最大子序列)|||[155、最小栈(easy)](#最小栈)|
 ||||[169、多数元素(easy)](#多数元素)||
 |[206、反转链表(easy)](#反转链表)||
 ||[322、零钱兑换(medium)](#零钱兑换)||||
@@ -7340,6 +7340,68 @@ public:
         return max_;
     }
 };
+```
+
+<span id="最小栈"></span>
+## [155、最小栈(easy)](#back)
+```cpp
+设计一个支持 push，pop，top 操作，并能在常数时间内检索到最小元素的栈。
+push(x) -- 将元素 x 推入栈中。
+pop() -- 删除栈顶的元素。
+top() -- 获取栈顶元素。
+getMin() -- 检索栈中的最小元素。
+
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> 返回 -3.
+minStack.pop();
+minStack.top();      --> 返回 0.
+minStack.getMin();   --> 返回 -2.
+
+class MinStack {
+public:
+    /** initialize your data structure here. */
+    MinStack() {
+
+    }
+    
+    void push(int x) {
+        stk.push(x);
+        if(m_stk.empty() || m_stk.top() > x) {
+            m_stk.push(x);
+        }
+        else m_stk.push(m_stk.top());
+
+    }
+    
+    void pop() {
+        stk.pop();
+        m_stk.pop();
+    }
+    
+    int top() {
+        return stk.top();
+
+    }
+    
+    int getMin() {
+        return m_stk.top();
+    }
+private:
+    stack<int> stk;
+    stack<int> m_stk;
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(x);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
 ```
 
 <span id="多数元素"></span>
