@@ -34,6 +34,7 @@
 |[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)|[148、排序链表(medium)](#排序链表)|[149、直线上最多的点数(hard)](#直线上最多的点数)|[150、逆波兰表达式求值(medium)](#逆波兰表达式求值)|
 |[151、翻转字符串里的单词(medium)](#翻转字符串里的单词)|[152、乘积最大子序列(medium)](#乘积最大子序列)|||[155、最小栈(easy)](#最小栈)|
 ||||[169、多数元素(easy)](#多数元素)||
+|||||[160、相交链表(#easy)](相交链表)|
 |[206、反转链表(easy)](#反转链表)||
 |||||[300、最长上升子序列(medium)](#最长上升子序列)|
 ||[322、零钱兑换(medium)](#零钱兑换)||||
@@ -7403,6 +7404,34 @@ private:
  * int param_3 = obj->top();
  * int param_4 = obj->getMin();
  */
+```
+
+<span id="相交链表"></span>
+## [160、相交链表(easy)](#back)
+```cpp
+编写一个程序，找到两个单链表相交的起始节点。
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        // 双指针
+        ListNode* p_headA = headA;
+        ListNode* p_headB = headB;
+        while (p_headA != p_headB) {
+            p_headA = p_headA == nullptr ? headB : p_headA -> next;
+            p_headB = p_headB == nullptr ? headA : p_headB -> next;
+        } 
+        return p_headA;
+    }
+};
 ```
 
 <span id="多数元素"></span>
