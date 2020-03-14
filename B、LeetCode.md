@@ -35,6 +35,7 @@
 |[151、翻转字符串里的单词(medium)](#翻转字符串里的单词)|[152、乘积最大子序列(medium)](#乘积最大子序列)|||[155、最小栈(easy)](#最小栈)|
 ||||[169、多数元素(easy)](#多数元素)||
 |[206、反转链表(easy)](#反转链表)||
+|||||[300、最长上升子序列(medium)](#最长上升子序列)|
 ||[322、零钱兑换(medium)](#零钱兑换)||||
 ||[386、字典序排数](#字典序排数)  |
 |||[543、二叉树的直径(easy)](#二叉树的直径)|
@@ -7466,6 +7467,44 @@ public:
         recur_pre = head;
         head = tmp;
         return reverseList(head);
+    }
+};
+```
+
+<span id="最长上升子序列"></span>
+## [300、最长上升子序列(medium)](#back)
+```cpp
+给定一个无序的整数数组，找到其中最长上升子序列的长度。
+
+输入: [10,9,2,5,3,7,101,18]
+输出: 4 
+解释: 最长的上升子序列是 [2,3,7,101]，它的长度是 4。
+说明:
+可能会有多种最长上升子序列的组合，你只需要输出对应的长度即可。
+你算法的时间复杂度应该为 O(n2) 。
+进阶: 你能将算法的时间复杂度降低到 O(n log n) 吗?
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        // 动态规划
+        // dp[i] = 以 i 位置中的数结尾时上升子序列的长度
+        if(nums.size() <= 1) return nums.size();
+        vector<int> dp(nums.size(), 1);
+        for (int i = 1; i < nums.size(); i++) {
+            int max_ = dp[i];
+            for (int j = 0; j < i; j++) {
+                if(nums[j] < nums[i] && max_ <= dp[j]) {
+                    max_ = dp[j];
+                    dp[i] = dp[j] + 1;
+                }
+            }
+        }
+        int dp_len = dp[0];
+        for(auto a : dp) {
+            dp_len = max(a, dp_len);
+        }
+        return dp_len;
     }
 };
 ```
