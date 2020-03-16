@@ -45,7 +45,7 @@
 |||[1013、将数组分成和相等的三个部分(easy)](#将数组分成和相等的三个部分)|||
 |[1071、字符串的最大公因子(easy)](#字符串的最大公因子)||
 |||[1103、分糖果 II(easy)](#分糖果2)|||
-
+||||[1394、字符串压缩(easy)](#字符串压缩)||
 <span id="两数之和"></span>
 ## [1、两数之和](#back)
 ```cpp
@@ -7885,6 +7885,38 @@ public:
             i++;
         }
         return res;
+    }
+};
+```
+
+<span id="字符串压缩"></span>
+## [1394、字符串压缩(easy)](#back)
+```cpp
+字符串压缩。利用字符重复出现的次数，编写一种方法，实现基本的字符串压缩功能。比如，字符串aabcccccaaa会变为a2b1c5a3。若“压缩”后的字符串没有变短，则返回原先的字符串。你可以假设字符串中只包含大小写英文字母（a至z）。
+
+ 输入："aabcccccaaa"
+ 输出："a2b1c5a3"
+
+ 输入："abbccd"
+ 输出："abbccd"
+ 解释："abbccd"压缩后为"a1b2c2d1"，比原字符串长度更长。
+
+class Solution {
+public:
+    string compressString(string S) {
+        char c_ = S[0];
+        int count_ = 1;
+        string new_s;
+        for (int i = 1; i < S.size(); i++) {
+            if (c_ == S[i]) count_++;
+            else {
+                new_s += c_ + to_string(count_);  
+                c_ = S[i];
+                count_ = 1;
+            }
+        }
+        new_s += c_ + to_string(count_);
+        return new_s.size() < S.size() ? new_s : S;
     }
 };
 ```
