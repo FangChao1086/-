@@ -45,6 +45,7 @@
 |||[1013、将数组分成和相等的三个部分(easy)](#将数组分成和相等的三个部分)|||
 |[1071、字符串的最大公因子(easy)](#字符串的最大公因子)||
 |||[1103、分糖果 II(easy)](#分糖果2)|||
+|||||[1160、拼写单词(easy)](#拼写单词)|
 ||||[1394、字符串压缩(easy)](#字符串压缩)||
 <span id="两数之和"></span>
 ## [1、两数之和](#back)
@@ -7885,6 +7886,60 @@ public:
             i++;
         }
         return res;
+    }
+};
+```
+
+<span id="拼写单词"></span>
+## [1160、拼写单词(easy)](#back)
+```cpp
+给你一份『词汇表』（字符串数组） words 和一张『字母表』（字符串） chars。
+假如你可以用 chars 中的『字母』（字符）拼写出 words 中的某个『单词』（字符串），那么我们就认为你掌握了这个单词。
+注意：每次拼写时，chars 中的每个字母都只能用一次。
+返回词汇表 words 中你掌握的所有单词的长度之和。
+
+输入：words = ["cat","bt","hat","tree"], chars = "atach"
+输出：6
+解释： 
+可以形成字符串 "cat" 和 "hat"，所以答案是 3 + 3 = 6。
+
+输入：words = ["hello","world","leetcode"], chars = "welldonehoneyr"
+输出：10
+解释：
+可以形成字符串 "hello" 和 "world"，所以答案是 5 + 5 = 10。
+ 
+提示：
+1 <= words.length <= 1000
+1 <= words[i].length, chars.length <= 100
+所有字符串中都仅包含小写英文字母
+
+class Solution {
+public:
+    int countCharacters(vector<string>& words, string chars) {
+        int len_ = words.size();
+        int all_ = 0;
+        unordered_map<char, int> mp_;
+        for (auto a : chars) {
+            mp_[a]++;
+        }        
+        for (int i = 0; i < len_; i++) {
+            int flag = 1;
+            int word_size = words[i].size();
+            unordered_map<char, int> mp_word;
+            for (auto b : words[i]) {
+                mp_word[b]++;
+            }
+            for (auto b : words[i]) {
+                if (mp_word[b] > mp_[b]) {
+                    flag = 0;
+                    break;
+                }
+            }
+            if(flag) {
+                all_ += word_size;
+            }
+        }
+        return all_;
     }
 };
 ```
