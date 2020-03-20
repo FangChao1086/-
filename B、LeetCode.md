@@ -49,6 +49,7 @@
 |||[1103、分糖果 II(easy)](#分糖果2)|||
 |||||[1160、拼写单词(easy)](#拼写单词)|
 ||||[1394、字符串压缩(easy)](#字符串压缩)||
+|||[1538、最小的k个数(easy)](#最小的k个数)|||
 <span id="两数之和"></span>
 ## [1、两数之和](#back)
 ```cpp
@@ -8031,6 +8032,41 @@ public:
         }
         new_s += c_ + to_string(count_);
         return new_s.size() < S.size() ? new_s : S;
+    }
+};
+```
+
+<span id="最小的k个数"></span>
+## [1538、最小的k个数(easy)](#back)
+```cpp
+输入整数数组 arr ，找出其中最小的 k 个数。
+例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。
+
+输入：arr = [3,2,1], k = 2
+输出：[1,2] 或者 [2,1]
+
+输入：arr = [0,1,2,1], k = 1
+输出：[0]
+
+class Solution {
+public:
+    vector<int> getLeastNumbers(vector<int>& arr, int k) {
+        // 最大堆实现
+        // 时间复杂度：nlogk
+        // 空间复杂度： k
+        priority_queue<int> heap;
+        for(auto a : arr) {
+            heap.push(a);
+            if (heap.size() > k) {
+                heap.pop();
+            }
+        }
+        vector<int> res;
+        for(int i = 0; i < k; i++) {
+            res.push_back(heap.top());
+            heap.pop();
+        }
+        return res;
     }
 };
 ```
