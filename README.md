@@ -3,7 +3,6 @@
 * [LeetCode](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/B、LeetCode.md)
 * [shell](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/C、shell.md)
 * [多线程](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/D、多线程.md)
-* [面试算法题](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/E、面试算法题.md)
 * [专题](https://github.com/FangChao1086/Data_structures_and_algorithms/tree/master/专题)
   * [数组](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/专题/数组.md)  
   * [排序](https://github.com/FangChao1086/Data_structures_and_algorithms/blob/master/专题/排序.md)
