@@ -8050,21 +8050,60 @@ public:
 
 class Solution {
 public:
-    vector<int> getLeastNumbers(vector<int>& arr, int k) {
-        // 最大堆实现
-        // 时间复杂度：nlogk
-        // 空间复杂度： k
-        priority_queue<int> heap;
-        for(auto a : arr) {
-            heap.push(a);
-            if (heap.size() > k) {
-                heap.pop();
+    int partition(vector<int>& nums, int l, int r) {
+        int pivot = nums[r];
+        int i = l - 1;
+        for (int j = l; j < r; j++) {
+            if (nums[j] <= pivot) {
+                i = i + 1;
+                swap(nums[i], nums[j]);
             }
         }
+        swap(nums[i + 1], nums[r]);
+        return i + 1;
+    }
+
+    int randomized_partition(vector<int>& nums, int l,  int r) {
+        int i = rand() % (r - l + 1) + l;
+        swap(nums[r], nums[i]);
+        return partition(nums, l, r);
+    }
+
+    void randomized_selected(vector<int>& arr, int l, int r, int k) {
+        if (l >= r) return ;
+        int pos = randomized_partition(arr, l, r);
+        int num = pos - l + 1;
+        if (k == num) return ;
+        else if (k < num) randomized_selected(arr, l, pos - 1, k);
+        else randomized_selected(arr, pos + 1, r, k - num);
+    }
+
+    vector<int> getLeastNumbers(vector<int>& arr, int k) {
+        // // 最大堆实现
+        // // 时间复杂度：nlogk
+        // // 空间复杂度： k
+        // priority_queue<int> heap;
+        // for(auto a : arr) {
+        //     heap.push(a);
+        //     if (heap.size() > k) {
+        //         heap.pop();
+        //     }
+        // }
+        // vector<int> res;
+        // for(int i = 0; i < k; i++) {
+        //     res.push_back(heap.top());
+        //     heap.pop();
+        // }
+        // return res;
+
+        // 快排实现
+        // 时间复杂度：n
+        // 空间复杂度：logn
+        srand((unsigned)time(NULL));  // 初始化随机种子
+        randomized_selected(arr, 0, (int)arr.size() - 1, k);
         vector<int> res;
-        for(int i = 0; i < k; i++) {
-            res.push_back(heap.top());
-            heap.pop();
+        for (int i = 0; i < k; i++) {
+            res.push_back(arr[i]);
         }
         return res;
     }
