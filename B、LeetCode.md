@@ -44,6 +44,7 @@
 |||[543、二叉树的直径(easy)](#二叉树的直径)|
 |||||[695、岛屿的最大面积(medium)](#岛屿的最大面积)|
 |[836、矩形重叠(easy)](#矩形重叠)|||||
+|[876、链表的中间结点(easy)](#链表的中间结点)||
 |||||[945、使数组唯一的最小增量(medium)](#使数组唯一的最小增量)|
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 |||[1013、将数组分成和相等的三个部分(easy)](#将数组分成和相等的三个部分)|||
@@ -7789,6 +7790,44 @@ public:
         // 重叠时即有重叠部分也是矩形
         // 两个矩形在 x 、y 轴上的投影有交集
         return (min(rec1[2], rec2[2]) > max(rec1[0], rec2[0])) && (min(rec1[3], rec2[3]) > max(rec1[1], rec2[1]));
+    }
+};
+```
+
+<span id="链表的中间结点"></span>
+## [876、链表的中间结点(easy)]($back)
+```cpp
+给定一个带有头结点 head 的非空单链表，返回链表的中间结点。
+如果有两个中间结点，则返回第二个中间结点。
+
+输入：[1,2,3,4,5]
+输出：此列表中的结点 3 (序列化形式：[3,4,5])
+返回的结点值为 3 。 (测评系统对该结点序列化表述是 [3,4,5])。
+注意，我们返回了一个 ListNode 类型的对象 ans，这样：
+ans.val = 3, ans.next.val = 4, ans.next.next.val = 5, 以及 ans.next.next.next = NULL.
+
+输入：[1,2,3,4,5,6]
+输出：此列表中的结点 4 (序列化形式：[4,5,6])
+由于该列表有两个中间结点，值分别为 3 和 4，我们返回第二个结点。
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode* p_slow = head;
+        ListNode* p_fast = head;
+        while(p_fast != nullptr && p_fast -> next != nullptr) {
+            p_slow = p_slow -> next;
+            p_fast = p_fast -> next -> next;
+        }
+        return p_slow;
     }
 };
 ```
