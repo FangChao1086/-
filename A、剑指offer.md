@@ -606,17 +606,14 @@ class Solution {
 public:
     int minNumberInRotateArray(vector<int> rotateArray) {
         int len = rotateArray.size();
-        int left = 0,mid = 0, right = len - 1;
+        int left = 0, mid = 0, right = len - 1;
         while(left < right){
-            if(right - left <= 1) return rotateArray[right];
             mid = (left + right) >> 1;
-            if(rotateArray[left] <= rotateArray[mid]){
-                left = mid;
-            }
-            else if(rotateArray[mid] <= rotateArray[right]){
-                right = mid;
-            }
+            if(rotateArray[mid] > rotateArray[right])
+                left = mid + 1;
+	    else right = mid;
         }
+	return rotateArray[left];
     }
 };
 ```
