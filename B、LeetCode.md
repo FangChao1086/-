@@ -43,6 +43,7 @@
 ||||[409、最长回文串(easy)](#最长回文串)||
 |||[543、二叉树的直径(easy)](#二叉树的直径)|
 |||||[695、岛屿的最大面积(medium)](#岛屿的最大面积)|
+|||||[820、单词的压缩编码(medium)](#单词的压缩编码)|
 |[836、矩形重叠(easy)](#矩形重叠)|||||
 |[876、链表的中间结点(easy)](#链表的中间结点)||
 ||[892、三维形体的表面积(easy)](#三维形体的表面积)||||
@@ -7800,6 +7801,81 @@ public:
             }
         }
         return max_;
+    }
+};
+```
+
+<span id="单词的压缩编码"></span>
+## [820、单词的压缩编码(medium)](#back)
+```cpp
+给定一个单词列表，我们将这个列表编码成一个索引字符串 S 与一个索引列表 A。
+例如，如果这个列表是 ["time", "me", "bell"]，
+我们就可以将其表示为 S = "time#bell#" 和 indexes = [0, 2, 5]。
+对于每一个索引，我们可以通过从字符串 S 中索引的位置开始读取字符串，直到 "#" 结束，来恢复我们之前的单词列表。
+那么成功对给定单词列表进行编码的最小字符串长度是多少呢？
+
+输入: words = ["time", "me", "bell"]
+输出: 10
+说明: S = "time#bell#" ， indexes = [0, 2, 5] 。
+ 
+1 <= words.length <= 2000
+1 <= words[i].length <= 7
+每个单词都是小写字母 。
+
+// 辅助；字典树
+class TrieNode {
+    TrieNode* children[26];
+public:
+    int count;
+    TrieNode(){
+        for (int i = 0 ; i < 26; i++) children[i] = nullptr;
+        count = 0;
+    }
+    TrieNode* get(char c) {
+        if (children[c - 'a'] == nullptr) {
+            children[c - 'a'] = new TrieNode();
+            count++;
+        }
+        return children[c - 'a'];
+    }
+};
+
+
+class Solution {
+public:
+    int minimumLengthEncoding(vector<string>& words) {
+        // 参考：https://leetcode-cn.com/problems/short-encoding-of-words/solution/dan-ci-de-ya-suo-bian-ma-by-leetcode-solution/
+        // // 方法1；存储后缀; 时间复杂度高
+        // unordered_set<string> s(words.begin(), words.end());
+        // for (auto w1 : words) {
+        //     for (int k =1; k < w1.size(); k++) {
+        //         s.erase(w1.substr(k));
+        //     }
+        // }
+        // int ans = 0;
+        // for (auto s1 : s) {
+        //     ans += s1.size() + 1;
+        // }
+        // return ans;
+
+        // 方法2； 字典树；时间复杂度低
+        TrieNode* trie = new TrieNode();
+        unordered_map<TrieNode*, int> node;
+        for (int i = 0; i < words.size(); i++) {
+            string w = words[i];
+            TrieNode* cur = trie;
+            for (int j = w.size() - 1; j >= 0; j--) {
+                cur = cur -> get(w[j]);
+            }
+            node[cur] = i;
+        }
+        int ans = 0;
+        for (auto [n, idx] : node) {
+            if (n -> count == 0) {
+                ans += words[idx].size() + 1;
+            }
+        }
+        return ans;
     }
 };
 ```
