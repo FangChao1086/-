@@ -30,7 +30,7 @@
   }
   ```
 
-### 生成数组
+### 生成数据
 ```cpp
 // C++
 
@@ -49,6 +49,14 @@ vector<int>(res.rbegin(), res.rend());
 
 // 累加 vector 中的值
 int sum = accumulate(A.begin(), A.end(), 0);  // 其中 A 是vector， 0是代表累加的初值为0；
+
+// 排序(根据pair中的第二个关键字降序)
+#include"algorithm"
+bool cmp2(pair<int, int> a, pair<int, int> b) {
+    return a.second > b.second; 
+}
+vector<pair<int, int>> vec;
+sort(vec.begin(), vec.end(), cmp2);
 ```
 
 ### 数据类型转换
