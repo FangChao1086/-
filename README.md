@@ -30,17 +30,17 @@
   }
   ```
 
-### 生成数据
+### 生成数据(结构)
 ```cpp
-// C++
-
 // 二维数组
 int dp[n][m];  // 方法1
 memset(dp,0,sizeof(dp));  // 用0填充
-
 vector<vector<int>> dp(n,vector<int>(m,0));  // 方法2；n*m填充0
-
 vector<int> res(input.begin(), input.begin() + k);  // 方法3；input是已经存在的vector
+
+// 优先队列  最大最小堆
+priority_queue<pair<int,int>> pq;  // 最大堆，默认
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq; // 最小堆
 ```
 ### 数据处理
 ```cpp
