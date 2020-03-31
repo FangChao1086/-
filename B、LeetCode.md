@@ -47,7 +47,7 @@
 |[836、矩形重叠(easy)](#矩形重叠)|||||
 |[876、链表的中间结点(easy)](#链表的中间结点)||
 ||[892、三维形体的表面积(easy)](#三维形体的表面积)||||
-||||[914、卡牌分组(easy)](#卡牌分组)||
+||[912、排序数组(medium)](#排序数组)||[914、卡牌分组(easy)](#卡牌分组)||
 |||||[945、使数组唯一的最小增量(medium)](#使数组唯一的最小增量)|
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 ||||[999、车的可用捕获量(easy)](#车的可用捕获量)||
@@ -7982,6 +7982,55 @@ public:
             }
         }
         return area_;
+    }
+};
+```
+
+<span id="排序数组"></span>
+## [912、排序数组(medium)](#back)
+```cpp
+给你一个整数数组 nums，请你将该数组升序排列。
+
+输入：nums = [5,2,3,1]
+输出：[1,2,3,5]
+
+输入：nums = [5,1,1,2,0,0]
+输出：[0,0,1,1,2,5]
+
+class Solution {
+public:
+    int partion(vector<int>& nums, int l, int r) {
+        int pivot = nums[r];
+        int i = l - 1;
+        for (int j = l; j < r; j++) {
+            if (nums[j] <= pivot) {
+                i = i + 1;
+                swap(nums[i], nums[j]);
+            }
+        }
+        swap(nums[i + 1], nums[r]);
+        return i + 1;
+    }
+
+    int randomized_partition(vector<int>& nums, int l, int r) {
+        int i = rand() % (r - l + 1) + l;
+        swap(nums[r], nums[i]);
+        return partion(nums, l, r);
+    }
+
+    void randomized_quicksort(vector<int>& nums, int l ,int r) {
+        if (l < r) {
+            int pos = randomized_partition(nums, l, r);
+            randomized_quicksort(nums, l ,pos - 1);
+            randomized_quicksort(nums, pos + 1, r);
+        }
+    }
+
+    vector<int> sortArray(vector<int>& nums) {
+        // 快排
+        srand((unsigned)time(NULL));  // 随机种子
+        randomized_quicksort(nums, 0, nums.size() - 1);
+        return nums;
     }
 };
 ```
