@@ -32,7 +32,7 @@
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
 |[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
 |[146、LRU缓存机制(medium)](#LRU缓存机制)|[147、对链表进行插入排序(medium)](#对链表进行插入排序)|[148、排序链表(medium)](#排序链表)|[149、直线上最多的点数(hard)](#直线上最多的点数)|[150、逆波兰表达式求值(medium)](#逆波兰表达式求值)|
-|[151、翻转字符串里的单词(medium)](#翻转字符串里的单词)|[152、乘积最大子序列(medium)](#乘积最大子序列)|[153、寻找旋转排序数组中的最小值(medium)](#寻找旋转排序数组中的最小值)||[155、最小栈(easy)](#最小栈)|
+|[151、翻转字符串里的单词(medium)](#翻转字符串里的单词)|[152、乘积最大子序列(medium)](#乘积最大子序列)|[153、寻找旋转排序数组中的最小值(medium)](#寻找旋转排序数组中的最小值)|[154、寻找旋转排序数组中的最小值 II(hard)](#寻找旋转排序数组中的最小值2)|[155、最小栈(easy)](#最小栈)|
 |||||[160、相交链表(easy)](#相交链表)|
 ||||[169、多数元素(easy)](#多数元素)||
 |[206、反转链表(easy)](#反转链表)||
@@ -7385,6 +7385,41 @@ public:
             mid = (left + right) >> 1;
             if (nums[mid] > nums[right]) left = mid + 1;
             else right = mid;
+        }
+        return nums[left];
+    }
+};
+```
+
+<span id="寻找旋转排序数组中的最小值2"></span>
+## [154、寻找旋转排序数组中的最小值 II(hard)](#back)
+```cpp
+假设按照升序排序的数组在预先未知的某个点上进行了旋转。
+( 例如，数组 [0,1,2,4,5,6,7] 可能变为 [4,5,6,7,0,1,2] )。
+请找出其中最小的元素。
+注意数组中可能存在重复的元素。
+
+输入: [1,3,5]
+输出: 1
+
+输入: [2,2,2,0,1]
+输出: 0
+
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        // 二分查找
+        int len_ = nums.size();
+        int left = 0, right = len_ - 1;
+        while(left < right) {
+            if (nums[left] < nums[right]) return nums[left];  // 优化，可要可不要 
+            int mid = (left + right) >> 1;
+            if (nums[mid] > nums[right]) left = mid + 1;
+            else if (nums[mid] < nums[right]) right = mid;
+            else {
+                if (nums[mid] == nums[left]) right--;  // 可能在左或者右
+                else right = mid;  // 在左边
+            }
         }
         return nums[left];
     }
