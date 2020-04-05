@@ -43,6 +43,7 @@
 |||||[365、水壶问题(medium)](#水壶问题)|
 ||[386、字典序排数](#字典序排数)  |
 ||||[409、最长回文串(easy)](#最长回文串)||
+|||||[460、LFU缓存(hard)](#LFU缓存)|
 |||[543、二叉树的直径(easy)](#二叉树的直径)|
 |||||[695、岛屿的最大面积(medium)](#岛屿的最大面积)|
 |||||[820、单词的压缩编码(medium)](#单词的压缩编码)|
@@ -7851,6 +7852,101 @@ public:
         return all_ == s.size() ? all_ : (all_ + 1);
     }
 };
+```
+
+<span id="LFU缓存"></span>
+## [460、LFU缓存(hard)](#back)
+```cpp
+设计并实现最不经常使用（LFU）缓存的数据结构。它应该支持以下操作：get 和 put。
+get(key) - 如果键存在于缓存中，则获取键的值（总是正数），否则返回 -1。
+put(key, value) - 如果键不存在，请设置或插入值。
+当缓存达到其容量时，它应该在插入新项目之前，使最不经常使用的项目无效。
+在此问题中，当存在平局（即两个或更多个键具有相同使用频率）时，最近最少使用的键将被去除。
+
+LFUCache cache = new LFUCache( 2 /* capacity (缓存容量) */ );
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);       // 返回 1
+cache.put(3, 3);    // 去除 key 2
+cache.get(2);       // 返回 -1 (未找到key 2)
+cache.get(3);       // 返回 3
+cache.put(4, 4);    // 去除 key 1
+cache.get(1);       // 返回 -1 (未找到 key 1)
+cache.get(3);       // 返回 3
+cache.get(4);       // 返回 4
+
+struct Node {
+    int key, val, freq;
+    Node(int _key, int _val, int _freq): key(_key), val(_val), freq(_freq){};
+};
+
+class LFUCache {
+    // 双哈希表
+    int minfreq, capacity;
+    unordered_map<int, list<Node>::iterator> key_table;
+    unordered_map<int, list<Node>> freq_table;
+
+public:
+    LFUCache(int _capacity) {
+        minfreq = 0;
+        capacity = _capacity;
+        key_table.clear();
+        freq_table.clear();
+    }
+    
+    int get(int key) {
+        if (capacity == 0) return -1;  // 缓存的阈值
+        auto it = key_table.find(key);
+        if (it == key_table.end()) return -1;  // 哈希表中没有找到节点
+        list<Node>:: iterator node = it -> second;
+        int val = node -> val, freq = node -> freq;
+        freq_table[freq].erase(node);
+        if (freq_table[freq].size() == 0) {
+            freq_table.erase(freq);
+            if (minfreq == freq) minfreq += 1;
+        }
+        // 插入到 freq + 1 中
+        freq_table[freq + 1].push_front(Node(key, val, freq + 1));
+        key_table[key] = freq_table[freq + 1].begin();
+        return val;
+    }
+    
+    void put(int key, int value) {
+        if (capacity == 0) return ;
+        auto it = key_table.find(key);
+        if (it == key_table.end()) {  // put 的 key 不在缓存中
+            // 缓存已满， put前需要删除
+            if (key_table.size() == capacity) {
+                auto it2 = freq_table[minfreq].back();
+                key_table.erase(it2.key);
+                freq_table[minfreq].pop_back();
+                if (freq_table[minfreq].size() == 0) 
+                    freq_table.erase(minfreq); 
+            }
+            freq_table[1].push_front(Node(key, value, 1));
+            key_table[key] = freq_table[1].begin();
+            minfreq = 1;
+        }
+        else {  // put 的 key 在缓存中
+            list<Node>::iterator node = it -> second;
+            int freq = node -> freq;
+            freq_table[freq].erase(node);
+            if (freq_table[freq].size() == 0) {
+                freq_table.erase(freq);
+                if (minfreq == freq) minfreq += 1;
+            }
+            freq_table[freq + 1].push_front(Node(key, value, freq + 1));
+            key_table[key] = freq_table[freq + 1].begin();
+        }
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
 ```
 
 <span id="二叉树的直径"></span>
