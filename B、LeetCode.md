@@ -61,6 +61,7 @@
 |||||[1160、拼写单词(easy)](#拼写单词)|
 ||[1162、地图分析(medium)](#地图分析)||
 ||||[1394、字符串压缩(easy)](#字符串压缩)||
+|||[1418、旋转矩阵(medium)](#旋转矩阵)|||
 |[1496、按摩师(easy)](#按摩师)||
 |||[1538、最小的k个数(easy)](#最小的k个数)|||
 ||||[1579、圆圈中最后剩下的数字(easy)](#圆圈中最后剩下的数字)||
@@ -8826,6 +8827,65 @@ public:
         }
         new_s += c_ + to_string(count_);
         return new_s.size() < S.size() ? new_s : S;
+    }
+};
+```
+
+<span id="旋转矩阵></span>
+## [1418、旋转矩阵(medium)](#back)
+```cpp
+给你一幅由 N × N 矩阵表示的图像，其中每个像素的大小为 4 字节。
+请你设计一种算法，将图像旋转 90 度。
+不占用额外内存空间能否做到？
+
+给定 matrix = 
+[
+  [1,2,3],
+  [4,5,6],
+  [7,8,9]
+],
+原地旋转输入矩阵，使其变为:
+[
+  [7,4,1],
+  [8,5,2],
+  [9,6,3]
+]
+
+给定 matrix =
+[
+  [ 5, 1, 9,11],
+  [ 2, 4, 8,10],
+  [13, 3, 6, 7],
+  [15,14,12,16]
+], 
+原地旋转输入矩阵，使其变为:
+[
+  [15,13, 2, 5],
+  [14, 3, 4, 1],
+  [12, 6, 8, 9],
+  [16, 7,10,11]
+]
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int N = matrix.size();
+        int left = 0, right = N - 1, top = 0, bottom = N - 1;
+        while (left <= right && top <= bottom) {
+            if (top <= bottom) {
+                for (int i = top; i < bottom; i++) {
+                    swap(matrix[i][left], matrix[bottom][i]);
+                }
+                int bottom_ = bottom;
+                for (int i = left; i < right; i++) {
+                    swap(matrix[bottom][i], matrix[bottom_--][right]);
+                }
+                for (int i = bottom; i > top; i--) {
+                    swap(matrix[i][right], matrix[top][i]);
+                }
+            }
+            top++,bottom--,left++,right--;
+        }
     }
 };
 ```
