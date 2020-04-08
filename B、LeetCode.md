@@ -63,6 +63,7 @@
 ||||[1394、字符串压缩(easy)](#字符串压缩)||
 |||[1418、旋转矩阵(medium)](#旋转矩阵)|||
 |[1496、按摩师(easy)](#按摩师)||
+|[1531、机器人的运动范围(medium)](#机器人的运动范围)||
 |||[1538、最小的k个数(easy)](#最小的k个数)|||
 ||||[1579、圆圈中最后剩下的数字(easy)](#圆圈中最后剩下的数字)||
 <span id="两数之和"></span>
@@ -8927,6 +8928,62 @@ public:
             dp1 = ndp1;  // dp[i][1]更新dp1
         }
         return max(dp0, dp1);
+    }
+};
+```
+
+<span id="机器人的运动范围"></span>
+## [1531、机器人的运动范围(medium)](#back)
+```cpp
+地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。
+一个机器人从坐标 [0, 0] 的格子开始移动，
+它每次可以向左、右、上、下移动一格（不能移动到方格外），
+也不能进入行坐标和列坐标的数位之和大于k的格子。
+例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。
+但它不能进入方格 [35, 38]，因为3+5+3+8=19。
+请问该机器人能够到达多少个格子？
+
+输入：m = 2, n = 3, k = 1
+输出：3
+
+输入：m = 3, n = 1, k = 0
+输出：1
+
+class Solution {
+public:
+    // 判断机器人是否可以进入位置 (a, b)
+    bool torf(int a, int b, int k) {
+        int count_ = 0;
+        while (a) {
+            count_ += a % 10;
+            a = a / 10;
+        }
+        while (b) {
+            count_ += b % 10;
+            b = b / 10;
+        }
+        return count_ <= k ? true : false;
+    }
+
+    int sum = 0;
+    int dir[4][4] = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+    void movingCountHelper(vector<vector<int>> &flag, int i, int j, int m, int n, int k) {
+        if (torf(i, j, k) && i < m && j < n && i >= 0 && j >= 0 && flag[i][j] == 0) {
+            flag[i][j] = 1;
+            sum += 1;
+            for(int z = 0; z < 4; z++) {
+                int new_i = i + dir[z][0];
+                int new_j = j + dir[z][1];
+                if (torf(new_i, new_j, k) && new_i < m && new_j < n && new_i >= 0 && new_j >= 0 && flag[new_i][new_j] == 0)
+                    movingCountHelper(flag, new_i, new_j, m, n, k);
+            }
+        }
+    }
+
+    int movingCount(int m, int n, int k) {
+        vector<vector<int>> flag(m, vector<int> (n, 0));
+        movingCountHelper(flag, 0, 0, m, n, k);
+        return sum;
     }
 };
 ```
