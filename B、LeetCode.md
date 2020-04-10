@@ -7308,8 +7308,9 @@ public:
 
     string reverseWords(string s) {
         int l_= 0, r_ = s.size() - 1;
-        while(s[l_] == ' ') l_++;
-        while(s[r_] == ' ') r_--;
+        while(l_< s.size() && s[l_] == ' ') l_++;
+        while(r_ >= 0 && s[r_] == ' ') r_--;
+        if (l_ > r_) return "";
         s = s.substr(l_, r_ - l_ + 1);  // 去除首尾空格
         reverse(s, 0, s.size() - 1);
         s += ' ';
