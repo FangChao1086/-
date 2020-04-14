@@ -44,6 +44,7 @@
 |||||[365、水壶问题(medium)](#水壶问题)|
 ||[386、字典序排数](#字典序排数)  |
 ||||[409、最长回文串(easy)](#最长回文串)||
+|||||[445、两数相加 II](#两数相加2)|
 |||||[460、LFU缓存(hard)](#LFU缓存)|
 |||[543、二叉树的直径(easy)](#二叉树的直径)|
 |||||[695、岛屿的最大面积(medium)](#岛屿的最大面积)|
@@ -7987,6 +7988,58 @@ public:
             }
         }
         return all_ == s.size() ? all_ : (all_ + 1);
+    }
+};
+```
+
+<span id="两数相加2"></span>
+## [445、两数相加 II](#back)
+```cpp
+给你两个 非空 链表来代表两个非负整数。
+数字最高位位于链表开始位置。它们的每个节点只存储一位数字。
+将这两数相加会返回一个新的链表。
+你可以假设除了数字 0 之外，这两个数字都不会以零开头。
+进阶：
+如果输入链表不能修改该如何处理？换句话说，你不能对列表中的节点进行翻转。
+
+输入：(7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
+输出：7 -> 8 -> 0 -> 7
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        stack<int> s1, s2;
+        while (l1) {
+            s1.push(l1 -> val);
+            l1 = l1 -> next;
+        }
+        while (l2) {
+            s2.push(l2 -> val);
+            l2 = l2 -> next;
+        }
+        int flag = 0;
+        ListNode* ans = nullptr;
+        while (!s1.empty() || !s2.empty() || flag != 0) {
+            int a = s1.empty() ? 0 : s1.top();
+            int b = s2.empty() ? 0 : s2.top();
+            if (!s1.empty()) s1.pop();
+            if (!s2.empty()) s2.pop();
+            int cur = a + b + flag;
+            flag = cur / 10;
+            cur %= 10;
+            auto cur_node = new ListNode(cur);
+            cur_node -> next = ans;
+            ans = cur_node;
+        }
+        return ans;
     }
 };
 ```
