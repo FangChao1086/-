@@ -46,7 +46,7 @@
 ||||[409、最长回文串(easy)](#最长回文串)||
 |||||[445、两数相加 II](#两数相加2)|
 |||||[460、LFU缓存(hard)](#LFU缓存)|
-|||[543、二叉树的直径(easy)](#二叉树的直径)|
+||[542、01 矩阵(medium)](#01矩阵)|[543、二叉树的直径(easy)](#二叉树的直径)|
 |||||[695、岛屿的最大面积(medium)](#岛屿的最大面积)|
 |||||[820、单词的压缩编码(medium)](#单词的压缩编码)|
 |[836、矩形重叠(easy)](#矩形重叠)|||||
@@ -8137,6 +8137,59 @@ public:
  * int param_1 = obj->get(key);
  * obj->put(key,value);
  */
+```
+
+<span id="01矩阵"></span>
+## [542、01 矩阵(medium)](#back)
+```cpp
+给定一个由 0 和 1 组成的矩阵，找出每个元素到最近的 0 的距离。
+两个相邻元素间的距离为 1 。
+
+输入:
+0 0 0
+0 1 0
+1 1 1
+输出:
+0 0 0
+0 1 0
+1 2 1
+
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+        int m = matrix.size(), n = matrix[0].size();
+        queue<pair<int, int>> que;
+        vector<vector<int>> dis(m, vector<int> (n));  // 存储距离结果
+        vector<vector<int>> flag(m, vector<int> (n));  // 用于确认当前点是否已经被处理
+        int dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        // 初始化队列，将位置为 0 的加入队列中
+        for (int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    que.push({i, j});
+                    flag[i][j] = 1;  // 表示当前位置已经被处理
+                }
+            }
+        }
+
+        // 广度优先搜索
+        while (!que.empty()) {
+            auto [o_i, o_j] = que.front();
+            que.pop();
+            for (int i = 0; i < 4; i++) {
+                int new_i = o_i + dirs[i][0];
+                int new_j = o_j + dirs[i][1];
+                if (new_i >= 0 && new_i < m && new_j >= 0 && new_j < n && flag[new_i][new_j] != 1) {
+                    dis[new_i][new_j] += dis[o_i][o_j] + 1;
+                    que.push({new_i, new_j});
+                    flag[new_i][new_j] = 1;
+                }
+            }
+        }
+        return dis;
+    }
+};
 ```
 
 <span id="二叉树的直径"></span>
