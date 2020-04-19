@@ -46,6 +46,7 @@
 ||||[409、最长回文串(easy)](#最长回文串)||
 |||||[445、两数相加 II](#两数相加2)|
 |||||[460、LFU缓存(hard)](#LFU缓存)|
+|[466、统计重复个数(hard)](#统计重复个数)||||
 ||[542、01 矩阵(medium)](#01矩阵)|[543、二叉树的直径(easy)](#二叉树的直径)|
 |||||[695、岛屿的最大面积(medium)](#岛屿的最大面积)|
 |||||[820、单词的压缩编码(medium)](#单词的压缩编码)|
@@ -8157,6 +8158,73 @@ public:
  * int param_1 = obj->get(key);
  * obj->put(key,value);
  */
+```
+
+<span id="统计重复个数"></span>
+## [466、统计重复个数(hard)](#back)
+```cpp
+由 n 个连接的字符串 s 组成字符串 S，记作 S = [s,n]。例如，["abc",3]=“abcabcabc”。
+如果我们可以从 s2 中删除某些字符使其变为 s1，则称字符串 s1 可以从字符串 s2 获得。
+例如，根据定义，"abc" 可以从 “abdbec” 获得，但不能从 “acbbe” 获得。
+现在给你两个非空字符串 s1 和 s2（每个最多 100 个字符长）
+和两个整数 0 ≤ n1 ≤ 106 和 1 ≤ n2 ≤ 106。
+现在考虑字符串 S1 和 S2，其中 S1=[s1,n1] 、S2=[s2,n2] 。
+请你找出一个可以满足使[S2,M] 从 S1 获得的最大整数 M 。
+
+输入：
+s1 ="acb",n1 = 4
+s2 ="ab",n2 = 2
+输出：
+2
+
+class Solution {
+public:
+    int getMaxRepetitions(string s1, int n1, string s2, int n2) {
+        // 参考链接：https://leetcode-cn.com/problems/count-the-repetitions/solution/tong-ji-zhong-fu-ge-shu-by-leetcode-solution/
+        if (n1 == 0) return 0;
+        int s1cnt = 0, s2cnt = 0, index = 0;
+        unordered_map<int, pair<int, int>> recall;
+        pair<int, int> pre_loop, in_loop;
+        while (true) {
+            ++s1cnt;
+            for (char ch : s1) {
+                if (ch == s2[index]) {
+                    index += 1;
+                    if (index == s2.size()) {
+                        ++s2cnt;
+                        index = 0;
+                    }
+                }
+            }
+            if (s1cnt == n1) {
+                return s2cnt / n2;
+            }
+            if (recall.count(index)) {
+                auto [s1cnt_prime, s2cnt_prime] = recall[index];
+                pre_loop = {s1cnt_prime, s2cnt_prime};
+                in_loop = {s1cnt - s1cnt_prime, s2cnt - s2cnt_prime};
+                break;
+            }
+            else {
+                recall[index] = {s1cnt, s2cnt};
+            }
+        }
+        int ans = pre_loop.second + (n1 - pre_loop.first) / in_loop.first * in_loop.second;
+        int rest = (n1 - pre_loop.first) % in_loop.first;
+        for (int i = 0; i < rest; i++) {
+            for (char ch : s1) {
+                if (ch == s2[index]) {
+                    ++index;
+                    if (index == s2.size()) {
+                        ++ans;
+                        index = 0;
+                    }
+                }
+            }
+        }
+        return ans / n2;
+    }
+};
 ```
 
 <span id="01矩阵"></span>
