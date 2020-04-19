@@ -36,6 +36,7 @@
 |||||[160、相交链表(easy)](#相交链表)|
 ||[162、寻找峰值(medium)](#寻找峰值)||
 ||||[169、多数元素(easy)](#多数元素)||
+|||||[200、岛屿数量(medium)](#岛屿数量)|
 |[206、反转链表(easy)](#反转链表)||
 ||||[289、生命游戏(medium)](#生命游戏)||
 |||||[300、最长上升子序列(medium)](#最长上升子序列)|
@@ -7599,6 +7600,65 @@ public:
     	// 排序后最中间的数即是所求值
         sort(nums.begin(), nums.end());
         return nums[nums.size() / 2];
+    }
+};
+```
+
+<span id="岛屿数量"></span>
+## [200、岛屿数量(medium)](#back)
+```cpp
+给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
+岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+此外，你可以假设该网格的四条边均被水包围。
+
+输入:
+11110
+11010
+11000
+00000
+输出: 1
+
+输入:
+11000
+11000
+00100
+00011
+输出: 3
+解释: 每座岛屿只能由水平和/或竖直方向上相邻的陆地连接而成。
+
+class Solution {
+public:
+    int count_ = 0;
+    int dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    void find_islands(vector<vector<char>>& grid, vector<vector<int>>& flag, int i, int j) {
+        if (i >= 0 && i < grid.size() && j >= 0 && j < grid[0].size() && grid[i][j] == '1' && flag[i][j] == 0) {
+            flag[i][j] = 1;
+            count_ += 1;
+            for (int z = 0; z < 4; z++) {
+                int new_i = i + dirs[z][0];
+                int new_j = j + dirs[z][1];
+                if (new_i >= 0 && new_i < grid.size() && new_j >= 0 && new_j < grid[0].size() && grid[new_i][new_j] == '1' && flag[new_i][new_j] == 0) {
+                    find_islands(grid, flag, new_i, new_j);
+                    count_--;
+                }
+            }
+        }
+    }
+
+    int numIslands(vector<vector<char>>& grid) {
+        if (grid.size() == 0) return 0;
+        int rows = grid.size();
+        int cols = grid[0].size();
+        vector<vector<int>> flag(rows, vector<int> (cols, 0));
+        for (int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                if (grid[i][j] == '1' && flag[i][j] == 0) {
+                    find_islands(grid, flag, i, j);
+                }
+            }
+        }
+        return count_;
     }
 };
 ```
