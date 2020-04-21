@@ -65,6 +65,7 @@
 |[1111、有效括号的嵌套深度(medium)](#有效括号的嵌套深度)||
 |||||[1160、拼写单词(easy)](#拼写单词)|
 ||[1162、地图分析(medium)](#地图分析)||
+|||[1248、统计「优美子数组」(medium)](#统计优美子数组)|||
 ||||[1394、字符串压缩(easy)](#字符串压缩)||
 |||[1418、旋转矩阵(medium)](#旋转矩阵)|||
 |[1476、交点(hard)](#交点)||
@@ -9229,6 +9230,42 @@ public:
             }
         }
         return ans - 1;
+    }
+};
+```
+
+<span id="统计优美子数组"></span>
+## [1248、统计「优美子数组」(medium)](#back)
+```cpp
+给你一个整数数组 nums 和一个整数 k。
+如果某个 连续 子数组中恰好有 k 个奇数数字，我们就认为这个子数组是「优美子数组」。
+请返回这个数组中「优美子数组」的数目。
+
+输入：nums = [1,1,2,1,1], k = 3
+输出：2
+解释：包含 3 个奇数的子数组是 [1,1,2,1] 和 [1,2,1,1] 。
+
+输入：nums = [2,4,6], k = 1
+输出：0
+解释：数列中不包含任何奇数，所以不存在优美子数组。
+
+输入：nums = [2,2,2,1,2,2,1,2,2,2], k = 2
+输出：16
+
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        // 参考链接：https://leetcode-cn.com/problems/count-number-of-nice-subarrays/solution/tong-ji-you-mei-zi-shu-zu-by-leetcode-solution/
+        int n = nums.size();
+        vector<int> res(n + 1, 0);
+        res[0] = 1;
+        int ans = 0, pre_i = 0;
+        for (int i = 0; i < n; i++) {
+            pre_i += nums[i] & 1;
+            ans += pre_i >= k ? res[pre_i - k] : 0;
+            res[pre_i] += 1;
+        }
+        return ans;
     }
 };
 ```
