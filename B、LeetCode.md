@@ -36,7 +36,7 @@
 |||||[160、相交链表(easy)](#相交链表)|
 ||[162、寻找峰值(medium)](#寻找峰值)||
 ||||[169、多数元素(easy)](#多数元素)||
-|||||[200、岛屿数量(medium)](#岛屿数量)|
+||||[199、二叉树的右视图(medium)](#二叉树的右视图)|[200、岛屿数量(medium)](#岛屿数量)|
 |[206、反转链表(easy)](#反转链表)||
 ||||[289、生命游戏(medium)](#生命游戏)||
 |||||[300、最长上升子序列(medium)](#最长上升子序列)|
@@ -7601,6 +7601,57 @@ public:
     	// 排序后最中间的数即是所求值
         sort(nums.begin(), nums.end());
         return nums[nums.size() / 2];
+    }
+};
+```
+
+<span id="二叉树的右视图"></span>
+## [199、二叉树的右视图(medium)](#back)
+```cpp
+给定一棵二叉树，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
+
+输入: [1,2,3,null,5,null,4]
+输出: [1, 3, 4]
+解释:
+   1            <---
+ /   \
+2     3         <---
+ \     \
+  5     4       <---
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> res;
+        if(root == nullptr) return res;
+        queue<TreeNode*> que;
+        que.push(root);
+        while (!que.empty()) {
+            int size_ = que.size();
+            for (int i = 0; i < size_; i++) {
+                TreeNode* tmp = que.front();
+                que.pop();
+                if (i == size_ - 1) {
+                    res.push_back(tmp -> val);
+                }
+                if (tmp -> left) {
+                    que.push(tmp -> left);
+                }
+                if (tmp -> right) {
+                    que.push(tmp -> right);
+                }
+            }
+        }
+        return res;
     }
 };
 ```
