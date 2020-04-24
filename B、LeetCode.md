@@ -74,6 +74,8 @@
 |[1531、机器人的运动范围(medium)](#机器人的运动范围)||
 |||[1538、最小的k个数(easy)](#最小的k个数)|||
 ||||[1579、圆圈中最后剩下的数字(easy)](#圆圈中最后剩下的数字)||
+|[1591、数组中的逆序对(hard)](#数组中的逆序对)||||
+
 <span id="两数之和"></span>
 ## [1、两数之和](#back)
 ```cpp
@@ -9751,6 +9753,63 @@ public:
             s = (s + m) % i;
         }
         return s;
+    }
+};
+```
+
+<span id="数组中的逆序对"></span>
+## [1591、数组中的逆序对(hard)](#back)
+```cpp
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。
+输入一个数组，求出这个数组中的逆序对的总数。
+
+输入: [7,5,6,4]
+输出: 5
+
+class Solution {
+public:
+    // 归并
+    long InversePairsCore(vector<int> &data,vector<int> &copy,int start,int end){
+        if(start==end){
+            copy[start]=data[start];
+            return 0;
+        }
+        int length=(end-start)/2;
+        long left=InversePairsCore(copy,data,start,start+length);
+        long right=InversePairsCore(copy,data,start+length+1,end);
+        
+        int i=start+length;
+        int j=end;
+        int index_copy=end;
+        long count=0;
+        while(i>=start && j>=start+length+1){
+            if(data[i]>data[j]){
+                copy[index_copy--]=data[i--];
+                count=count+j-start-length;
+            }
+            else{
+                copy[index_copy--]=data[j--];
+            }
+        }
+        for(;i>=start;i--){
+            copy[index_copy--]=data[i];
+        }
+        for(;j>=start+length+1;j--){
+            copy[index_copy--]=data[j];
+        }
+        return count+left+right;
+    }
+
+
+    int reversePairs(vector<int>& nums) {
+        if(nums.size()<1)
+            return 0;
+        vector<int> copy;
+        for(int i=0;i<int(nums.size());i++){
+            copy.push_back(nums[i]);
+        }
+        long count=InversePairsCore(nums,copy,0,int(nums.size())-1);
+        return count;
     }
 };
 ```
