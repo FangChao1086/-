@@ -75,6 +75,7 @@
 |||[1538、最小的k个数(easy)](#最小的k个数)|||
 ||||[1579、圆圈中最后剩下的数字(easy)](#圆圈中最后剩下的数字)||
 |[1591、数组中的逆序对(hard)](#数组中的逆序对)||||
+|||[1608、数组中数字出现的次数(medium)](#数组中数字出现的次数)|||
 
 <span id="两数之和"></span>
 ## [1、两数之和](#back)
@@ -9810,6 +9811,35 @@ public:
         }
         long count=InversePairsCore(nums,copy,0,int(nums.size())-1);
         return count;
+    }
+};
+```
+
+<span id="数组中数字出现的次数"></span>
+## [1608、数组中数字出现的次数(medium)](#back)
+```cpp
+一个整型数组 nums 里除两个数字之外，其他数字都出现了两次。
+请写程序找出这两个只出现一次的数字。要求时间复杂度是O(n)，空间复杂度是O(1)。
+
+输入：nums = [4,1,4,6]
+输出：[1,6] 或 [6,1]
+
+输入：nums = [1,2,10,4,1,4,3,3]
+输出：[2,10] 或 [10,2]
+
+class Solution {
+public:
+    vector<int> singleNumbers(vector<int>& nums) {
+        int res = 0;
+        for (auto n : nums) res ^= n;
+        int div = 1;
+        while ((res & div) == 0) div <<= 1;
+        int a = 0, b = 0;
+        for (auto n : nums) {
+            if (div & n) a ^= n;
+            else b ^= n;
+        }
+        return vector<int> {a, b};
     }
 };
 ```
