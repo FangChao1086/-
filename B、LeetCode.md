@@ -61,6 +61,7 @@
 ||||[999、车的可用捕获量(easy)](#车的可用捕获量)||
 |||[1013、将数组分成和相等的三个部分(easy)](#将数组分成和相等的三个部分)|||
 |[1071、字符串的最大公因子(easy)](#字符串的最大公因子)||
+|||||[1095、山脉数组中查找目标值(hard)](#山脉数组中查找目标值)|
 |||[1103、分糖果 II(easy)](#分糖果2)|||
 |[1111、有效括号的嵌套深度(medium)](#有效括号的嵌套深度)||
 |||||[1160、拼写单词(easy)](#拼写单词)|
@@ -9083,6 +9084,82 @@ public:
         // 当 str1 + str2 == str2 + str1 时必然存在，不相等时则不存在
         if (str1 + str2 != str2 + str1) return "";
         return str1.substr(0, gcd(str1.size(), str2.size()));
+    }
+};
+```
+
+<span id="山脉数组中查找目标值"></span>
+## [1095、山脉数组中查找目标值(hard)](#back)
+```cpp
+给你一个 山脉数组 mountainArr，请你返回能够使得 mountainArr.get(index) 等于 target 最小的下标 index 值。
+如果不存在这样的下标 index，就请返回 -1。
+
+如果数组 A 是一个山脉数组的话，那它满足如下条件：
+首先，A.length >= 3
+其次，在 0 < i < A.length - 1 条件下，存在 i 使得：
+A[0] < A[1] < ... A[i-1] < A[i]
+A[i] > A[i+1] > ... > A[A.length - 1] 
+你不能直接访问该山脉数组，必须通过 MountainArray 接口来获取数据：
+MountainArray.get(k) - 会返回数组中索引为k 的元素（下标从 0 开始）
+MountainArray.length() - 会返回该数组的长度
+ 
+注意：
+对 MountainArray.get 发起超过 100 次调用的提交将被视为错误答案。
+此外，任何试图规避判题系统的解决方案都将会导致比赛资格被取消。 
+
+输入：array = [1,2,3,4,5,3,1], target = 3
+输出：2
+解释：3 在数组中出现了两次，下标分别为 2 和 5，我们返回最小的下标 2。
+
+输入：array = [0,1,2,4,2,1], target = 3
+输出：-1
+解释：3 在数组中没有出现，返回 -1。
+
+/**
+ * // This is the MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * class MountainArray {
+ *   public:
+ *     int get(int index);
+ *     int length();
+ * };
+ */
+
+class Solution {
+public:
+    int binary_search(MountainArray &mountainArr, int target, int left, int right, int reverse) {
+        target *= reverse;  // 全部变为升序查找
+        while (left <= right) {
+            int mid = (left + right) >> 1;
+            int cur = reverse * (mountainArr.get(mid));
+            if (cur == target) {
+                return mid;
+            }
+            else if (cur < target) {
+                left = mid + 1;
+            }
+            else right = mid - 1;
+        }
+        return -1;
+    }
+
+
+    int findInMountainArray(int target, MountainArray &mountainArr) {
+        int left = 0, right = mountainArr.length() - 1;
+        // 利用二分查找找到峰值
+        while (left < right) {
+            int mid = (left + right) >> 1;
+            if (mountainArr.get(mid) < mountainArr.get(mid + 1)) {
+                left = mid + 1;
+            }
+            else right = mid;
+        }
+        int peak = left;
+        int index = binary_search(mountainArr, target, 0, peak, 1);  // 左边升序, 其中最后的 1 表示升序
+        if (index != -1) {
+            return index;
+        }
+        else return binary_search(mountainArr, target, peak + 1, mountainArr.length() - 1, -1);  // 右边降序, 其中最后的 -1 表示降序
     }
 };
 ```
