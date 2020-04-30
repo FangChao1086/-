@@ -37,6 +37,7 @@
 ||[162、寻找峰值(medium)](#寻找峰值)||
 ||||[169、多数元素(easy)](#多数元素)||
 ||||[199、二叉树的右视图(medium)](#二叉树的右视图)|[200、岛屿数量(medium)](#岛屿数量)|
+||[202、快乐数(easy)](#快乐数)||||
 |[206、反转链表(easy)](#反转链表)||
 ||||[289、生命游戏(medium)](#生命游戏)||
 |||||[300、最长上升子序列(medium)](#最长上升子序列)|
@@ -7716,6 +7717,49 @@ public:
             }
         }
         return count_;
+    }
+};
+```
+
+<span id="快乐数"></span>
+## [202、快乐数(easy)](#back)
+```cpp
+编写一个算法来判断一个数 n 是不是快乐数。
+
+「快乐数」定义为：
+对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，
+然后重复这个过程直到这个数变为 1，也可能是无限循环但始终变不到 1。
+如果可以变为 1，那么这个数就是快乐数。
+如果 n 是快乐数就返回 True ；不是，则返回 False 。
+
+输入：19
+输出：true
+解释：
+12 + 92 = 82
+82 + 22 = 68
+62 + 82 = 100
+12 + 02 + 02 = 1
+
+class Solution {
+public:
+    int changeNum(int n) {
+        int sum = 0;
+        while (n) {
+            sum += pow((n % 10), 2);
+            n = n / 10;
+        }
+        return sum;
+    }
+
+    bool isHappy(int n) {
+        // 双指针
+        int p_slow = n;
+        int p_fast = changeNum(n);
+        while ((p_fast != 1) && (p_slow != p_fast)) {
+            p_slow = changeNum(p_slow);
+            p_fast = changeNum(changeNum(p_fast));
+        }
+        return p_fast == 1;
     }
 };
 ```
