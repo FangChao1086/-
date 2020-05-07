@@ -50,6 +50,7 @@
 |||||[460、LFU缓存(hard)](#LFU缓存)|
 |[466、统计重复个数(hard)](#统计重复个数)||||
 ||[542、01 矩阵(medium)](#01矩阵)|[543、二叉树的直径(easy)](#二叉树的直径)|
+||[572、另一个树的子树(easy)](#另一个树的子树)||||
 |||||[695、岛屿的最大面积(medium)](#岛屿的最大面积)|
 |||||[820、单词的压缩编码(medium)](#单词的压缩编码)|
 |[836、矩形重叠(easy)](#矩形重叠)|||||
@@ -8481,6 +8482,65 @@ public:
     int diameterOfBinaryTree(TreeNode* root) {
         dfs(root);
         return res;
+    }
+};
+```
+
+<span id="另一个树的子树"></span>
+## [572、另一个树的子树(easy)](#back)
+```cpp
+给定两个非空二叉树 s 和 t，检验 s 中是否包含和 t 具有相同结构和节点值的子树。
+s 的一个子树包括 s 的一个节点和这个节点的所有子孙。s 也可以看做它自身的一棵子树。
+
+给定的树 s:
+     3
+    / \
+   4   5
+  / \
+ 1   2
+给定的树 t：
+   4 
+  / \
+ 1   2
+返回 true，因为 t 与 s 的一个子树拥有相同的结构和节点值。
+
+给定的树 s：
+     3
+    / \
+   4   5
+  / \
+ 1   2
+    /
+   0
+给定的树 t：
+   4
+  / \
+ 1   2
+返回 false。
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool sameTree(TreeNode* pRoot1, TreeNode* pRoot2) {
+        if (pRoot1 == nullptr && pRoot2 == nullptr) return true;
+        if (pRoot1 == nullptr || pRoot2 == nullptr) return false;
+        if (pRoot1 -> val == pRoot2 -> val) {
+            return sameTree(pRoot1 -> left, pRoot2 -> left) && sameTree(pRoot1 -> right, pRoot2 -> right);
+        }
+        else return false;
+    }
+
+    bool isSubtree(TreeNode* s, TreeNode* t) {
+        if (s == nullptr || t == nullptr) return false;
+        return sameTree(s, t) || isSubtree(s -> left, t) || isSubtree(s -> right, t);
     }
 };
 ```
