@@ -39,6 +39,7 @@
 ||||[199、二叉树的右视图(medium)](#二叉树的右视图)|[200、岛屿数量(medium)](#岛屿数量)|
 ||[202、快乐数(easy)](#快乐数)||||
 |[206、反转链表(easy)](#反转链表)||
+|[221、最大正方形(medium)](#最大正方形)||
 ||||[289、生命游戏(medium)](#生命游戏)||
 |||||[300、最长上升子序列(medium)](#最长上升子序列)|
 ||[322、零钱兑换(medium)](#零钱兑换)||||
@@ -7806,6 +7807,44 @@ public:
         recur_pre = head;
         head = tmp;
         return reverseList(head);
+    }
+};
+```
+
+<span id="最大正方形"></span>
+## [221、最大正方形(medium)](#back)
+```cpp
+在一个由 0 和 1 组成的二维矩阵内，找到只包含 1 的最大正方形，并返回其面积。
+
+输入: 
+1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0
+输出: 4
+
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        // 动态规划
+        // dp[i][j]：以 i, j 结尾的正方形边长最大值(位置 i, j)处的值为1
+        // 当 matrix[i][j] 不是 1，dp[i][j] == 0
+        if (matrix.size() == 0 || matrix[0].size() == 0) {
+            return 0;
+        }
+        int rows = matrix.size(), cols = matrix[0].size();
+        int max_ = 0;
+        vector<vector<int>> dp(rows, vector<int> (cols, 0));
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] == '1') {
+                    if (i == 0 || j == 0) dp[i][j] = 1;
+                    else dp[i][j] = min(min(dp[i - 1][j - 1], dp[i][j - 1]), dp[i - 1][j]) + 1;
+                    max_ = max(max_, dp[i][j]);
+                }
+            }
+        }
+        return pow(max_, 2);
     }
 };
 ```
