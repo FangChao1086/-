@@ -37,7 +37,7 @@
 ||[162、寻找峰值(medium)](#寻找峰值)||
 ||||[169、多数元素(easy)](#多数元素)||
 ||||[199、二叉树的右视图(medium)](#二叉树的右视图)|[200、岛屿数量(medium)](#岛屿数量)|
-||[202、快乐数(easy)](#快乐数)||||
+||[202、快乐数(easy)](#快乐数)|[203、移除链表元素(easy)](#移除链表元素)|||
 |[206、反转链表(easy)](#反转链表)||
 |[221、最大正方形(medium)](#最大正方形)||
 |[236、二叉树的最近公共祖先(medium)](#二叉树的最近公共祖先)||
@@ -7764,6 +7764,43 @@ public:
             p_fast = changeNum(changeNum(p_fast));
         }
         return p_fast == 1;
+    }
+};
+```
+
+<span id="移除链表元素"></span>
+## [203、移除链表元素(easy)](#back)
+```cpp
+删除链表中等于给定值 val 的所有节点。
+
+输入: 1->2->6->3->4->5->6, val = 6
+输出: 1->2->3->4->5
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode* dummy = new ListNode(0);
+        dummy -> next = head;
+        ListNode* p = dummy;
+        while (p -> next) {
+            if (p -> next -> val == val) {
+                ListNode* tmp = p -> next -> next;
+                delete p -> next;
+                p -> next = tmp;
+            }
+            else {
+                p = p -> next;
+            }
+        }
+        return dummy -> next;
     }
 };
 ```
