@@ -40,6 +40,7 @@
 ||[202、快乐数(easy)](#快乐数)|[203、移除链表元素(easy)](#移除链表元素)|||
 |[206、反转链表(easy)](#反转链表)||
 |[221、最大正方形(medium)](#最大正方形)||
+|[226、翻转二叉树(easy)](#翻转二叉树)||||
 |[236、二叉树的最近公共祖先(medium)](#二叉树的最近公共祖先)||
 ||||[289、生命游戏(medium)](#生命游戏)||
 |||||[300、最长上升子序列(medium)](#最长上升子序列)|
@@ -7883,6 +7884,46 @@ public:
             }
         }
         return pow(max_, 2);
+    }
+};
+```
+
+<span id="翻转二叉树"></span>
+## [226、翻转二叉树(easy)](#back)
+```cpp
+翻转一棵二叉树。
+
+输入：
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+输出：
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if (root == nullptr) return nullptr;
+        TreeNode* left = invertTree(root -> left);
+        TreeNode* right = invertTree(root -> right);
+        root -> left = right;
+        root -> right = left;
+        return root;
     }
 };
 ```
