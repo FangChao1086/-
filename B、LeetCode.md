@@ -53,6 +53,7 @@
 |||||[460、LFU缓存(hard)](#LFU缓存)|
 |[466、统计重复个数(hard)](#统计重复个数)||||
 ||[542、01 矩阵(medium)](#01矩阵)|[543、二叉树的直径(easy)](#二叉树的直径)|
+|||||[560、和为K的子数组(medium)](#和为K的子数组)|
 ||[572、另一个树的子树(easy)](#另一个树的子树)||||
 |||||[695、岛屿的最大面积(medium)](#岛屿的最大面积)|
 |||||[820、单词的压缩编码(medium)](#单词的压缩编码)|
@@ -8647,6 +8648,30 @@ public:
     int diameterOfBinaryTree(TreeNode* root) {
         dfs(root);
         return res;
+    }
+};
+```
+
+<span id="和为K的子数组"></span>
+## [560、和为K的子数组(medium)](#back)
+```cpp
+给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的 连续的子数组 的个数。
+
+输入:nums = [1,1,1], k = 2
+输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。
+
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        unordered_map<int, int> mp;  // 哈希表
+        mp[0] = 1;
+        int count_ = 0, pre = 0;
+        for (auto x : nums) {
+            pre += x;
+            if (mp.find(pre - k) != mp.end()) count_ += mp[pre - k];
+            mp[pre]++;
+        }
+        return count_;
     }
 };
 ```
