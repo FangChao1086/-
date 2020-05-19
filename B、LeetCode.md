@@ -56,6 +56,7 @@
 ||[542、01 矩阵(medium)](#01矩阵)|[543、二叉树的直径(easy)](#二叉树的直径)|
 |||||[560、和为K的子数组(medium)](#和为K的子数组)|
 ||[572、另一个树的子树(easy)](#另一个树的子树)||||
+|||||[680、验证回文字符串 Ⅱ(easy)](#验证回文字符串2)|
 |||||[695、岛屿的最大面积(medium)](#岛屿的最大面积)|
 |||||[820、单词的压缩编码(medium)](#单词的压缩编码)|
 |[836、矩形重叠(easy)](#矩形重叠)|||||
@@ -8826,6 +8827,46 @@ public:
     bool isSubtree(TreeNode* s, TreeNode* t) {
         if (s == nullptr || t == nullptr) return false;
         return sameTree(s, t) || isSubtree(s -> left, t) || isSubtree(s -> right, t);
+    }
+};
+```
+
+<span id="验证回文字符串2"></span>
+## [680、验证回文字符串 Ⅱ(easy)](#back)
+```cpp
+给定一个非空字符串 s，最多删除一个字符。判断是否能成为回文字符串。
+
+输入: "aba"
+输出: True
+
+输入: "abca"
+输出: True
+解释: 你可以删除c字符。
+
+class Solution {
+public:
+    bool help_validPalindrome(string s, int low, int high) {
+        while (low < high) {
+            if (s[low] != s[high]) return false;
+            low++;
+            high--;
+        }
+        return true;
+    }
+
+    bool validPalindrome(string s) {
+        int low = 0, high = s.size() - 1;
+        while (low < high) {
+            char c1 = s[low], c2 = s[high];
+            if (c1 == c2) {
+                low++;
+                high--;
+            }
+            else {
+                return help_validPalindrome(s, low, high - 1) || help_validPalindrome(s, low + 1, high);
+            }
+        }
+        return true;
     }
 };
 ```
