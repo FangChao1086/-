@@ -43,6 +43,7 @@
 |[221、最大正方形(medium)](#最大正方形)||
 |[226、翻转二叉树(easy)](#翻转二叉树)||||
 |[236、二叉树的最近公共祖先(medium)](#二叉树的最近公共祖先)||
+||[257、二叉树的所有路径(medium)](#二叉树的所有路径)||||
 ||||[289、生命游戏(medium)](#生命游戏)||
 |||||[300、最长上升子序列(medium)](#最长上升子序列)|
 ||[322、零钱兑换(medium)](#零钱兑换)||||
@@ -8068,6 +8069,56 @@ public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         dfs(root, p, q);
         return ans;        
+    }
+};
+```
+
+<span id="二叉树的所有路径"></span>
+## [257、二叉树的所有路径(medium)](#back)
+```cpp
+给定一个二叉树，返回所有从根节点到叶子节点的路径。
+说明: 叶子节点是指没有子节点的节点。
+
+输入:
+   1
+ /   \
+2     3
+ \
+  5
+输出: ["1->2->5", "1->3"]
+解释: 所有根节点到叶子节点的路径为: 1->2->5, 1->3
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> res;
+        if (root == nullptr) return res;
+        stack<pair<TreeNode*, string>> st;  // 存储当前节点，与到当前节点的前面的字符串
+        pair<TreeNode*, string> temp = pair<TreeNode*, string>(root, to_string(root -> val));
+        st.push(temp);
+        while (!st.empty()) {
+            temp = st.top();
+            st.pop();
+            if (temp.first -> right != nullptr) {
+                st.push(pair<TreeNode*, string>(temp.first -> right, temp.second + "->" + to_string(temp.first -> right -> val)));
+            }
+            if (temp.first -> left != nullptr) {
+                st.push(pair<TreeNode*, string>(temp.first->left, temp.second + "->" + to_string(temp.first -> left ->val)));
+            }
+            if (temp.first -> left == nullptr && temp.first -> right == nullptr) {
+                res.push_back(temp.second);
+            }
+        }
+        return res;
     }
 };
 ```
