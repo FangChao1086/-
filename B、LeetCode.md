@@ -66,6 +66,7 @@
 ||[892、三维形体的表面积(easy)](#三维形体的表面积)||||
 ||[912、排序数组(medium)](#排序数组)||[914、卡牌分组(easy)](#卡牌分组)||
 |||||[945、使数组唯一的最小增量(medium)](#使数组唯一的最小增量)|
+||||[974、和可被 K 整除的子数组(medium)](#和可被K整除的子数组)||
 |||[983、最低票价(medium)](#最低票价)|||
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 ||||[999、车的可用捕获量(easy)](#车的可用捕获量)||
@@ -9366,6 +9367,36 @@ public:
             }
         }
         return all_;
+    }
+};
+```
+
+<span id="和可被K整除的子数组"></span>
+## [974、和可被 K 整除的子数组(medium)](#back)
+```cpp
+给定一个整数数组 A，返回其中元素之和可被 K 整除的（连续、非空）子数组的数目。
+
+输入：A = [4,5,0,-2,-3,1], K = 5
+输出：7
+解释：
+有 7 个子数组满足其元素之和可被 K = 5 整除：
+[4, 5, 0, -2, -3, 1], [5], [5, 0], [5, 0, -2, -3], [0], [0, -2, -3], [-2, -3]
+
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& A, int K) {
+        // 前缀和
+        unordered_map<int, int> record = {{0, 1}};
+        int sum = 0, ans = 0;
+        for (int elem : A) {
+            sum += elem;
+            int modulus = (sum % K + K) % K;
+            if (record.count(modulus)) {
+                ans += record[modulus];
+            }
+            ++record[modulus];
+        }
+        return ans;
     }
 };
 ```
