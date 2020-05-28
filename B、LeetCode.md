@@ -50,6 +50,7 @@
 |||||[355、设计推特(medium)](#设计推特)|
 |||||[365、水壶问题(medium)](#水壶问题)|
 ||[386、字典序排数](#字典序排数)  |
+||||[394、字符串解码(medium)](#字符串解码)||
 ||||[409、最长回文串(easy)](#最长回文串)||
 |||||[445、两数相加 II](#两数相加2)|
 |||||[460、LFU缓存(hard)](#LFU缓存)|
@@ -8494,6 +8495,75 @@ public:
             }
         }
         return res;
+    }
+};
+```
+
+<span id="字符串解码"></span>
+## [394、字符串解码(medium)](#back)
+```cpp
+给定一个经过编码的字符串，返回它解码后的字符串。
+编码规则为: k[encoded_string]，表示其中方括号内部的 encoded_string 正好重复 k 次。注意 k 保证为正整数。
+你可以认为输入字符串总是有效的；输入字符串中没有额外的空格，且输入的方括号总是符合格式要求的。
+此外，你可以认为原始数据不包含数字，所有的数字只表示重复的次数 k ，例如不会出现像 3a 或 2[4] 的输入。
+
+s = "3[a]2[bc]", 返回 "aaabcbc".
+s = "3[a2[c]]", 返回 "accaccacc".
+s = "2[abc]3[cd]ef", 返回 "abcabccdcdcdef".
+
+class Solution {
+public:
+    string getDigit(string &s, size_t &ptr) {
+        string ret = "";
+        while (isdigit(s[ptr])) ret.push_back(s[ptr++]);
+        return ret;
+    } 
+
+    string getString(vector<string> &v) {
+        string ret;
+        for (const auto &s : v) {
+            ret += s;
+        }
+        return ret;
+    } 
+
+    string decodeString(string s) {
+        // 栈实现
+        // 如果当前为是数字，将数字压入栈（需要考虑数字是两位以上的情况）
+        // 如果当前是 [ 或者字母，直接入栈
+        // 如果遇到 ], 使用新的字符串记录，开始出栈，直到遇到 [ 停止，
+        // 取出此时的栈顶数据t（为数字），将新的字符串重复t次，压入栈中
+        vector<string> stk;  // vector<string> 模拟栈
+        size_t ptr = 0; 
+        while (ptr < s.size()) {
+            char cur = s[ptr];
+            if (isdigit(cur)) {
+                // 获取
+                string digit_ = getDigit(s, ptr);  // 数字可能是 2 位以上的数字 
+                stk.push_back(digit_);
+            } else if (isalpha(cur) || cur == '[') {
+                stk.push_back(string(1, s[ptr++]));
+            }else {
+                ++ptr;
+                vector<string> sub;
+                while (stk.back() != "[") {
+                    sub.push_back(stk.back());
+                    stk.pop_back();
+                }
+                reverse(sub.begin(), sub.end());
+                stk.pop_back();  // 左括号出栈
+                // 此时栈顶为当前 sub 对应的字符串该出现的次数
+                int repTime = stoi(stk.back());
+                stk.pop_back();
+                string t;
+                string o = getString(sub);  // 将 vector<string> 转换为 string
+                while (repTime--) {
+                    t += o;
+                }
+                stk.push_back(t);
+            }
+        }
+        return getString(stk);
     }
 };
 ```
