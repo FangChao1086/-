@@ -18,7 +18,7 @@
 |[66、加一](#加一)  |[67、二进制求和](#二进制求和)  |[68、文本左右对齐](#文本左右对齐)  |[69、X的平方根(easy)](#X的平方根)  |[70、爬楼梯](#爬楼梯)  
 |[71、简化路径](#简化路径)  |[72、编辑距离(hard)](#编辑距离)  |[73、矩阵置零](#矩阵置零)  |[74、搜索二维矩阵](#搜索二维矩阵)  |[75、颜色分类](#颜色分类)  
 |[76、最小覆盖子串(hard)](#最小覆盖子串)  |[77、组合](#组合)  |[78、子集](#子集)  |[79、单词搜索](#单词搜索)  |[80、删除排序数组中的重复项 II](#删除排序数组中的重复项2)  
-|[81、搜索旋转排序数组 II](#搜索旋转排序数组2)  |[82、删除排序链表中的重复元素 II](#删除排序链表中的重复元素2)  |[83、删除排序链表中的重复元素](#删除排序链表中的重复元素)  |[84、柱状图中最大的矩形](#柱状图中最大的矩形)  |[85、最大矩形](#最大矩形)  
+|[81、搜索旋转排序数组 II](#搜索旋转排序数组2)  |[82、删除排序链表中的重复元素 II](#删除排序链表中的重复元素2)  |[83、删除排序链表中的重复元素](#删除排序链表中的重复元素)  |[84、柱状图中最大的矩形(hard)](#柱状图中最大的矩形)  |[85、最大矩形](#最大矩形)  
 |[86、分隔链表](#分隔链表)  |[87、扰乱字符串](#扰乱字符串)  |[88、合并两个有序数组](#合并两个有序数组)  |[89、格雷编码](#格雷编码)  |[90、子集 II](#子集2)  
 |[91、解码方法](#解码方法)  |[92、反转链表 II](#反转链表2)  |[93、复原IP地址](#复原IP地址)  |[94、二叉树的中序遍历](#二叉树的中序遍历)  |[95、不同的二叉搜索树 II](#不同的二叉搜索树2)  
 |[96、不同的二叉搜索树](#不同的二叉搜索树)  |[97、交错字符串](#交错字符串)  |[98、验证二叉搜索树(medium)](#验证二叉搜索树)  |[99、恢复二叉搜索树](#恢复二叉搜索树)  |[100、相同的树](#相同的树)  
@@ -4023,7 +4023,7 @@ public:
 ```
 
 <span id="柱状图中最大的矩形"></span>
-## [84、柱状图中最大的矩形](#back)
+## [84、柱状图中最大的矩形(hard)](#back)
 ```
 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
 求在该柱状图中，能够勾勒出来的矩形的最大面积。
@@ -4046,26 +4046,27 @@ public:
 class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
-        // 分治法
-        // 找到最小高度的索引值 min_index，用其得到使用此索引的最大面积 min_index* (end - start + 1)
-        // 在索引左边（不包括索引 min_index ）再继续找最小高度的索引，计算左边的最大面积
-        // 同样在右边也找到一个最大面积
-        //  3 者的最大面积即为所求
-        return fenzhi(heights, 0, heights.size() - 1);
-    }
-
-    int fenzhi(vector<int>& heights, int start, int end) {
-        if (start > end) return 0;
-        int min_index = start;
-        for (int i = start; i <= end; i++) 
-            if (heights[min_index] > heights[i])
-                min_index = i;
-        int left_min = min_index - 1;
-        int right_min = min_index + 1;
-        // 找到左边比分界线大的数
-        while (left_min > 0 && heights[left_min] <= heights[min_index]) left_min--;
-        while (right_min < end && heights[right_min] <= heights[min_index]) right_min++;
-        return max(heights[min_index] * (end - start + 1), max(fenzhi(heights, start, left_min), fenzhi(heights, right_min, end)));
+        // 栈实现
+        int n = heights.size();
+        vector<int> left(n), right(n);
+        stack<int> stk;
+        for (int i = 0; i < n; i++) {
+            while (!stk.empty() && heights[stk.top()] >= heights[i])
+                stk.pop();
+            left[i] = stk.empty() ? -1 : stk.top();  // 从左遍历时索引值
+            stk.push(i);
+        }
+        stk = stack<int>();
+        for(int i = n - 1; i >= 0; i--) {
+            while(!stk.empty() && heights[stk.top()] >= heights[i]) 
+                stk.pop();
+            right[i] = stk.empty() ? n : stk.top();
+            stk.push(i);
+        }
+        int ans = 0; 
+        for (int i = 0; i < n; i++) 
+            ans = max(ans, (right[i] - left[i] - 1) * heights[i]);
+        return ans;
     }
 };
 ```
