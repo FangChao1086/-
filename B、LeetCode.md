@@ -91,6 +91,7 @@
 ||||[1579、圆圈中最后剩下的数字(easy)](#圆圈中最后剩下的数字)||
 |[1591、数组中的逆序对(hard)](#数组中的逆序对)||||
 |||[1608、数组中数字出现的次数(medium)](#数组中数字出现的次数)|||
+||[1662、求1+2+…+n(medium)](#求1+2+…+n)||||
 
 <span id="两数之和"></span>
 ## [1、两数之和](#back)
@@ -10729,6 +10730,26 @@ public:
             else b ^= n;
         }
         return vector<int> {a, b};
+    }
+};
+```
+
+<span id="求1+2+…+n"></span>
+## [1662、求1+2+…+n(medium)](#back)
+```cpp
+求 1+2+...+n ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
+
+输入: n = 3
+输出: 6
+
+输入: n = 9
+输出: 45
+
+class Solution {
+public:
+    int sumNums(int n) {
+        n && (n +=sumNums(n - 1));
+        return n; 
     }
 };
 ```
