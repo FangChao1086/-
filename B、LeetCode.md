@@ -42,7 +42,7 @@
 |[206、反转链表(easy)](#反转链表)||||[210、课程表 II(medium)](#课程表2)|
 |[221、最大正方形(medium)](#最大正方形)||
 |[226、翻转二叉树(easy)](#翻转二叉树)||||
-|[236、二叉树的最近公共祖先(medium)](#二叉树的最近公共祖先)||
+|[236、二叉树的最近公共祖先(medium)](#二叉树的最近公共祖先)||[238、除自身以外数组的乘积(medium)](#除自身以外数组的乘积)|
 ||[257、二叉树的所有路径(medium)](#二叉树的所有路径)||||
 ||[287、寻找重复数(medium)](#寻找重复数)||[289、生命游戏(medium)](#生命游戏)||
 |||||[300、最长上升子序列(medium)](#最长上升子序列)|
@@ -8113,6 +8113,38 @@ public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         dfs(root, p, q);
         return ans;        
+    }
+};
+```
+
+<span id="除自身以外数组的乘积"></span>
+## [238、除自身以外数组的乘积(medium)](#back)
+```cpp
+给你一个长度为 n 的整数数组 nums，其中 n > 1，返回输出数组 output ，
+其中 output[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积。
+
+输入: [1,2,3,4]
+输出: [24,12,8,6]
+说明: 请不要使用除法，且在 O(n) 时间复杂度内完成此题。
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int size_ = nums.size();
+        vector<int> left(size_, 0), right(size_, 0);
+        left[0] = 1;
+        for (int i = 1; i < size_; i++) {
+            left[i] = nums[i - 1] * left[i - 1];
+        }
+        right[size_ - 1] = 1;
+        for (int i = size_ - 2; i >= 0; i--) {
+            right[i] = nums[i + 1] * right[i + 1];
+        }
+        vector<int> res(size_, 0);
+        for (int i = 0; i < size_; i++) {
+            res[i] = left[i] * right[i];
+        }
+        return res;
     }
 };
 ```
