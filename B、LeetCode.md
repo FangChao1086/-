@@ -91,6 +91,7 @@
 ||||[1579、圆圈中最后剩下的数字(easy)](#圆圈中最后剩下的数字)||
 |[1591、数组中的逆序对(hard)](#数组中的逆序对)||||
 |||[1608、数组中数字出现的次数(medium)](#数组中数字出现的次数)|||
+|[1621、顺时针打印矩阵(easy)](#顺时针打印矩阵)|||||
 ||[1662、求1+2+…+n(medium)](#求1+2+…+n)||||
 
 <span id="两数之和"></span>
@@ -10799,6 +10800,53 @@ public:
             else b ^= n;
         }
         return vector<int> {a, b};
+    }
+};
+```
+
+<span id="顺时针打印矩阵"></span>
+## [1621、顺时针打印矩阵(easy)](#back)
+```cpp
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+
+输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+输出：[1,2,3,6,9,8,7,4,5]
+
+输入：matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+输出：[1,2,3,4,8,12,11,10,9,5,6,7]
+
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> res;
+        int row = matrix.size();
+        if (row == 0) return res;
+        int cols = matrix[0].size();
+        int left = 0, right = cols - 1, top = 0, bottom = row - 1;
+        while (left <= right && top <= bottom) {
+            if (left <= right) {
+                for(int i = left; i <= right; i++) {
+                    res.push_back(matrix[top][i]);
+                }
+            }
+            if (top < bottom && left <= right) {
+                for(int i = top + 1; i <= bottom; i++) {
+                    res.push_back(matrix[i][right]);
+                }
+            }
+            if (top < bottom && left < right) {
+                for(int i = right - 1; i >= left; i--) {
+                    res.push_back(matrix[bottom][i]);
+                }
+            }
+            if (top + 1 < bottom && left < right) {
+                for(int i = bottom - 1; i >= top + 1; i--) {
+                    res.push_back(matrix[i][left]);
+                }
+            }
+            left++, right--, top++, bottom--;
+        }
+        return res;
     }
 };
 ```
