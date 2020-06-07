@@ -27,7 +27,7 @@
 |[111、二叉树的最小深度](#二叉树的最小深度)  |[112、路径总和](#路径总和)  |[113、路径总和 II](#路径总和2)  |[114、二叉树展开为链表](#二叉树展开为链表)  |[115、不同的子序列](#不同的子序列)  
 |[116、填充每个节点的下一个右侧节点指针](#填充每个节点的下一个右侧节点指针)  |[117、填充每个节点的下一个右侧节点指针 II](#填充每个节点的下一个右侧节点指针2)  |[118、杨辉三角](#杨辉三角)|[119、杨辉三角 II](#杨辉三角2)|[120、三角形最小路径和](#三角形最小路径和)|
 |[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|[124、二叉树中的最大路径和(hard)](#二叉树中的最大路径和)|[125、验证字符串(easy)](#验证字符串)|
-||[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
+|[126、单词接龙 II(hard)](#单词接龙2)|[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
 |[141、环形链表(easy)](#环形链表)|[142、环形链表 II(medium)](#环形链表2)|[143、重排链表(medium)](#重排链表)|[144、二叉树的前序遍历(medium)](#二叉树的前序遍历)|[145、二叉树的后序遍历(hard)](#二叉树的后序遍历)|
@@ -6049,6 +6049,114 @@ public:
             else return false;
         }
         return true;
+    }
+};
+```
+
+<span id="单词接龙2"></span>
+## [126、单词接龙 II(hard)](#back)
+```cpp
+给定两个单词（beginWord 和 endWord）和一个字典 wordList，找出所有从 beginWord 到 endWord 的最短转换序列。
+转换需遵循如下规则：
+每次转换只能改变一个字母。
+转换过程中的中间单词必须是字典中的单词。
+
+说明:
+如果不存在这样的转换序列，返回一个空列表。
+所有单词具有相同的长度。
+所有单词只由小写字母组成。
+字典中不存在重复的单词。
+你可以假设 beginWord 和 endWord 是非空的，且二者不相同。
+
+输入:
+beginWord = "hit",
+endWord = "cog",
+wordList = ["hot","dot","dog","lot","log","cog"]
+输出:
+[
+  ["hit","hot","dot","dog","cog"],
+  ["hit","hot","lot","log","cog"]
+]
+
+输入:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log"]
+输出: []
+解释: endWord "cog" 不在字典中，所以不存在符合要求的转换序列。
+
+const int INF = 1 << 20;
+
+class Solution {
+private:
+    unordered_map<string, int> wordId;
+    vector<string> idWord;
+    vector<vector<int>> edges;
+public:
+    bool transformCheck(const string& str1, const string& str2) {
+        int differences = 0;
+        for (int i = 0; i < str1.size() && differences < 2; i++) {
+            if (str1[i] != str2[i])
+                differences++;
+        }
+        return differences == 1;
+    }
+
+    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+        // 拓扑图bfs
+        int id = 0;
+        for (const string& word : wordList) {
+            if (!wordId.count(word)) {
+                wordId[word] = id++;
+                idWord.push_back(word);
+            }
+        }
+        if (!wordId.count(endWord)) {
+            return {};
+        }
+        if (!wordId.count(beginWord)) {
+            wordId[beginWord] = id++;
+            idWord.push_back(beginWord);
+        }
+        edges.resize(idWord.size());
+        for (int i = 0; i < idWord.size(); i++) {
+            for (int j = i + 1; j < idWord.size(); j++) {
+                if (transformCheck(idWord[i], idWord[j])) {
+                    edges[i].push_back(j);
+                    edges[j].push_back(i);
+                }
+            }
+        }
+        const int dest = wordId[endWord];
+        vector<vector<string>> res;
+        queue<vector<int>> q;
+        vector<int> cost(id, INF);
+        q.push(vector<int> {wordId[beginWord]});
+        cost[wordId[beginWord]] = 0;
+        while (!q.empty()) {
+            vector<int> now = q.front();
+            q.pop();
+            int last = now.back();
+            if (last == dest) {
+                vector<string> tmp;
+                for (int index : now) {
+                    tmp.push_back(idWord[index]);
+                } 
+                res.push_back(tmp);
+            }
+            else {
+                for (int i = 0; i < edges[last].size(); i++) {
+                    int to = edges[last][i];
+                    if (cost[last] + 1 <= cost[to]) {
+                        cost[to] = cost[last] + 1;
+                        vector<int> tmp(now);
+                        tmp.push_back(to);
+                        q.push(tmp);
+                    }
+                }
+            }
+        }
+        return res;
     }
 };
 ```
