@@ -61,6 +61,7 @@
 ||[572、另一个树的子树(easy)](#另一个树的子树)||||
 |||||[680、验证回文字符串 Ⅱ(easy)](#验证回文字符串2)|
 |||||[695、岛屿的最大面积(medium)](#岛屿的最大面积)|
+||||[739、每日温度(medium)](#每日温度)||
 |||||[820、单词的压缩编码(medium)](#单词的压缩编码)|
 |[836、矩形重叠(easy)](#矩形重叠)|[837、新21点(medium)](#新21点)||||
 |[876、链表的中间结点(easy)](#链表的中间结点)||
@@ -9303,6 +9304,35 @@ public:
             }
         }
         return max_;
+    }
+};
+```
+
+<span id="每日温度"></span>
+## [739、每日温度(medium)](#back)
+```cpp
+请根据每日 气温 列表，重新生成一个列表。
+对应位置的输出为：要想观测到更高的气温，至少需要等待的天数。
+如果气温在这之后都不会升高，请在该位置用 0 来代替。
+
+给定一个列表 temperatures = [73, 74, 75, 71, 69, 72, 76, 73]，
+你的输出应该是 [1, 1, 4, 2, 1, 1, 0, 0]。
+
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& T) {
+        int len_ = T.size();
+        vector<int> ans(len_, 0);
+        stack<int> s;
+        for (int i = 0; i < len_; i++) {
+            while (!s.empty() && T[i] > T[s.top()]) {
+                int pre_index = s.top();
+                ans[pre_index] = i - pre_index;
+                s.pop();
+            }
+            s.push(i);
+        }
+        return ans;
     }
 };
 ```
