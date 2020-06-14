@@ -82,6 +82,7 @@
 |||||[1160、拼写单词(easy)](#拼写单词)|
 ||[1162、地图分析(medium)](#地图分析)||
 |||[1248、统计「优美子数组」(medium)](#统计优美子数组)|||
+|||||[1300、转变数组后最接近目标值的数组和(medium)](#转变数组后最接近目标值的数组和)|
 |[1371、每个元音包含偶数次的最长子字符串(medium)](#每个元音包含偶数次的最长子字符串)|||||
 ||||[1394、字符串压缩(easy)](#字符串压缩)||
 |||[1418、旋转矩阵(medium)](#旋转矩阵)|||
@@ -10449,6 +10450,43 @@ public:
             res[pre_i] += 1;
         }
         return ans;
+    }
+};
+```
+
+<span id="转变数组后最接近目标值的数组和"></span>
+## [1300、转变数组后最接近目标值的数组和(medium)](#back)
+```cpp
+给你一个整数数组 arr 和一个目标值 target ，请你返回一个整数 value ，
+使得将数组中所有大于 value 的值变成 value 后，数组的和最接近  target （最接近表示两者之差的绝对值最小）。
+如果有多种使得和最接近 target 的方案，请你返回这些整数中的最小值。
+请注意，答案不一定是 arr 中的数字。
+
+输入：arr = [4,9,3], target = 10
+输出：3
+解释：当选择 value 为 3 时，数组会变成 [3, 3, 3]，和为 9 ，这是最接近 target 的方案。
+
+输入：arr = [2,3,5], target = 10
+输出：5
+
+输入：arr = [60864,25176,27249,21296,20204], target = 56803
+输出：11361
+
+class Solution {
+public:
+    int findBestValue(vector<int>& arr, int target) {
+        sort(arr.begin(), arr.end());
+        int sum = 0;
+        for (int i = 0; i < arr.size(); i++) {
+            int x = (target - sum) / (arr.size() - i);
+            if (x < arr[i]) {
+                double t = (double) (target - sum) / (arr.size() - i);
+                if (t - x > 0.5) return x + 1;
+                else return x;
+            }
+            sum += arr[i];
+        }
+        return arr[arr.size() - 1];
     }
 };
 ```
