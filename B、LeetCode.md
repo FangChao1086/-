@@ -46,7 +46,7 @@
 ||[257、二叉树的所有路径(medium)](#二叉树的所有路径)||||
 |||[263、丑数(easy)](#丑数)|||
 ||[287、寻找重复数(medium)](#寻找重复数)||[289、生命游戏(medium)](#生命游戏)||
-|||||[300、最长上升子序列(medium)](#最长上升子序列)|
+||[297、二叉树的序列化与反序列化(hard)](#二叉树的序列化与反序列化)|||[300、最长上升子序列(medium)](#最长上升子序列)|
 ||[322、零钱兑换(medium)](#零钱兑换)||||
 |||||[355、设计推特(medium)](#设计推特)|
 |||||[365、水壶问题(medium)](#水壶问题)|
@@ -8455,6 +8455,85 @@ public:
         }
     }
 };
+```
+
+<span id="二叉树的序列化与反序列化"></span>
+## [297、二叉树的序列化与反序列化(hard)](#back)
+```cpp
+序列化是将一个数据结构或者对象转换为连续的比特位的操作，进而可以将转换后的数据存储在一个文件或者内存中，
+同时也可以通过网络传输到另一个计算机环境，采取相反方式重构得到原数据。
+请设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列 / 反序列化算法执行逻辑，
+你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。
+
+你可以将以下二叉树：
+    1
+   / \
+  2   3
+     / \
+    4   5
+序列化为 "[1,2,3,null,null,4,5]"
+
+说明: 不要使用类的成员 / 全局 / 静态变量来存储状态，你的序列化和反序列化算法应该是无状态的。
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+    void dfs_s(TreeNode* root, string& res) {
+        if (!root) {
+            res += "null ";
+            return ;
+        }
+        res += to_string(root -> val) + ' ';
+        dfs_s(root -> left, res);
+        dfs_s(root -> right, res);
+    }
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string res;
+        dfs_s(root, res);
+        return res;        
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        // 开始遍历索引
+        int u = 0;
+        return dfs_d(data, u);
+    }
+
+     TreeNode* dfs_d(string& data, int& u) {
+        if (u >= data.size()) return NULL;
+        if (data[u] == 'n') {
+            u = u + 5;
+            return NULL;
+        }
+        int val = 0, sign = 1;
+        if (data[u] == '-') sign = -1, u ++ ;
+        while(data[u] != ' '){val = val * 10 + data[u] - '0'; u++;}
+        val *= sign;
+        u = u + 1 ;
+
+        auto root = new TreeNode(val);
+        root->left = dfs_d(data, u);
+        root->right = dfs_d(data, u);
+
+        return root;
+    }
+
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));
 ```
 
 <span id="最长上升子序列"></span>
