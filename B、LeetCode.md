@@ -75,6 +75,7 @@
 ||||[994、腐烂的橘子(easy)](#腐烂的橘子)||
 ||||[999、车的可用捕获量(easy)](#车的可用捕获量)||
 |||[1013、将数组分成和相等的三个部分(easy)](#将数组分成和相等的三个部分)|[1014、最佳观光组合(medium)](#最佳观光组合)||
+|||[1028、从先序遍历还原二叉树(hard)](#从先序遍历还原二叉树)|||
 |[1071、字符串的最大公因子(easy)](#字符串的最大公因子)||
 |||||[1095、山脉数组中查找目标值(hard)](#山脉数组中查找目标值)|
 |||[1103、分糖果 II(easy)](#分糖果2)|||
@@ -10204,6 +10205,66 @@ public:
             mx = max(mx, A[j] + j);
         }
         return ans;
+    }
+};
+```
+
+<span id="从先序遍历还原二叉树"></span>
+## [1028、从先序遍历还原二叉树(hard)](#back)
+```cpp
+我们从二叉树的根节点 root 开始进行深度优先搜索。
+在遍历中的每个节点处，我们输出 D 条短划线（其中 D 是该节点的深度），然后输出该节点的值。
+（如果节点的深度为 D，则其直接子节点的深度为 D + 1。根节点的深度为 0）。
+如果节点只有一个子节点，那么保证该子节点为左子节点。
+给出遍历输出 S，还原树并返回其根节点 root。
+    1      
+ 2    5
+3 4  6 7
+
+输入："1-2--3--4-5--6--7"
+输出：[1,2,5,3,4,6,7]
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* recoverFromPreorder(string S) {
+        stack<TreeNode*> path;
+        int pos = 0;
+        while (pos < S.size()) {
+            int level = 0;
+            while (S[pos] == '-') {
+                ++level;
+                ++pos;
+            }
+            int value = 0;
+            while (pos < S.size() && isdigit(S[pos])) {
+                value = value * 10 + (S[pos] - '0');
+                ++pos;
+            }
+            TreeNode* node = new TreeNode(value);
+            if (level == path.size()) {
+                if (!path.empty()) {
+                    path.top() -> left = node;
+                }
+            }
+            else {
+                while (level != path.size()) {
+                    path.pop();
+                }
+                path.top() -> right = node;
+            }
+            path.push(node);
+        }
+        while (path.size() > 1) path.pop();
+        return path.top();
     }
 };
 ```
