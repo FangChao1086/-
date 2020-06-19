@@ -26,7 +26,7 @@
 |[106、从中序与后序遍历序列构造二叉树](#从中序与后序遍历序列构造二叉树)  |[107、二叉树的层次遍历 II](#二叉树的层次遍历2)  |[108、将有序数组转换为二叉搜索树](#将有序数组转换为二叉搜索树)  |[109、有序链表转换二叉搜索树](#有序链表转换二叉搜索树)  |[110、平衡二叉树](#平衡二叉树)  
 |[111、二叉树的最小深度](#二叉树的最小深度)  |[112、路径总和](#路径总和)  |[113、路径总和 II](#路径总和2)  |[114、二叉树展开为链表](#二叉树展开为链表)  |[115、不同的子序列](#不同的子序列)  
 |[116、填充每个节点的下一个右侧节点指针](#填充每个节点的下一个右侧节点指针)  |[117、填充每个节点的下一个右侧节点指针 II](#填充每个节点的下一个右侧节点指针2)  |[118、杨辉三角](#杨辉三角)|[119、杨辉三角 II](#杨辉三角2)|[120、三角形最小路径和](#三角形最小路径和)|
-|[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|[124、二叉树中的最大路径和(hard)](#二叉树中的最大路径和)|[125、验证字符串(easy)](#验证字符串)|
+|[121、买卖股票的最佳时机(easy)](#买卖股票的最佳时机)|[122、买卖股票的最佳时机 II(easy)](#买卖股票的最佳时机2)|[123、买卖股票的最佳时机 III(hard)](#买卖股票的最佳时机3)|[124、二叉树中的最大路径和(hard)](#二叉树中的最大路径和)|[125、验证回文串(easy)](#验证回文串)|
 |[126、单词接龙 II(hard)](#单词接龙2)|[127、单词接龙(medium)](#单词接龙)|[128、最长连续序列(hard)](#最长连续序列)|[129、求根到叶子节点数字之和(medium)](#求根到叶子节点数字之和)|[130、被围绕的区域(medium)](#被围绕的区域)|
 |[131、分割回文串(medium)](#分割回文串)|[132、分割回文串 II(hard)](#分割回文串2)|[133、克隆图(medium)](#克隆图)|[134、加油站(medium)](#加油站)|[135、分发糖果(hard)](#分发糖果)|
 |[136、只出现一次的数字(easy)](#只出现一次的数字)|[137、只出现一次的数字 II(medium)](#只出现一次的数字2)|[138、复制带随机指针的链表(medium)](#复制带随机指针的链表)|[139、单词拆分(medium)](#单词拆分)||
@@ -6021,8 +6021,8 @@ public:
 };
 ```
 
-<span id="验证字符串"></span>
-## [125、验证字符串(easy)](#back)
+<span id="验证回文串"></span>
+## [125、验证回文串(easy)](#back)
 ```cpp
 给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
 说明：本题中，我们将空字符串定义为有效的回文串。
@@ -6036,22 +6036,29 @@ public:
 class Solution {
 public:
     bool isPalindrome(string s) {
-        if (s.size() == 0) return true;
-        int left = 0, right = s.size() - 1;
+        int len_ = s.size();
+        int left = 0, right = len_ - 1;
+        
         while (left < right) {
-            if (!isalpha(s[left]) && !isdigit(s[left])) {
+            while (left < right && !isalpha(s[left])  && !isdigit(s[left]))
                 left++;
-                continue;
-            }
-            if (!isalpha(s[right]) && !isdigit(s[right])) {
+            while (left < right && !isalpha(s[right])  && !isdigit(s[right]))
                 right--;
-                continue;
+            if (isdigit(s[left])) {
+                if (s[left] != s[right])
+                    return false;
+                else {
+                    left++;
+                    right--;
+                }
             }
-            if (tolower(s[left]) == tolower(s[right])) {
+            else if (toupper(s[left]) != toupper(s[right])) {
+                return false;
+            }
+            else {
                 left++;
                 right--;
             }
-            else return false;
         }
         return true;
     }
