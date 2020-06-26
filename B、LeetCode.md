@@ -95,7 +95,7 @@
 |[1531、机器人的运动范围(medium)](#机器人的运动范围)||
 |||[1538、最小的k个数(easy)](#最小的k个数)|||
 ||||[1579、圆圈中最后剩下的数字(easy)](#圆圈中最后剩下的数字)||
-|[1591、数组中的逆序对(hard)](#数组中的逆序对)||||
+|[1591、移除重复节点(easy)](#移除重复节点)||||
 |||[1608、数组中数字出现的次数(medium)](#数组中数字出现的次数)|||
 |[1621、顺时针打印矩阵(easy)](#顺时针打印矩阵)|||||
 ||||[1644、把数字翻译成字符串(medium)](#把数字翻译成字符串)||
@@ -11214,59 +11214,43 @@ public:
 };
 ```
 
-<span id="数组中的逆序对"></span>
-## [1591、数组中的逆序对(hard)](#back)
+<span id="移除重复节点"></span>
+## [1591、移除重复节点(easy)](#back)
 ```cpp
-在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。
-输入一个数组，求出这个数组中的逆序对的总数。
+编写代码，移除未排序链表中的重复节点。保留最开始出现的节点。
 
-输入: [7,5,6,4]
-输出: 5
+输入：[1, 2, 3, 3, 2, 1]
+输出：[1, 2, 3]
 
+输入：[1, 1, 1, 1, 2]
+输出：[1, 2]
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
 class Solution {
 public:
-    // 归并
-    long InversePairsCore(vector<int> &data,vector<int> &copy,int start,int end){
-        if(start==end){
-            copy[start]=data[start];
-            return 0;
-        }
-        int length=(end-start)/2;
-        long left=InversePairsCore(copy,data,start,start+length);
-        long right=InversePairsCore(copy,data,start+length+1,end);
-        
-        int i=start+length;
-        int j=end;
-        int index_copy=end;
-        long count=0;
-        while(i>=start && j>=start+length+1){
-            if(data[i]>data[j]){
-                copy[index_copy--]=data[i--];
-                count=count+j-start-length;
-            }
-            else{
-                copy[index_copy--]=data[j--];
+    ListNode* removeDuplicateNodes(ListNode* head) {
+        if (head == nullptr) return head;
+        unordered_set<int> un_s = {head -> val};
+        ListNode* pos = head;
+        while (pos -> next != nullptr) {
+            //  待删节点
+            ListNode* cur = pos -> next;
+            if (!un_s.count(cur -> val)) {  // 如果当前节点不在set中
+                un_s.insert(cur -> val);
+                pos = pos-> next;
+            } else {
+                pos -> next = pos -> next -> next;
             }
         }
-        for(;i>=start;i--){
-            copy[index_copy--]=data[i];
-        }
-        for(;j>=start+length+1;j--){
-            copy[index_copy--]=data[j];
-        }
-        return count+left+right;
-    }
-
-
-    int reversePairs(vector<int>& nums) {
-        if(nums.size()<1)
-            return 0;
-        vector<int> copy;
-        for(int i=0;i<int(nums.size());i++){
-            copy.push_back(nums[i]);
-        }
-        long count=InversePairsCore(nums,copy,0,int(nums.size())-1);
-        return count;
+        pos -> next == nullptr;
+        return head;
     }
 };
 ```
