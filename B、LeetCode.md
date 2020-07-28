@@ -65,6 +65,7 @@
 ||||[739、每日温度(medium)](#每日温度)||
 |||||[820、单词的压缩编码(medium)](#单词的压缩编码)|
 |[836、矩形重叠(easy)](#矩形重叠)|[837、新21点(medium)](#新21点)||||
+|[871、最低加油次数(hard)](#最低加油次数)||
 |[876、链表的中间结点(easy)](#链表的中间结点)||
 ||[887、鸡蛋掉落(hard)](#鸡蛋掉落)||||
 ||[892、三维形体的表面积(easy)](#三维形体的表面积)||||
@@ -9587,6 +9588,59 @@ public:
             dp[i] = dp[i + 1] - (dp[i + W + 1] - dp[i + 1]) / W;
         }
         return dp[0];
+    }
+};
+```
+
+<span id="最低加油次数"></span>
+## [871、最低加油次数(hard)](#back)
+```cpp
+汽车从起点出发驶向目的地，该目的地位于出发位置东面 target 英里处。
+沿途有加油站，每个 station[i] 代表一个加油站，它位于出发位置东面 station[i][0] 英里处，并且有 station[i][1] 升汽油。
+假设汽车油箱的容量是无限的，其中最初有 startFuel 升燃料。它每行驶 1 英里就会用掉 1 升汽油。
+当汽车到达加油站时，它可能停下来加油，将所有汽油从加油站转移到汽车中。
+为了到达目的地，汽车所必要的最低加油次数是多少？如果无法到达目的地，则返回 -1 。
+注意：如果汽车到达加油站时剩余燃料为 0，它仍然可以在那里加油。如果汽车到达目的地时剩余燃料为 0，仍然认为它已经到达目的地。
+
+输入：target = 1, startFuel = 1, stations = []
+输出：0
+解释：我们可以在不加油的情况下到达目的地。
+
+输入：target = 100, startFuel = 1, stations = [[10,100]]
+输出：-1
+解释：我们无法抵达目的地，甚至无法到达第一个加油站。
+
+输入：target = 100, startFuel = 10, stations = [[10,60],[20,30],[30,30],[60,40]]
+输出：2
+解释：
+我们出发时有 10 升燃料。
+我们开车来到距起点 10 英里处的加油站，消耗 10 升燃料。将汽油从 0 升加到 60 升。
+然后，我们从 10 英里处的加油站开到 60 英里处的加油站（消耗 50 升燃料），
+并将汽油从 10 升加到 50 升。然后我们开车抵达目的地。
+我们沿途在1两个加油站停靠，所以返回 2 。
+
+class Solution {
+public:
+    int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
+        int reach = startFuel;
+        priority_queue<int> pq;
+        int step = 0;
+        int i = 0;
+        while (true) {
+            if (reach >= target) return step;
+            step++;
+            for (; i < stations.size() && stations[i][0] <= reach; i++) {
+                pq.push(stations[i][1]);
+            }
+            if (pq.empty()) {
+                break;
+            }
+            else {
+                reach += pq.top();
+                pq.pop();
+            }
+        }
+        return -1;
     }
 };
 ```
