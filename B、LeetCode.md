@@ -93,6 +93,7 @@
 |[1476、交点(hard)](#交点)||
 |[1481、硬币(medium)](#硬币)||||
 |[1496、按摩师(easy)](#按摩师)||
+|||||[1530、好叶子节点对的数量(medium)](#好叶子节点对的数量)|
 |[1531、机器人的运动范围(medium)](#机器人的运动范围)||
 |||[1538、最小的k个数(easy)](#最小的k个数)|||
 ||||[1579、圆圈中最后剩下的数字(easy)](#圆圈中最后剩下的数字)||
@@ -11102,6 +11103,67 @@ public:
             dp1 = ndp1;  // dp[i][1]更新dp1
         }
         return max(dp0, dp1);
+    }
+};
+```
+
+<span id="好叶子节点对的数量"></span>
+## [1530、好叶子节点对的数量(medium)](#back)
+```cpp
+给你二叉树的根节点 root 和一个整数 distance 。
+如果二叉树中两个叶节点之间的 最短路径长度 小于或者等于 distance ，那它们就可以构成一组 好叶子节点对 。
+返回树中 好叶子节点对的数量 。
+
+	1
+   2         3
+4    5    6     7
+输入：root = [1,2,3,4,5,6,7], distance = 3
+输出：2
+解释：好叶子节点对为 [4,5] 和 [6,7] ，最短路径长度都是 2 。但是叶子节点对 [4,6] 不满足要求，因为它们之间的最短路径长度为 4 。
+
+输入：root = [100], distance = 1
+输出：0
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> dfs(TreeNode* root, int distance, int& ans) {
+        if (root == nullptr) return {};
+        if (root->left == nullptr && root->right == nullptr) return { 0 };
+        vector<int> ret;
+        auto left = dfs(root->left, distance, ans);
+        for (auto& e : left) {
+            if (++e > distance) continue;
+            ret.push_back(e);
+        }
+        auto right = dfs(root->right, distance, ans);
+        for (auto& e : right) {
+            if (++e > distance) continue;
+            ret.push_back(e);
+        }
+
+        for (auto l : left) {
+            for (auto r : right) {
+                ans += (l + r <= distance);
+            }
+        }
+        return ret;
+    }
+
+    int countPairs(TreeNode* root, int distance) {
+        int ans = 0;
+        dfs(root, distance, ans);
+        return ans;
     }
 };
 ```
