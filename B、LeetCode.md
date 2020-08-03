@@ -40,7 +40,7 @@
 ||||[189、旋转数组(easy)](#旋转数组)||
 |||[198、打家劫舍(easy)](#打家劫舍)|[199、二叉树的右视图(medium)](#二叉树的右视图)|[200、岛屿数量(medium)](#岛屿数量)|
 ||[202、快乐数(easy)](#快乐数)|[203、移除链表元素(easy)](#移除链表元素)|||
-|[206、反转链表(easy)](#反转链表)||||[210、课程表 II(medium)](#课程表2)|
+|[206、反转链表(easy)](#反转链表)|[207、课程表(medium)](#课程表)|||[210、课程表 II(medium)](#课程表2)|
 |[221、最大正方形(medium)](#最大正方形)||
 |[226、翻转二叉树(easy)](#翻转二叉树)||||
 |[236、二叉树的最近公共祖先(medium)](#二叉树的最近公共祖先)||[238、除自身以外数组的乘积(medium)](#除自身以外数组的乘积)|
@@ -8074,6 +8074,64 @@ public:
         recur_pre = head;
         head = tmp;
         return reverseList(head);
+    }
+};
+```
+
+<span id="课程表"></span>
+## [207、课程表(medium)](#back)
+```cpp
+你这个学期必须选修 numCourse 门课程，记为 0 到 numCourse-1 。
+在选修某些课程之前需要一些先修课程。 例如，想要学习课程 0 ，你需要先完成课程 1 ，我们用一个匹配来表示他们：[0,1]
+给定课程总量以及它们的先决条件，请你判断是否可能完成所有课程的学习？
+
+输入: 2, [[1,0]] 
+输出: true
+解释: 总共有 2 门课程。学习课程 1 之前，你需要完成课程 0。所以这是可能的。
+
+输入: 2, [[1,0],[0,1]]
+输出: false
+解释: 总共有 2 门课程。学习课程 1 之前，你需要先完成 课程 0；并且学习课程 0 之前，你还应先完成课程 1。这是不可能的。
+
+class Solution {
+private:
+    // 存储有向图
+    vector<vector<int>> edges;
+    // 标记节点的状态
+    vector<int> visited;
+    // 判断图中是否存在环
+    bool invalid = false;
+
+public:
+    void dfs(int u) {
+        visited[u] = 1;
+        for (auto v : edges[u]) {
+            if (visited[v] == 0) {
+                dfs(v);
+                if (invalid) return ;
+            }
+            else if (visited[v] == 1) {
+                invalid = true;
+                return ;
+            }
+        }
+        visited[u] = 2;
+    }
+
+
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        edges.resize(numCourses);
+        visited.resize(numCourses);
+        for (const auto &info : prerequisites) {
+            edges[info[1]].push_back(info[0]);
+        }
+        for (int i = 0; i < numCourses && !invalid; i++) {
+            if (!visited[i]) {
+                dfs(i);
+            }
+        }
+        if (invalid) return false;
+        return true;
     }
 };
 ```
