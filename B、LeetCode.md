@@ -48,6 +48,7 @@
 |||[263、丑数(easy)](#丑数)|||
 ||[287、寻找重复数(medium)](#寻找重复数)||[289、生命游戏(medium)](#生命游戏)||
 ||[297、二叉树的序列化与反序列化(hard)](#二叉树的序列化与反序列化)|||[300、最长上升子序列(medium)](#最长上升子序列)|
+|[316、去除重复字母(hard)](#去除重复字母)|||||
 ||[322、零钱兑换(medium)](#零钱兑换)||||
 |||||[355、设计推特(medium)](#设计推特)|
 |||||[365、水壶问题(medium)](#水壶问题)|
@@ -8668,6 +8669,42 @@ public:
             dp_len = max(a, dp_len);
         }
         return dp_len;
+    }
+};
+```
+
+<span id="去除重复字母"></span>
+## [316、去除重复字母(hard)](#back)
+```cpp
+给你一个仅包含小写字母的字符串，请你去除字符串中重复的字母，使得每个字母只出现一次。
+需保证返回结果的字典序最小（要求不能打乱其他字符的相对位置）。
+
+输入: "bcabc"
+输出: "abc"
+
+输入: "cbacdcbc"
+输出: "acdb"
+
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        vector<char> vec(256, 0);
+        vector<bool> visited(256, 0);
+        for (char s1 : s) {
+            vec[s1]++;
+        }
+        string str = " ";
+        for (char s1 : s) {
+            vec[s1]--;
+            if (visited[s1]) continue;
+            while (vec[str.back()] && s1 < str.back()) {
+                visited[str.back()] = false;
+                str.pop_back();
+            }
+            str += s1;
+            visited[s1] = true;
+        }
+        return str.substr(1, str.size() - 1);
     }
 };
 ```
