@@ -104,7 +104,7 @@
 ||||[1644、把数字翻译成字符串(medium)](#把数字翻译成字符串)||
 |||[1658、模式匹配(medium)](#模式匹配)|||
 ||[1662、求1+2+…+n(medium)](#求1+2+…+n)||||
-
+||||[5489、两球之间的磁力(medium)](#两球之间的磁力)||
 <span id="两数之和"></span>
 ## [1、两数之和](#back)
 ```cpp
@@ -11671,6 +11671,65 @@ public:
     int sumNums(int n) {
         n && (n +=sumNums(n - 1));
         return n; 
+    }
+};
+```
+
+<span id="两球之间的磁力"> </span>
+## [5489、两球之间的磁力(medium)](#back)
+
+<div align=center><img src="https://github.com/FangChao1086/LeetCode_Solutions/blob/master/依赖文件/LeetCode5489_两球之间的磁力.png"></div>
+
+```cpp
+在代号为 C-137 的地球上，Rick 发现如果他将两个球放在他新发明的篮子里，它们之间会形成特殊形式的磁力。
+Rick 有 n 个空的篮子，第 i 个篮子的位置在 position[i] ，Morty 想把 m 个球放到这些篮子里，使得任意两球间 最小磁力 最大。
+已知两个球如果分别位于 x 和 y ，那么它们之间的磁力为 |x - y| 。
+给你一个整数数组 position 和一个整数 m ，请你返回最大化的最小磁力。
+
+输入：position = [1,2,3,4,7], m = 3
+输出：3
+解释：将 3 个球分别放入位于 1，4 和 7 的三个篮子，两球间的磁力分别为 [3, 3, 6]。最小磁力为 3 。我们没办法让最小磁力大于 3 。
+
+输入：position = [5,4,3,2,1,1000000000], m = 2
+输出：999999999
+解释：我们使用位于 1 和 1000000000 的篮子时最小磁力最大。
+
+class Solution {
+public:
+    bool check(int x, vector<int>& position, int m) {
+        int cnt = 0;
+        int target = position[0] + x;
+        for (int i = 0; i < position.size() - 1; i++) {
+            if (position[i + 1] >= target && position[i] < target) {
+                cnt++;
+                target = position[i + 1] + x;
+            }
+        }
+        return cnt >= m - 1;
+    }
+
+    int maxDistance(vector<int>& position, int m) {
+        // 最大化最小值问题  二分搜索
+        sort(position.begin(), position.end());
+        int len = position.size();
+        int diff = position[len - 1] - position[0];  // 最大间隔
+        int mm = INT_MAX;  // 记录最小间隔
+        for (int i = 0; i < len - 1; i++) {
+            if (mm > position[i + 1] - position[i]) {
+                mm = position[i + 1] - position[i];
+            }
+        }
+        if (m == 2) return diff;
+        int left = mm, right = diff / (m - 1);  // 确定左右边界
+        while (left <= right) {  // 二分搜索
+            int mid = left + right >> 1;
+            if (check(mid, position, m)) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left - 1;
     }
 };
 ```
